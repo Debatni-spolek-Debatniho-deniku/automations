@@ -8,8 +8,6 @@ public class PaymentViewModel
 
     [Display(Name = "Typ")]
     public PaymentType Type { get; }
-    
-    public bool Hidden { get; }
 
     public ulong VariableSymbol { get; }
 
@@ -31,7 +29,6 @@ public class PaymentViewModel
     public PaymentViewModel(ulong variableSymbol, Model.BankPayment payment)
     {
         Reference = payment.Reference;
-        Hidden = payment.Overrides.Hidden;
         VariableSymbol = variableSymbol;
         CounterpartyAccountNumber = payment.CounterpartyAccountNumber;
         ConstantSymbol = payment.Overrides.ConstantSymbol ?? payment.ConstantSymbol;
@@ -39,15 +36,17 @@ public class PaymentViewModel
         DateTime =  payment.Overrides.DateTime ?? payment.DateTime;
         Description = payment.Overrides.Description ?? payment.Description;
 
-        Type = payment.Overrides.ConstantSymbol is not null || payment.Overrides.DateTime is not null
-            ? PaymentType.BANK_OVERRIDED
-            : PaymentType.BANK;
+        Type = payment switch
+        {
+            { Overrides: { Removed: true } } => PaymentType.BANK_REMOVED,
+            { Overrides: { Overriden: true } } => PaymentType.BANK_OVERRIDED,
+            _ => PaymentType.BANK,
+        };
     }
 
     public PaymentViewModel(ulong variableSymbol, Model.ManualPayment payment)
     {
         Reference = payment.Reference;
-        Hidden = false;
         VariableSymbol = variableSymbol;
         CounterpartyAccountNumber = null;
         ConstantSymbol = payment.ConstantSymbol;

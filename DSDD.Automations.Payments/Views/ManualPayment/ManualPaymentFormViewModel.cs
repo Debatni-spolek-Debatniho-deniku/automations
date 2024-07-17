@@ -11,11 +11,7 @@ public class ManualPaymentFormViewModel
     public DateTime DateTime { get; }
 
     public string? Description { get; }
-
-    public ManualPaymentFormViewModel()
-    {
-    }
-
+    
     public ManualPaymentFormViewModel(ulong? constantSymbol, decimal amountCzk, DateTime dateTime, string? description)
     {
         ConstantSymbol = constantSymbol;

@@ -2,6 +2,7 @@ using System.Net.Mime;
 using DSDD.Automations.Payments.Helpers;
 using DSDD.Automations.Payments.Model;
 using DSDD.Automations.Payments.Payments;
+using DSDD.Automations.Payments.Views.BankPayment;
 using DSDD.Automations.Payments.Views.Index;
 using DSDD.Automations.Payments.Views.ManualPayment;
 using DSDD.Automations.Payments.Views.Payer;
@@ -60,7 +61,7 @@ public class MvcHttp
 
         return new ContentResult()
         {
-            Content = await _engine.CompileRenderAsync("ManualPayments.ManualPayment.cshtml", new ManualPaymentViewModel(longVariableSymbol)),
+            Content = await _engine.CompileRenderAsync("ManualPayment.ManualPayment.cshtml", new ManualPaymentViewModel(longVariableSymbol)),
             ContentType = MediaTypeNames.Text.Html,
             StatusCode = StatusCodes.Status200OK
         };
@@ -84,8 +85,8 @@ public class MvcHttp
         return new RedirectResult($"/payers/{variableSymbol}");
     }
 
-    [Function(nameof(MvcHttp) + "-" + nameof(GetEditPayment))]
-    public async Task<IActionResult> GetEditPayment(
+    [Function(nameof(MvcHttp) + "-" + nameof(GetPayment))]
+    public async Task<IActionResult> GetPayment(
         [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "payers/{variableSymbol}/payments/{paymentReference}")] HttpRequest req,
         string variableSymbol,
         string paymentReference)
@@ -102,36 +103,55 @@ public class MvcHttp
             ulong longVariableSymbol = _numericSymbolParser.Parse(variableSymbol);
             Payer payer = await _payers.GetRequiredAsync(longVariableSymbol);
 
-            BankPayment? maybeBankPayment = payer.BankPayments.SingleOrDefault(p => p.Reference == paymentReference);
-            if (maybeBankPayment is not null)
-                throw new NotImplementedException();
-
-            ManualPayment? maybeManualPayment = payer.ManualPayments.SingleOrDefault(p => p.Reference == paymentReference);
-            if (maybeManualPayment is not null)
-                return await _engine.CompileRenderAsync(
-                    "ManualPayments.ManualPayment.cshtml",
-                    new ManualPaymentViewModel(longVariableSymbol, maybeManualPayment));
-
-            throw new IndexOutOfRangeException(
-                $"Pro poplatníka {variableSymbol} neexistuje platba {paymentReference}!");
+            switch (await _paymentsService.GetPaymentAsync(longVariableSymbol, paymentReference))
+            {
+                case BankPayment bankPayment:
+                    return await _engine.CompileRenderAsync(
+                        "BankPayment.BankPayment.cshtml",
+                        new BankPaymentViewModel(longVariableSymbol, bankPayment));
+                case ManualPayment manualPayment:
+                    return await _engine.CompileRenderAsync(
+                        "ManualPayment.ManualPayment.cshtml",
+                        new ManualPaymentViewModel(longVariableSymbol, manualPayment));
+                default:
+                    throw new IndexOutOfRangeException();
+            }
         }
     }
 
-    [Function(nameof(MvcHttp) + "-" + nameof(PostEditPayment))]
-    public async Task<IActionResult> PostEditPayment(
+    [Function(nameof(MvcHttp) + "-" + nameof(PostPayment))]
+    public async Task<IActionResult> PostPayment(
         [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "payers/{variableSymbol}/payments/{paymentReference}")] HttpRequest req,
         string variableSymbol,
         string paymentReference)
     {
-        ManualPaymentFormViewModel model = BindToManualPaymentFormViewModel(await req.ReadFormAsync());
+        ulong longVariableSymbol = _numericSymbolParser.Parse(variableSymbol);
 
-        await _paymentsService.UpsertManualPaymentAsync(
-            _numericSymbolParser.Parse(variableSymbol),
-            paymentReference,
-            model.ConstantSymbol,
-            model.AmountCzk,
-            model.DateTime,
-            model.Description);
+        IFormCollection form = await req.ReadFormAsync();
+
+        bool isBank = (await _paymentsService.GetPaymentAsync(longVariableSymbol, paymentReference)) is BankPayment;
+
+        if (isBank)
+        {
+            BankPaymentFormViewModel model = BindToBankPaymentFormViewModel(form);
+            await _paymentsService.OverrideBankPaymentAsync(
+                longVariableSymbol,
+                paymentReference,
+                model.ConstantSymbol,
+                model.DateTime,
+                model.Description);
+        }
+        else
+        {
+            ManualPaymentFormViewModel model = BindToManualPaymentFormViewModel(form);
+            await _paymentsService.UpsertManualPaymentAsync(
+                longVariableSymbol,
+                paymentReference,
+                model.ConstantSymbol,
+                model.AmountCzk,
+                model.DateTime,
+                model.Description);
+        }
 
         return new RedirectResult($"/payers/{variableSymbol}");
     }
@@ -144,6 +164,19 @@ public class MvcHttp
     {
         await _paymentsService.RemovePaymentAsync(
             _numericSymbolParser.Parse(variableSymbol), 
+            paymentReference);
+
+        return new RedirectResult($"/payers/{variableSymbol}");
+    }
+
+    [Function(nameof(MvcHttp) + "-" + nameof(PostRestorePayment))]
+    public async Task<IActionResult> PostRestorePayment(
+        [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "payers/{variableSymbol}/payments/{paymentReference}/restore")] HttpRequest req,
+        string variableSymbol,
+        string paymentReference)
+    {
+        await _paymentsService.RestorePaymentAsync(
+            _numericSymbolParser.Parse(variableSymbol),
             paymentReference);
 
         return new RedirectResult($"/payers/{variableSymbol}");
@@ -169,5 +202,23 @@ public class MvcHttp
             : null;
 
         return new(constantSymbol, amount, dateTime, description);
+    }
+
+    private BankPaymentFormViewModel BindToBankPaymentFormViewModel(IFormCollection form)
+    {
+        ulong? constantSymbol = form[nameof(BankPaymentFormViewModel.ConstantSymbol)].FirstOrDefault() is { } c 
+                                && !string.IsNullOrWhiteSpace(c)
+            ? _numericSymbolParser.Parse(c)
+            : null;
+        DateTime? dateTime = form[nameof(BankPaymentFormViewModel.DateTime)].FirstOrDefault() is {} dt
+                             && !string.IsNullOrWhiteSpace(dt)
+            ? DateTime.Parse(dt)
+            : null; 
+        string? description = form[nameof(BankPaymentFormViewModel.Description)].FirstOrDefault() is { } d 
+                              && !string.IsNullOrWhiteSpace(d)
+            ? d
+            : null;
+
+        return new(constantSymbol, dateTime, description);
     }
 }

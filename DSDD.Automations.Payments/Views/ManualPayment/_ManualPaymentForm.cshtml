@@ -12,13 +12,13 @@
             </div>
             <div class="col-4 form-group">
                 <label for="date-time" class="required">Datum a čas</label>
-                <input type="datetime-local" class="form-control" id="date-time" name="DateTime" value="@Model?.DateTime.ToString("yyyy-MM-ddTHH:mm:ss.fffZ")" required>
+                <input type="datetime-local" class="form-control" id="date-time" name="DateTime" value="@Model?.DateTime.ToString("yyy-MM-ddTHH:mm")" required>
             </div>
         </div>
         <div class="row">
             <div class="col-4 form-group">
                 <label for="constant-symbol">Konstantní symbol</label>
-                <input type="number" class="form-control" id="constant-symbol" name="ConstantSymbol" min="0" step="0" value="@Model?.ConstantSymbol">
+                <input type="number" class="form-control" id="constant-symbol" name="ConstantSymbol" min="0" step="1" value="@Model?.ConstantSymbol">
             </div>
             <div class="col-8 form-group">
                 <label for="description">Popis platby</label>

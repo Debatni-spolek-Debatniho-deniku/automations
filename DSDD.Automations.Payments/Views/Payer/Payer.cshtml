@@ -4,13 +4,19 @@
     Layout = "Layout._Layout.cshtml";
 }
 
+<style>
+    .row-removed {
+        opacity: 0.5
+    }
+</style>
+
 <div class="mb-2">
     <a href="/payers" class="btn btn-secondary">Zpět</a>
     <a href="/payers/@Model.VariableSymbol/payments/new" class="btn btn-success"><i class="bi bi-plus"></i>Nová platba</a>
 </div>
 
-<table class="table table-bordered table-striped">
-    <thead class="thead-dark">
+<table class="table table-bordered">
+    <thead class="table-light">
         <tr>
             <th>@DisplayNameFor(model => model.Payments.First().Type)</th>
             <th>@DisplayNameFor(model => model.Payments.First().CounterpartyAccountNumber)</th>

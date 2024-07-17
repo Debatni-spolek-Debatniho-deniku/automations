@@ -1,0 +1,30 @@
+﻿@inherits DSDD.Automations.Payments.Views.ShimTemplatePage<DSDD.Automations.Payments.Views.BankPayment.BankPaymentFormViewModel>
+
+<form class="card" method="post">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-4 form-group">
+                <label for="date-time" class="required">Datum a čas</label>
+                <div class="d-flex align-items-center">
+                    <input type="datetime-local" class="form-control" id="date-time" name="DateTime" value="@Model.DateTime?.ToString("yyy-MM-ddTHH:mm")">
+                    <button type="button" class="btn btn-outlined-secondary btn-sm mx-2" onclick="document.getElementById('date-time').value = ''">
+                        <i class="bi bi-x-lg"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-4 form-group">
+                <label for="constant-symbol">Konstantní symbol</label>
+                <input type="number" class="form-control" id="constant-symbol" name="ConstantSymbol" min="0" step="1" value="@Model.ConstantSymbol">
+            </div>
+            <div class="col-8 form-group">
+                <label for="description">Popis platby</label>
+                <input type="text" class="form-control" id="description" name="Description" value="@Model.Description">
+            </div>
+        </div>
+    </div>
+    <div class="card-footer d-flex justify-content-end">
+        <button type="submit" class="btn btn-success ml-auto">Uložit</button>
+    </div>
+</form>

@@ -9,6 +9,8 @@
 	  <MvcRazorExcludeRefAssembliesFromPublish>false</MvcRazorExcludeRefAssembliesFromPublish>
 	</PropertyGroup>
 	<ItemGroup>
+	  <None Remove="Views\BankPayment\BankPayment.cshtml" />
+	  <None Remove="Views\BankPayment\_BankPaymentForm.cshtml" />
 	  <None Remove="Views\Error\Error.cshtml" />
 	  <None Remove="Views\ManualPayment\ManualPayment.cshtml" />
 	  <None Remove="Views\ManualPayment\_ManualPaymentForm.cshtml" />
@@ -38,6 +40,12 @@
 		</None>
 	</ItemGroup>
 	<ItemGroup>
+		<EmbeddedResource Include="Views\BankPayment\BankPayment.cshtml">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</EmbeddedResource>
+		<EmbeddedResource Include="Views\BankPayment\_BankPaymentForm.cshtml">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</EmbeddedResource>
 		<EmbeddedResource Include="Views\Error\Error.cshtml">
 		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</EmbeddedResource>
