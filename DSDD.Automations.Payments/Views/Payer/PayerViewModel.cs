@@ -8,7 +8,7 @@ public class PayerViewModel : LayoutViewModel
 
     public IReadOnlyList<PaymentViewModel> Payments { get; }
     
-    public PayerViewModel(ulong variableSymbol) : base($"Plátce s variabilním symbolem {variableSymbol}")
+    public PayerViewModel(ulong variableSymbol) : base($"Poplatník s variabilním symbolem {variableSymbol}")
     {
         VariableSymbol = variableSymbol;
         Payments = Array.Empty<PaymentViewModel>();
