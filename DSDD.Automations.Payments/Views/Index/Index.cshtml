@@ -1,0 +1,24 @@
+﻿@inherits RazorLight.TemplatePage<DSDD.Automations.Payments.Views.Index.IndexViewModel>
+
+@{
+    Layout = "Layout._Layout.cshtml";
+}
+
+<form class="card" style="max-width: 20rem" onsubmit="onSubmit(event)">
+    <div class="card-body form-group">
+        <label for="variableSymbol">Variabilní symbol</label>
+        <input type="number" class="form-control" id="variableSymbol" required min="0" step="1">
+    </div>
+    <div class="card-footer d-flex justify-content-end">
+        <button type="submit" class="btn btn-success ml-auto">Uložit</button>
+    </div>
+</form>
+
+<script>
+    function onSubmit(event) {
+        event.preventDefault();
+
+        const numberInput = document.getElementById('variableSymbol').value;
+        window.location.href = '/payers/' + numberInput;
+    }
+</script>

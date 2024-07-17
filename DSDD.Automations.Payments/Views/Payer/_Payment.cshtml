@@ -1,0 +1,10 @@
+﻿@inherits DSDD.Automations.Payments.Views.ShimTemplatePage<DSDD.Automations.Payments.Views.Payer.PaymentViewModel>
+
+<tr class="@(Model.Hidden ?"table-secondary text-muted" :null)">
+    <td>@DisplayFor(m => m.Type)</td>
+    <td>@(Model.CounterpartyAccountNumber ?? "-")</td>
+    <td>@(Model.ConstantSymbol?.ToString() ?? "-")</td>
+    <td>@Model.AmountCzk CZK</td>
+    <td>@Model.DateTime.ToString("dd.MM.yyyy HH:mm")</td>
+    <td>@Model.Description</td>
+</tr>

@@ -1,0 +1,13 @@
+﻿@inherits DSDD.Automations.Payments.Views.ShimTemplatePage<DSDD.Automations.Payments.Views.ManualPayment.ManualPaymentViewModel>
+
+@{
+    Layout = "Layout._Layout.cshtml";
+}
+
+<div class="mb-2">
+    <a href="/payers/@Model.VariableSymbol" class="btn btn-secondary">Zpět</a>
+</div>
+
+@{
+    await IncludeAsync("ManualPayment._ManualPaymentForm.cshtml", Model);
+}
