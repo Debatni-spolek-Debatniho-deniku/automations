@@ -5,9 +5,9 @@ using Microsoft.Azure.Cosmos.Fluent;
 
 namespace DSDD.Automations.Payments;
 
-public class CosmosPayers: IPayers, IDisposable
+public class CosmosPayersDao: IPayersDao, IDisposable
 {
-    public CosmosPayers(TokenCredential tokenCredential, string accountEndpoint)
+    public CosmosPayersDao(TokenCredential tokenCredential, string accountEndpoint)
     {
         _tokenCredential = tokenCredential;
         _accountEndpoint = accountEndpoint;
@@ -20,11 +20,11 @@ public class CosmosPayers: IPayers, IDisposable
     {
         Container payers = await GetPayersContainer();
 
+        string id = variableSymbol.ToString();
+
         try
         {
-            return await payers.ReadItemAsync<Payer>(
-                variableSymbol.ToString(),
-                new PartitionKey(variableSymbol));
+            return await payers.ReadItemAsync<Payer>(id, new PartitionKey(id));
         }
         catch (CosmosException ex) when (ex.StatusCode == System.Net.HttpStatusCode.NotFound)
         {
@@ -34,7 +34,7 @@ public class CosmosPayers: IPayers, IDisposable
 
     public async Task UpsertAync(Payer payer)
     {
-        Container payers = await GetPayersContainer();;
+        Container payers = await GetPayersContainer();
         await payers.UpsertItemAsync(payer);
     }
     

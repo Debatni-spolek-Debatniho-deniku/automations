@@ -11,10 +11,12 @@ public class PaymentViewModel
     
     public bool Hidden { get; }
 
+    public ulong VariableSymbol { get; }
+
     [Display(Name = "Protiúčet")]
     public string? CounterpartyAccountNumber { get; }
 
-    [Display(Name = "Konstanta")]
+    [Display(Name = "Konstantní symbol")]
     public ulong? ConstantSymbol { get; }
 
     [Display(Name = "Částka")]
@@ -26,12 +28,13 @@ public class PaymentViewModel
     [Display(Name = "Popis")]
     public string? Description { get; }
     
-    public PaymentViewModel(Model.BankPayment payment)
+    public PaymentViewModel(ulong variableSymbol, Model.BankPayment payment)
     {
         Reference = payment.Reference;
-        Hidden = payment.Overrides?.Hidden ?? false;
+        Hidden = payment.Overrides.Hidden;
+        VariableSymbol = variableSymbol;
         CounterpartyAccountNumber = payment.CounterpartyAccountNumber;
-        ConstantSymbol = payment.Overrides?.ConstantSymbol ?? payment.ConstantSymbol;
+        ConstantSymbol = payment.Overrides.ConstantSymbol ?? payment.ConstantSymbol;
         AmountCzk = payment.AmountCzk;
         DateTime =  payment.Overrides.DateTime ?? payment.DateTime;
         Description = payment.Overrides.Description ?? payment.Description;
@@ -41,10 +44,11 @@ public class PaymentViewModel
             : PaymentType.BANK;
     }
 
-    public PaymentViewModel(Model.ManualPayment payment)
+    public PaymentViewModel(ulong variableSymbol, Model.ManualPayment payment)
     {
         Reference = payment.Reference;
         Hidden = false;
+        VariableSymbol = variableSymbol;
         CounterpartyAccountNumber = null;
         ConstantSymbol = payment.ConstantSymbol;
         AmountCzk = payment.AmountCzk;

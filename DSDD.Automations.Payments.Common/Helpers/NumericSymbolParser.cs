@@ -2,14 +2,14 @@
 
 public class NumericSymbolParser : INumericSymbolParser
 {
-    public class VariableSymbolCannotBeParsed : ArgumentException
+    public class NumericSymbolCannotBeParsed : ArgumentException
     {
-        public VariableSymbolCannotBeParsed(string variableSymbol) : base($"Varaible symbol {variableSymbol} cannot be parsed!")
+        public NumericSymbolCannotBeParsed(string variableSymbol) : base($"Číselný symbol {variableSymbol} není validní!")
         { }
     }
 
     public ulong Parse(string variableSymbol)
         => ulong.TryParse(variableSymbol, out ulong result)
             ? result
-            : throw new VariableSymbolCannotBeParsed(variableSymbol);
+            : throw new NumericSymbolCannotBeParsed(variableSymbol);
 }

@@ -4,11 +4,8 @@ public abstract class LayoutViewModel
 {
     public string Title { get; }
 
-    public Exception? Exception { get; }
-
-    protected LayoutViewModel(string title, Exception? exception)
+    protected LayoutViewModel(string title)
     {
         Title = title;
-        Exception = exception;
     }
 }

@@ -2,13 +2,13 @@
 
 public class BankPaymentOverrides
 {
-    public bool Hidden { get; }
+    public bool Hidden { get; set; }
     
-    public ulong? ConstantSymbol { get; }
+    public ulong? ConstantSymbol { get; set; }
 
-    public DateTime? DateTime { get; }
+    public DateTime? DateTime { get; set; }
 
-    public string? Description { get; }
+    public string? Description { get; set; }
 
     public BankPaymentOverrides(bool hidden, ulong? constantSymbol, DateTime? dateTime, string? description)
     {

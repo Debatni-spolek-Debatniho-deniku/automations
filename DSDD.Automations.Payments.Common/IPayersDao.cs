@@ -2,7 +2,7 @@
 
 namespace DSDD.Automations.Payments;
 
-public interface IPayers
+public interface IPayersDao
 {
     Task<Payer?> GetAsync(ulong variableSymbol);
 

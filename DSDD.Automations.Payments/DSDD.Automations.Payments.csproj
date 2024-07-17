@@ -12,7 +12,6 @@
 	  <None Remove="Views\Error\Error.cshtml" />
 	  <None Remove="Views\ManualPayment\ManualPayment.cshtml" />
 	  <None Remove="Views\ManualPayment\_ManualPaymentForm.cshtml" />
-	  <None Remove="Views\PayerSelect\_PayerSelect.cshtml" />
 	  <None Remove="Views\Payer\Payer.cshtml" />
 	  <None Remove="Views\Payer\_Payment.cshtml" />
 	</ItemGroup>
@@ -52,9 +51,6 @@
 		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</EmbeddedResource>
 		<EmbeddedResource Include="Views\ManualPayment\_ManualPaymentForm.cshtml">
-		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</EmbeddedResource>
-		<EmbeddedResource Include="Views\PayerSelect\_PayerSelect.cshtml">
 		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</EmbeddedResource>
 		<EmbeddedResource Include="Views\Payer\_Payment.cshtml">

@@ -2,6 +2,8 @@ using System.Reflection;
 using Azure.Core;
 using Azure.Identity;
 using DSDD.Automations.Payments;
+using DSDD.Automations.Payments.Middleware;
+using DSDD.Automations.Payments.Payments;
 using DSDD.Automations.Payments.RBCZ;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Configuration;
@@ -11,7 +13,10 @@ using RazorLight;
 using RazorLight.Extensions;
 
 var host = new HostBuilder()
-    .ConfigureFunctionsWebApplication()
+    .ConfigureFunctionsWebApplication(app =>
+    {
+        app.UseMiddleware<ErrorPageMiddleware>();
+    })
     .ConfigureServices((ctx, services) =>
     {
         services.AddApplicationInsightsTelemetryWorkerService();
@@ -23,8 +28,12 @@ var host = new HostBuilder()
             .Build());
         
         services.AddSingleton<TokenCredential>(new DefaultAzureCredential(new DefaultAzureCredentialOptions()));
+
+        services.AddTransient<IPaymentsService, PayerPaymentsService>();
+
         services.AddPaymentsCommon(ctx.Configuration.GetValue<string>("COSMOS_DB_ACCOUNT_ENDPOINT") ??
                                  throw new NullReferenceException("CosmosDB was not configured!"));
+
         services.AddPaymentsRBCZ();
     })
     .Build();

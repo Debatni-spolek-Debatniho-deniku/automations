@@ -7,4 +7,14 @@
     <td>@Model.AmountCzk CZK</td>
     <td>@Model.DateTime.ToString("dd.MM.yyyy HH:mm")</td>
     <td>@Model.Description</td>
+    <td style="width: 100px">
+        <div class="btn-group" role="group">
+            <a href="/payers/@Model.VariableSymbol/payments/@Model.Reference" class="btn btn-outline-success" title="Upravit">
+                <i class="bi bi-pencil"></i>
+            </a>
+            <form class="btn btn-outline-danger" action="/payers/@Model.VariableSymbol/payments/@Model.Reference/remove" method="POST" onclick="this.submit()" title="Odstranit">
+                <i class="bi bi-trash"></i>
+            </form>
+        </div>
+    </td>
 </tr>

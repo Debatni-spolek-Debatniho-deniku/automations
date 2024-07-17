@@ -18,12 +18,13 @@
             <th>@DisplayNameFor(model => model.Payments.First().AmountCzk)</th>
             <th>@DisplayNameFor(model => model.Payments.First().DateTime)</th>
             <th>@DisplayNameFor(model => model.Payments.First().Description)</th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
         @foreach (var payment in Model.Payments)
         {
-            await IncludeAsync("Payer._Payment.cshtml");
+            await IncludeAsync("Payer._Payment.cshtml", payment);
         }
     </tbody>
 </table>

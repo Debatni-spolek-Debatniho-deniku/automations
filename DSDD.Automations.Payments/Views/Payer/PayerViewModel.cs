@@ -1,17 +1,14 @@
-﻿using System.ComponentModel.DataAnnotations;
-using DSDD.Automations.Payments.Views.Layout;
+﻿using DSDD.Automations.Payments.Views.Layout;
 
 namespace DSDD.Automations.Payments.Views.Payer;
 
 public class PayerViewModel : LayoutViewModel
 {
-    [Display(Name="Variabilní symbol")]
     public ulong VariableSymbol { get; }
 
     public IReadOnlyList<PaymentViewModel> Payments { get; }
-
-
-    public PayerViewModel(ulong variableSymbol) : base($"Plátce s variabilním symbolem {variableSymbol}", null)
+    
+    public PayerViewModel(ulong variableSymbol) : base($"Plátce s variabilním symbolem {variableSymbol}")
     {
         VariableSymbol = variableSymbol;
         Payments = Array.Empty<PaymentViewModel>();
@@ -21,10 +18,10 @@ public class PayerViewModel : LayoutViewModel
     {
         Payments = payer
             .BankPayments
-            .Select(payment => new PaymentViewModel(payment))
+            .Select(payment => new PaymentViewModel(payer.VariableSymbol, payment))
             .Concat(payer
-                .ManualPayment
-                .Select(payment => new PaymentViewModel(payment)))
+                .ManualPayments
+                .Select(payment => new PaymentViewModel(payer.VariableSymbol, payment)))
             .OrderByDescending(payment => payment.DateTime)
             .ToArray();
     }

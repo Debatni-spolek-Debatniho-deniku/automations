@@ -15,7 +15,7 @@ public class NumericSymbolParserTests
 
     [Test]
     public void Parse_Throws()
-        => Assert.Throws<NumericSymbolParser.VariableSymbolCannotBeParsed>(() => _sut.Parse("SSS400"));
+        => Assert.Throws<NumericSymbolParser.NumericSymbolCannotBeParsed>(() => _sut.Parse("SSS400"));
 
     private readonly NumericSymbolParser _sut = new();
 }

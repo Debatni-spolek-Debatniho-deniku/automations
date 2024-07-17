@@ -6,20 +6,15 @@ public class ManualPaymentViewModel : LayoutViewModel
 {
     public ulong VariableSymbol { get; }
 
-    public ManualPaymentFormViewModel Payment { get; }
+    public ManualPaymentFormViewModel? Payment { get; }
 
-    public ManualPaymentViewModel(ulong variableSymbol, Exception? exception = null): base($"Nová manuální platba poplatníka {variableSymbol}", null)
+    public ManualPaymentViewModel(ulong variableSymbol): base($"Nová manuální platba poplatníka {variableSymbol}")
     {
         VariableSymbol = variableSymbol;
-        Payment = new();
+        Payment = null;
     }
 
-    public ManualPaymentViewModel(ulong variableSymbol, ManualPaymentFormViewModel payment, Exception exception): this(variableSymbol)
-    {
-
-    }
-
-    public ManualPaymentViewModel(ulong variableSymbol, Model.ManualPayment payment, Exception? exception = null) : base($"Manuální platba poplatníka {variableSymbol}", exception)
+    public ManualPaymentViewModel(ulong variableSymbol, Model.ManualPayment payment) : base($"Manuální platba poplatníka {variableSymbol}")
     {
         VariableSymbol = variableSymbol;
         Payment = new(payment);

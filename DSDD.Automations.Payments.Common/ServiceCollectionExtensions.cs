@@ -8,7 +8,6 @@ public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddPaymentsCommon(this IServiceCollection services, string cosmsoAccountEndpoint)
         => services
-            .AddSingleton<IPayers>(sp =>
-                new CosmosPayers(sp.GetRequiredService<TokenCredential>(), cosmsoAccountEndpoint))
-            .AddSingleton<INumericSymbolParser, NumericSymbolParser>();
+            .AddSingleton<IPayersDao>(sp => new CosmosPayersDao(sp.GetRequiredService<TokenCredential>(), cosmsoAccountEndpoint))
+            .AddTransient<INumericSymbolParser, NumericSymbolParser>();
 }

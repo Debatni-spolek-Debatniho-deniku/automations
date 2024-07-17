@@ -16,16 +16,18 @@
     </PropertyGroup>
 
 	<PropertyGroup>
-		<IsTestProject>$(MSBuildProjectName.EndsWith(`Test`, true, null))</IsTestProject>
+		<IsTestProject>$(MSBuildProjectName.EndsWith(`Tests`, true, null))</IsTestProject>
 		<IsPackable>!$(IsTestProject)</IsPackable>
 	</PropertyGroup>
 
 	<ItemGroup Condition="$(IsTestProject)">
 		<Using Include="NUnit.Framework" />
+		<Using Include="Moq" />
 	</ItemGroup>
 
 	<ItemGroup Condition="$(IsTestProject)">
 		<PackageReference Include="Microsoft.NET.Test.Sdk" />
+		<PackageReference Include="Moq" />
 		<PackageReference Include="NUnit" />
 		<PackageReference Include="NUnit.Analyzers" />
 		<PackageReference Include="NUnit3TestAdapter" />
