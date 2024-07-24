@@ -6,8 +6,14 @@ namespace DSDD.Automations.Payments;
 
 public static class ServiceCollectionExtensions
 {
-    public static IServiceCollection AddPaymentsCommon(this IServiceCollection services, string cosmsoAccountEndpoint)
-        => services
-            .AddSingleton<IPayersDao>(sp => new CosmosPayersDao(sp.GetRequiredService<TokenCredential>(), cosmsoAccountEndpoint))
+    public static IServiceCollection AddPaymentsCommon(this IServiceCollection services)
+    {
+        services.AddOptionsWithValidateOnStart<CosmosOptions>().BindConfiguration("");
+
+        services
+            .AddSingleton<IPayersDao, CosmosPayersDao>()
             .AddTransient<INumericSymbolParser, NumericSymbolParser>();
+
+        return services;
+    }
 }

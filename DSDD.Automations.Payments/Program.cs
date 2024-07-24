@@ -31,9 +31,7 @@ var host = new HostBuilder()
 
         services.AddTransient<IPaymentsService, PayerPaymentsService>();
 
-        services.AddPaymentsCommon(ctx.Configuration.GetValue<string>("COSMOS_DB_ACCOUNT_ENDPOINT") ??
-                                 throw new NullReferenceException("CosmosDB was not configured!"));
-
+        services.AddPaymentsCommon();
         services.AddPaymentsRBCZ();
     })
     .Build();
