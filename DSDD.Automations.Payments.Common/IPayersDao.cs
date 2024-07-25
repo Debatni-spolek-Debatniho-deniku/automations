@@ -4,7 +4,7 @@ namespace DSDD.Automations.Payments;
 
 public interface IPayersDao
 {
-    Task<Payer?> GetAsync(ulong variableSymbol);
+    Task<Payer?> GetAsync(ulong variableSymbol, CancellationToken ct);
 
-    Task UpsertAync(Payer payer);
+    Task UpsertAync(Payer payer, CancellationToken ct);
 }

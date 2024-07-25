@@ -4,6 +4,8 @@
 // </auto-generated>
 //----------------------
 
+using DSDD.Automations.Payments.RBCZ.PremiumApi;
+
 #pragma warning disable 108 // Disable "CS0108 '{derivedDto}.ToJson()' hides inherited member '{dtoBase}.ToJson()'. Use the new keyword if hiding was intended."
 #pragma warning disable 114 // Disable "CS0114 '{derivedDto}.RaisePropertyChanged(String)' hides inherited member 'dtoBase.RaisePropertyChanged(String)'. To make the current member override that implementation, add the override keyword. Otherwise add the new keyword."
 #pragma warning disable 472 // Disable "CS0472 The result of the expression is always 'false' since a value of type 'Int32' is never equal to 'null' of type 'Int32?'
@@ -18,7 +20,7 @@
 #pragma warning disable 8625 // Disable "CS8625 Cannot convert null literal to non-nullable reference type"
 #pragma warning disable 8765 // Disable "CS8765 Nullability of type of parameter doesn't match overridden member (possibly because of nullability attributes)."
 
-namespace DSDD.Automations.RBCZ.PremiumApi.Sandbox
+namespace DSDD.Automations.Payments.RBCZ.PremiumApi
 {
     using System = global::System;
 
@@ -81,9 +83,9 @@ namespace DSDD.Automations.RBCZ.PremiumApi.Sandbox
         /// <param name="accountNumber">The number of account without prefix and bankCode</param>
         /// <returns>Account with currencyFolders and balances.</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<Response> GetBalanceAsync(string x_IBM_Client_Id, string x_Request_Id, string pSU_IP_Address, string accountNumber)
+        public virtual System.Threading.Tasks.Task<Response> GetBalanceAsync(string x_IBM_Client_Id, string x_Request_Id, string pSU_IP_Address, Environment environment, string accountNumber)
         {
-            return GetBalanceAsync(x_IBM_Client_Id, x_Request_Id, pSU_IP_Address, accountNumber, System.Threading.CancellationToken.None);
+            return GetBalanceAsync(x_IBM_Client_Id, x_Request_Id, pSU_IP_Address, environment, accountNumber, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -98,8 +100,11 @@ namespace DSDD.Automations.RBCZ.PremiumApi.Sandbox
         /// <param name="accountNumber">The number of account without prefix and bankCode</param>
         /// <returns>Account with currencyFolders and balances.</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<Response> GetBalanceAsync(string x_IBM_Client_Id, string x_Request_Id, string pSU_IP_Address, string accountNumber, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<Response> GetBalanceAsync(string x_IBM_Client_Id, string x_Request_Id, string pSU_IP_Address, Environment environment, string accountNumber, System.Threading.CancellationToken cancellationToken)
         {
+            if (environment == null)
+                throw new System.ArgumentNullException("environment");
+
             if (accountNumber == null)
                 throw new System.ArgumentNullException("accountNumber");
 
@@ -125,8 +130,10 @@ namespace DSDD.Automations.RBCZ.PremiumApi.Sandbox
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "rbcz/premium/mock/accounts/{accountNumber}/balance"
-                    urlBuilder_.Append("rbcz/premium/mock/accounts/");
+                    // Operation Path: "rbcz/premium/{environment}/accounts/{accountNumber}/balance"
+                    urlBuilder_.Append("rbcz/premium/");
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(environment, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/accounts/");
                     urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(accountNumber, System.Globalization.CultureInfo.InvariantCulture)));
                     urlBuilder_.Append("/balance");
 
@@ -240,9 +247,9 @@ namespace DSDD.Automations.RBCZ.PremiumApi.Sandbox
         /// <param name="to">Defines date (and optionally time) until which transactions will be requested. If no time is specified then 23:59:59.999 (Central European  Time) will be used. Example values - 2021-08-02 or 2021-08-02T14:00:00.0Z</param>
         /// <param name="page">Page number to be requested. The first page is 1.</param>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<Response6> GetTransactionListAsync(string x_IBM_Client_Id, string x_Request_Id, string pSU_IP_Address, string accountNumber, string currencyCode, System.DateTime from, System.DateTime to, int? page)
+        public virtual System.Threading.Tasks.Task<Response6> GetTransactionListAsync(string x_IBM_Client_Id, string x_Request_Id, string pSU_IP_Address, Environment environment, string accountNumber, string currencyCode, System.DateTime from, System.DateTime to, int? page)
         {
-            return GetTransactionListAsync(x_IBM_Client_Id, x_Request_Id, pSU_IP_Address, accountNumber, currencyCode, from, to, page, System.Threading.CancellationToken.None);
+            return GetTransactionListAsync(x_IBM_Client_Id, x_Request_Id, pSU_IP_Address, environment, accountNumber, currencyCode, from, to, page, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -264,8 +271,11 @@ namespace DSDD.Automations.RBCZ.PremiumApi.Sandbox
         /// <param name="to">Defines date (and optionally time) until which transactions will be requested. If no time is specified then 23:59:59.999 (Central European  Time) will be used. Example values - 2021-08-02 or 2021-08-02T14:00:00.0Z</param>
         /// <param name="page">Page number to be requested. The first page is 1.</param>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<Response6> GetTransactionListAsync(string x_IBM_Client_Id, string x_Request_Id, string pSU_IP_Address, string accountNumber, string currencyCode, System.DateTime from, System.DateTime to, int? page, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<Response6> GetTransactionListAsync(string x_IBM_Client_Id, string x_Request_Id, string pSU_IP_Address, Environment environment, string accountNumber, string currencyCode, System.DateTime from, System.DateTime to, int? page, System.Threading.CancellationToken cancellationToken)
         {
+            if (environment == null)
+                throw new System.ArgumentNullException("environment");
+
             if (accountNumber == null)
                 throw new System.ArgumentNullException("accountNumber");
 
@@ -300,8 +310,10 @@ namespace DSDD.Automations.RBCZ.PremiumApi.Sandbox
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "rbcz/premium/mock/accounts/{accountNumber}/{currencyCode}/transactions"
-                    urlBuilder_.Append("rbcz/premium/mock/accounts/");
+                    // Operation Path: "rbcz/premium/{environment}/accounts/{accountNumber}/{currencyCode}/transactions"
+                    urlBuilder_.Append("rbcz/premium/");
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(environment, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/accounts/");
                     urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(accountNumber, System.Globalization.CultureInfo.InvariantCulture)));
                     urlBuilder_.Append('/');
                     urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(currencyCode, System.Globalization.CultureInfo.InvariantCulture)));
@@ -449,9 +461,9 @@ namespace DSDD.Automations.RBCZ.PremiumApi.Sandbox
         /// <param name="batch_Autocorrect">Flag if valueDate should be autocorrected in the imported file or not. Autocorrection moved valueDate on first available valid  (working) day. Beware that this may affect if the payment will be sent as instant or not since only payments with valueDate same as actual date (during sending of payment to bank) can be sent as instant.</param>
         /// <returns>New batch with payments created</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<Response12> ImportPaymentsAsync(string x_IBM_Client_Id, string x_Request_Id, string pSU_IP_Address, BatchImportFormat batch_Import_Format, string batch_Name, bool? batch_Combined_Payments, bool? batch_Autocorrect, string request_body)
+        public virtual System.Threading.Tasks.Task<Response12> ImportPaymentsAsync(string x_IBM_Client_Id, string x_Request_Id, string pSU_IP_Address, BatchImportFormat batch_Import_Format, string batch_Name, bool? batch_Combined_Payments, bool? batch_Autocorrect, Environment environment, string request_body)
         {
-            return ImportPaymentsAsync(x_IBM_Client_Id, x_Request_Id, pSU_IP_Address, batch_Import_Format, batch_Name, batch_Combined_Payments, batch_Autocorrect, request_body, System.Threading.CancellationToken.None);
+            return ImportPaymentsAsync(x_IBM_Client_Id, x_Request_Id, pSU_IP_Address, batch_Import_Format, batch_Name, batch_Combined_Payments, batch_Autocorrect, environment, request_body, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -481,8 +493,11 @@ namespace DSDD.Automations.RBCZ.PremiumApi.Sandbox
         /// <param name="batch_Autocorrect">Flag if valueDate should be autocorrected in the imported file or not. Autocorrection moved valueDate on first available valid  (working) day. Beware that this may affect if the payment will be sent as instant or not since only payments with valueDate same as actual date (during sending of payment to bank) can be sent as instant.</param>
         /// <returns>New batch with payments created</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<Response12> ImportPaymentsAsync(string x_IBM_Client_Id, string x_Request_Id, string pSU_IP_Address, BatchImportFormat batch_Import_Format, string batch_Name, bool? batch_Combined_Payments, bool? batch_Autocorrect, string request_body, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<Response12> ImportPaymentsAsync(string x_IBM_Client_Id, string x_Request_Id, string pSU_IP_Address, BatchImportFormat batch_Import_Format, string batch_Name, bool? batch_Combined_Payments, bool? batch_Autocorrect, Environment environment, string request_body, System.Threading.CancellationToken cancellationToken)
         {
+            if (environment == null)
+                throw new System.ArgumentNullException("environment");
+
             if (request_body == null)
                 throw new System.ArgumentNullException("request_body");
 
@@ -524,8 +539,10 @@ namespace DSDD.Automations.RBCZ.PremiumApi.Sandbox
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "rbcz/premium/mock/payments/batches"
-                    urlBuilder_.Append("rbcz/premium/mock/payments/batches");
+                    // Operation Path: "rbcz/premium/{environment}/payments/batches"
+                    urlBuilder_.Append("rbcz/premium/");
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(environment, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/payments/batches");
 
                     PrepareRequest(client_, request_, urlBuilder_);
 
@@ -662,9 +679,9 @@ namespace DSDD.Automations.RBCZ.PremiumApi.Sandbox
         /// <param name="batchFileId">Batch file id</param>
         /// <returns>Batch payment detail.</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<Response20> GetBatchDetailAsync(string x_IBM_Client_Id, string x_Request_Id, string pSU_IP_Address, long batchFileId)
+        public virtual System.Threading.Tasks.Task<Response20> GetBatchDetailAsync(string x_IBM_Client_Id, string x_Request_Id, string pSU_IP_Address, Environment environment, long batchFileId)
         {
-            return GetBatchDetailAsync(x_IBM_Client_Id, x_Request_Id, pSU_IP_Address, batchFileId, System.Threading.CancellationToken.None);
+            return GetBatchDetailAsync(x_IBM_Client_Id, x_Request_Id, pSU_IP_Address, environment, batchFileId, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -681,8 +698,11 @@ namespace DSDD.Automations.RBCZ.PremiumApi.Sandbox
         /// <param name="batchFileId">Batch file id</param>
         /// <returns>Batch payment detail.</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<Response20> GetBatchDetailAsync(string x_IBM_Client_Id, string x_Request_Id, string pSU_IP_Address, long batchFileId, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<Response20> GetBatchDetailAsync(string x_IBM_Client_Id, string x_Request_Id, string pSU_IP_Address, Environment environment, long batchFileId, System.Threading.CancellationToken cancellationToken)
         {
+            if (environment == null)
+                throw new System.ArgumentNullException("environment");
+
             if (batchFileId == null)
                 throw new System.ArgumentNullException("batchFileId");
 
@@ -708,8 +728,10 @@ namespace DSDD.Automations.RBCZ.PremiumApi.Sandbox
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "rbcz/premium/mock/payments/batches/{batchFileId}"
-                    urlBuilder_.Append("rbcz/premium/mock/payments/batches/");
+                    // Operation Path: "rbcz/premium/{environment}/payments/batches/{batchFileId}"
+                    urlBuilder_.Append("rbcz/premium/");
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(environment, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/payments/batches/");
                     urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(batchFileId, System.Globalization.CultureInfo.InvariantCulture)));
 
                     PrepareRequest(client_, request_, urlBuilder_);
@@ -825,9 +847,9 @@ namespace DSDD.Automations.RBCZ.PremiumApi.Sandbox
         /// <param name="page">Number of the requested page. Default is 1.</param>
         /// <param name="size">Number of items on the page. Default is 15.</param>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<Response26> GetAccountsAsync(string x_IBM_Client_Id, string x_Request_Id, string pSU_IP_Address, int? page, int? size)
+        public virtual System.Threading.Tasks.Task<Response26> GetAccountsAsync(string x_IBM_Client_Id, string x_Request_Id, string pSU_IP_Address, Environment environment, int? page, int? size)
         {
-            return GetAccountsAsync(x_IBM_Client_Id, x_Request_Id, pSU_IP_Address, page, size, System.Threading.CancellationToken.None);
+            return GetAccountsAsync(x_IBM_Client_Id, x_Request_Id, pSU_IP_Address, environment, page, size, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -842,8 +864,11 @@ namespace DSDD.Automations.RBCZ.PremiumApi.Sandbox
         /// <param name="page">Number of the requested page. Default is 1.</param>
         /// <param name="size">Number of items on the page. Default is 15.</param>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<Response26> GetAccountsAsync(string x_IBM_Client_Id, string x_Request_Id, string pSU_IP_Address, int? page, int? size, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<Response26> GetAccountsAsync(string x_IBM_Client_Id, string x_Request_Id, string pSU_IP_Address, Environment environment, int? page, int? size, System.Threading.CancellationToken cancellationToken)
         {
+            if (environment == null)
+                throw new System.ArgumentNullException("environment");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
@@ -866,8 +891,10 @@ namespace DSDD.Automations.RBCZ.PremiumApi.Sandbox
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "rbcz/premium/mock/accounts"
-                    urlBuilder_.Append("rbcz/premium/mock/accounts");
+                    // Operation Path: "rbcz/premium/{environment}/accounts"
+                    urlBuilder_.Append("rbcz/premium/");
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(environment, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/accounts");
                     urlBuilder_.Append('?');
                     if (page != null)
                     {
@@ -978,9 +1005,9 @@ namespace DSDD.Automations.RBCZ.PremiumApi.Sandbox
         /// <param name="page">Number of the requested page. Default is 1.</param>
         /// <param name="size">Number of items on the page. Default is 15.</param>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<Response30> GetStatementsAsync(string x_IBM_Client_Id, string x_Request_Id, string pSU_IP_Address, int? page, int? size, Request_body request_body)
+        public virtual System.Threading.Tasks.Task<Response30> GetStatementsAsync(string x_IBM_Client_Id, string x_Request_Id, string pSU_IP_Address, Environment environment, int? page, int? size, Request_body request_body)
         {
-            return GetStatementsAsync(x_IBM_Client_Id, x_Request_Id, pSU_IP_Address, page, size, request_body, System.Threading.CancellationToken.None);
+            return GetStatementsAsync(x_IBM_Client_Id, x_Request_Id, pSU_IP_Address, environment, page, size, request_body, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -995,8 +1022,11 @@ namespace DSDD.Automations.RBCZ.PremiumApi.Sandbox
         /// <param name="page">Number of the requested page. Default is 1.</param>
         /// <param name="size">Number of items on the page. Default is 15.</param>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<Response30> GetStatementsAsync(string x_IBM_Client_Id, string x_Request_Id, string pSU_IP_Address, int? page, int? size, Request_body request_body, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<Response30> GetStatementsAsync(string x_IBM_Client_Id, string x_Request_Id, string pSU_IP_Address, Environment environment, int? page, int? size, Request_body request_body, System.Threading.CancellationToken cancellationToken)
         {
+            if (environment == null)
+                throw new System.ArgumentNullException("environment");
+
             if (request_body == null)
                 throw new System.ArgumentNullException("request_body");
 
@@ -1026,8 +1056,10 @@ namespace DSDD.Automations.RBCZ.PremiumApi.Sandbox
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "rbcz/premium/mock/accounts/statements"
-                    urlBuilder_.Append("rbcz/premium/mock/accounts/statements");
+                    // Operation Path: "rbcz/premium/{environment}/accounts/statements"
+                    urlBuilder_.Append("rbcz/premium/");
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(environment, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/accounts/statements");
                     urlBuilder_.Append('?');
                     if (page != null)
                     {
@@ -1160,9 +1192,9 @@ namespace DSDD.Automations.RBCZ.PremiumApi.Sandbox
         /// <param name="pSU_IP_Address">IP address of a client - the end IP address of the client application (no server) in IPv4 or IPv6 format. If the bank client (your user) uses a browser by which he accesses your server app, we need to know the IP address of his browser. Always provide the closest IP address to the real end-user possible.</param>
         /// <returns>Document present and ready for download.</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<FileResponse> DownloadStatementAsync(string x_IBM_Client_Id, string x_Request_Id, string accept_Language, string pSU_IP_Address, Request_body2 request_body)
+        public virtual System.Threading.Tasks.Task<FileResponse> DownloadStatementAsync(string x_IBM_Client_Id, string x_Request_Id, string accept_Language, string pSU_IP_Address, Environment environment, Request_body2 request_body)
         {
-            return DownloadStatementAsync(x_IBM_Client_Id, x_Request_Id, accept_Language, pSU_IP_Address, request_body, System.Threading.CancellationToken.None);
+            return DownloadStatementAsync(x_IBM_Client_Id, x_Request_Id, accept_Language, pSU_IP_Address, environment, request_body, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -1179,8 +1211,11 @@ namespace DSDD.Automations.RBCZ.PremiumApi.Sandbox
         /// <param name="pSU_IP_Address">IP address of a client - the end IP address of the client application (no server) in IPv4 or IPv6 format. If the bank client (your user) uses a browser by which he accesses your server app, we need to know the IP address of his browser. Always provide the closest IP address to the real end-user possible.</param>
         /// <returns>Document present and ready for download.</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<FileResponse> DownloadStatementAsync(string x_IBM_Client_Id, string x_Request_Id, string accept_Language, string pSU_IP_Address, Request_body2 request_body, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<FileResponse> DownloadStatementAsync(string x_IBM_Client_Id, string x_Request_Id, string accept_Language, string pSU_IP_Address, Environment environment, Request_body2 request_body, System.Threading.CancellationToken cancellationToken)
         {
+            if (environment == null)
+                throw new System.ArgumentNullException("environment");
+
             if (request_body == null)
                 throw new System.ArgumentNullException("request_body");
 
@@ -1214,8 +1249,10 @@ namespace DSDD.Automations.RBCZ.PremiumApi.Sandbox
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "rbcz/premium/mock/accounts/statements/download"
-                    urlBuilder_.Append("rbcz/premium/mock/accounts/statements/download");
+                    // Operation Path: "rbcz/premium/{environment}/accounts/statements/download"
+                    urlBuilder_.Append("rbcz/premium/");
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(environment, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/accounts/statements/download");
 
                     PrepareRequest(client_, request_, urlBuilder_);
 
@@ -1334,9 +1371,9 @@ namespace DSDD.Automations.RBCZ.PremiumApi.Sandbox
         /// <param name="date">The effective date for which the FX rates list is requested. Will default to **now** when not specified.</param>
         /// <returns>Foreign exchange rates for all available currencies.</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<CurrencyListSimple> GetFxRatesListAsync(string x_IBM_Client_Id, string x_Request_Id, string pSU_IP_Address, System.DateOnly? date)
+        public virtual System.Threading.Tasks.Task<CurrencyListSimple> GetFxRatesListAsync(string x_IBM_Client_Id, string x_Request_Id, string pSU_IP_Address, Environment environment, System.DateOnly? date)
         {
-            return GetFxRatesListAsync(x_IBM_Client_Id, x_Request_Id, pSU_IP_Address, date, System.Threading.CancellationToken.None);
+            return GetFxRatesListAsync(x_IBM_Client_Id, x_Request_Id, pSU_IP_Address, environment, date, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -1351,8 +1388,11 @@ namespace DSDD.Automations.RBCZ.PremiumApi.Sandbox
         /// <param name="date">The effective date for which the FX rates list is requested. Will default to **now** when not specified.</param>
         /// <returns>Foreign exchange rates for all available currencies.</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<CurrencyListSimple> GetFxRatesListAsync(string x_IBM_Client_Id, string x_Request_Id, string pSU_IP_Address, System.DateOnly? date, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<CurrencyListSimple> GetFxRatesListAsync(string x_IBM_Client_Id, string x_Request_Id, string pSU_IP_Address, Environment environment, System.DateOnly? date, System.Threading.CancellationToken cancellationToken)
         {
+            if (environment == null)
+                throw new System.ArgumentNullException("environment");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
@@ -1375,8 +1415,10 @@ namespace DSDD.Automations.RBCZ.PremiumApi.Sandbox
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "rbcz/premium/mock/fxrates"
-                    urlBuilder_.Append("rbcz/premium/mock/fxrates");
+                    // Operation Path: "rbcz/premium/{environment}/fxrates"
+                    urlBuilder_.Append("rbcz/premium/");
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(environment, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/fxrates");
                     urlBuilder_.Append('?');
                     if (date != null)
                     {
@@ -1458,9 +1500,9 @@ namespace DSDD.Automations.RBCZ.PremiumApi.Sandbox
         /// <param name="date">The effective date for which the FX rates are requested. Will default to **now** when not specified.</param>
         /// <returns>Foreign exchange rates for the given currency.</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<CurrencyListSimple> GetFxRatesAsync(string x_IBM_Client_Id, string x_Request_Id, string pSU_IP_Address, string currencyCode, System.DateOnly? date)
+        public virtual System.Threading.Tasks.Task<CurrencyListSimple> GetFxRatesAsync(string x_IBM_Client_Id, string x_Request_Id, string pSU_IP_Address, Environment environment, string currencyCode, System.DateOnly? date)
         {
-            return GetFxRatesAsync(x_IBM_Client_Id, x_Request_Id, pSU_IP_Address, currencyCode, date, System.Threading.CancellationToken.None);
+            return GetFxRatesAsync(x_IBM_Client_Id, x_Request_Id, pSU_IP_Address, environment, currencyCode, date, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -1476,8 +1518,11 @@ namespace DSDD.Automations.RBCZ.PremiumApi.Sandbox
         /// <param name="date">The effective date for which the FX rates are requested. Will default to **now** when not specified.</param>
         /// <returns>Foreign exchange rates for the given currency.</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<CurrencyListSimple> GetFxRatesAsync(string x_IBM_Client_Id, string x_Request_Id, string pSU_IP_Address, string currencyCode, System.DateOnly? date, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<CurrencyListSimple> GetFxRatesAsync(string x_IBM_Client_Id, string x_Request_Id, string pSU_IP_Address, Environment environment, string currencyCode, System.DateOnly? date, System.Threading.CancellationToken cancellationToken)
         {
+            if (environment == null)
+                throw new System.ArgumentNullException("environment");
+
             if (currencyCode == null)
                 throw new System.ArgumentNullException("currencyCode");
 
@@ -1503,8 +1548,10 @@ namespace DSDD.Automations.RBCZ.PremiumApi.Sandbox
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "rbcz/premium/mock/fxrates/{currencyCode}"
-                    urlBuilder_.Append("rbcz/premium/mock/fxrates/");
+                    // Operation Path: "rbcz/premium/{environment}/fxrates/{currencyCode}"
+                    urlBuilder_.Append("rbcz/premium/");
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(environment, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/fxrates/");
                     urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(currencyCode, System.Globalization.CultureInfo.InvariantCulture)));
                     urlBuilder_.Append('?');
                     if (date != null)
@@ -1681,2188 +1728,6 @@ namespace DSDD.Automations.RBCZ.PremiumApi.Sandbox
 
             var result = System.Convert.ToString(value, cultureInfo);
             return result == null ? "" : result;
-        }
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class CurrencyListSimple
-    {
-
-        [System.Text.Json.Serialization.JsonPropertyName("exchangeRateLists")]
-        [System.ComponentModel.DataAnnotations.Required]
-        public System.Collections.Generic.ICollection<ExchangeRateList> ExchangeRateLists { get; set; } = new System.Collections.ObjectModel.Collection<ExchangeRateList>();
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class ExchangeRateList
-    {
-
-        [System.Text.Json.Serialization.JsonPropertyName("effectiveDateFrom")]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        public System.DateTime EffectiveDateFrom { get; set; }
-
-        [System.Text.Json.Serialization.JsonPropertyName("effectiveDateTo")]
-        public System.DateTime? EffectiveDateTo { get; set; }
-
-        [System.Text.Json.Serialization.JsonPropertyName("tradingDate")]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        public System.DateTime TradingDate { get; set; }
-
-        [System.Text.Json.Serialization.JsonPropertyName("ordinalNumber")]
-        public int OrdinalNumber { get; set; }
-
-        [System.Text.Json.Serialization.JsonPropertyName("lastRates")]
-        public bool LastRates { get; set; }
-
-        [System.Text.Json.Serialization.JsonPropertyName("exchangeRates")]
-        [System.ComponentModel.DataAnnotations.Required]
-        public System.Collections.Generic.ICollection<ExchangeRate> ExchangeRates { get; set; } = new System.Collections.ObjectModel.Collection<ExchangeRate>();
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class ExchangeRate
-    {
-
-        [System.Text.Json.Serialization.JsonPropertyName("countryFlagPath")]
-        public string CountryFlagPath { get; set; }
-
-        [System.Text.Json.Serialization.JsonPropertyName("currencyFrom")]
-        [System.ComponentModel.DataAnnotations.Required]
-        [System.ComponentModel.DataAnnotations.StringLength(3, MinimumLength = 3)]
-        public string CurrencyFrom { get; set; }
-
-        [System.Text.Json.Serialization.JsonPropertyName("currencyTo")]
-        [System.ComponentModel.DataAnnotations.Required]
-        [System.ComponentModel.DataAnnotations.StringLength(3, MinimumLength = 3)]
-        public string CurrencyTo { get; set; }
-
-        [System.Text.Json.Serialization.JsonPropertyName("exchangeRateBuy")]
-        public double ExchangeRateBuy { get; set; }
-
-        [System.Text.Json.Serialization.JsonPropertyName("exchangeRateBuyCash")]
-        public double ExchangeRateBuyCash { get; set; }
-
-        [System.Text.Json.Serialization.JsonPropertyName("exchangeRateCenter")]
-        public double ExchangeRateCenter { get; set; }
-
-        [System.Text.Json.Serialization.JsonPropertyName("exchangeRateCenterChange")]
-        public double ExchangeRateCenterChange { get; set; }
-
-        [System.Text.Json.Serialization.JsonPropertyName("exchangeRateSell")]
-        public double ExchangeRateSell { get; set; }
-
-        [System.Text.Json.Serialization.JsonPropertyName("exchangeRateSellCash")]
-        public double ExchangeRateSellCash { get; set; }
-
-        [System.Text.Json.Serialization.JsonPropertyName("exchangeRateSellCenter")]
-        public double ExchangeRateSellCenter { get; set; }
-
-        [System.Text.Json.Serialization.JsonPropertyName("exchangeRateSellCenterPrevious")]
-        public double ExchangeRateSellCenterPrevious { get; set; }
-
-        [System.Text.Json.Serialization.JsonPropertyName("exchangeRateEcbRate")]
-        public double? ExchangeRateEcbRate { get; set; }
-
-        [System.Text.Json.Serialization.JsonPropertyName("exchangeRateEcbVariation")]
-        public double? ExchangeRateEcbVariation { get; set; }
-
-        [System.Text.Json.Serialization.JsonPropertyName("fixedCountryCode")]
-        public string FixedCountryCode { get; set; }
-
-        [System.Text.Json.Serialization.JsonPropertyName("fixedCountryName")]
-        public string FixedCountryName { get; set; }
-
-        [System.Text.Json.Serialization.JsonPropertyName("quotationType")]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        public string QuotationType { get; set; }
-
-        [System.Text.Json.Serialization.JsonPropertyName("unitsFrom")]
-        public int UnitsFrom { get; set; }
-
-        [System.Text.Json.Serialization.JsonPropertyName("variableCountryCode")]
-        public string VariableCountryCode { get; set; }
-
-        [System.Text.Json.Serialization.JsonPropertyName("variableCountryName")]
-        public string VariableCountryName { get; set; }
-
-    }
-
-    /// <summary>
-    /// Format of imported batch. For CCT format please use option SEPA-XML.
-    /// </summary>
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal enum BatchImportFormat
-    {
-
-        [System.Runtime.Serialization.EnumMember(Value = @"GEMINI-P11")]
-        GEMINIP11 = 0,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"GEMINI-P32")]
-        GEMINIP32 = 1,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"GEMINI-F84")]
-        GEMINIF84 = 2,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"ABO-KPC")]
-        ABOKPC = 3,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"SEPA-XML")]
-        SEPAXML = 4,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"CFD")]
-        CFD = 5,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"CFU")]
-        CFU = 6,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"CFA")]
-        CFA = 7,
-
-    }
-
-    /// <summary>
-    /// Request values for list of a statements.
-    /// </summary>
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class Request_body
-    {
-
-        [System.Text.Json.Serialization.JsonPropertyName("accountNumber")]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        public string AccountNumber { get; set; }
-
-        /// <summary>
-        /// Currency of the requested currency folder.
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("currency")]
-        public string Currency { get; set; }
-
-        /// <summary>
-        /// Statement line identification.
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("statementLine")]
-        [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
-        public Request_bodyStatementLine? StatementLine { get; set; }
-
-        /// <summary>
-        /// Date limit from.
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("dateFrom")]
-        public System.DateOnly? DateFrom { get; set; }
-
-        /// <summary>
-        /// Date limit to.
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("dateTo")]
-        public System.DateOnly? DateTo { get; set; }
-
-    }
-
-    /// <summary>
-    /// Request values for the statement download.
-    /// </summary>
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class Request_body2
-    {
-        /// <summary>
-        /// Number of the account without prefix and bank code.
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("accountNumber")]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        public string AccountNumber { get; set; }
-
-        /// <summary>
-        /// Currency of the requested currency folder.
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("currency")]
-        public string Currency { get; set; }
-
-        /// <summary>
-        /// Public id of the statement.
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("statementId")]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        public string StatementId { get; set; }
-
-        /// <summary>
-        /// The format of the statement.
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("statementFormat")]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
-        public Request_body2StatementFormat StatementFormat { get; set; }
-
-    }
-
-    /// <summary>
-    /// Account with balances
-    /// </summary>
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class Response
-    {
-        /// <summary>
-        /// The prefix of the account number
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("numberPart1")]
-        public string NumberPart1 { get; set; }
-
-        /// <summary>
-        /// The account number without prefix
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("numberPart2")]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        public string NumberPart2 { get; set; }
-
-        /// <summary>
-        /// The bank clearing code
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("bankCode")]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        public string BankCode { get; set; }
-
-        /// <summary>
-        /// The available currency folders information.
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("currencyFolders")]
-        public System.Collections.Generic.ICollection<CurrencyFolders> CurrencyFolders { get; set; }
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class Response2
-    {
-
-        [System.Text.Json.Serialization.JsonPropertyName("error")]
-        [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
-        public Response2Error? Error { get; set; }
-
-        [System.Text.Json.Serialization.JsonPropertyName("error_description")]
-        public string Error_description { get; set; }
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class Response3
-    {
-
-        [System.Text.Json.Serialization.JsonPropertyName("error")]
-        [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
-        public Response3Error? Error { get; set; }
-
-        [System.Text.Json.Serialization.JsonPropertyName("error_description")]
-        public string Error_description { get; set; }
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class Response4
-    {
-
-        [System.Text.Json.Serialization.JsonPropertyName("error")]
-        [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
-        public Response4Error? Error { get; set; }
-
-        [System.Text.Json.Serialization.JsonPropertyName("error_description")]
-        public string Error_description { get; set; }
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class Response5
-    {
-
-        [System.Text.Json.Serialization.JsonPropertyName("error")]
-        [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
-        public Response5Error? Error { get; set; }
-
-        [System.Text.Json.Serialization.JsonPropertyName("error_description")]
-        public string Error_description { get; set; }
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class Response6
-    {
-        /// <summary>
-        /// Indication wheter the page is last - default false
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("lastPage")]
-        public bool? LastPage { get; set; }
-
-        /// <summary>
-        ///  An array of transactions.
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("transactions")]
-        public Transactions Transactions { get; set; }
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class Response7
-    {
-        /// <summary>
-        /// Invalid date. Parameter `from` must not be older than 90 days.
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("error")]
-        [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
-        public Response7Error? Error { get; set; }
-
-        [System.Text.Json.Serialization.JsonPropertyName("error_description")]
-        public string Error_description { get; set; }
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class Response8
-    {
-
-        [System.Text.Json.Serialization.JsonPropertyName("error")]
-        [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
-        public Response8Error? Error { get; set; }
-
-        [System.Text.Json.Serialization.JsonPropertyName("error_description")]
-        public string Error_description { get; set; }
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class Response9
-    {
-
-        [System.Text.Json.Serialization.JsonPropertyName("error")]
-        [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
-        public Response9Error? Error { get; set; }
-
-        [System.Text.Json.Serialization.JsonPropertyName("error_description")]
-        public string Error_description { get; set; }
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class Response10
-    {
-
-        [System.Text.Json.Serialization.JsonPropertyName("error")]
-        [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
-        public Response10Error? Error { get; set; }
-
-        [System.Text.Json.Serialization.JsonPropertyName("error_description")]
-        public string Error_description { get; set; }
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class Response11
-    {
-
-        [System.Text.Json.Serialization.JsonPropertyName("error")]
-        [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
-        public Response11Error? Error { get; set; }
-
-        [System.Text.Json.Serialization.JsonPropertyName("error_description")]
-        public string Error_description { get; set; }
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class Response12
-    {
-        /// <summary>
-        /// ID of created batch file
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("batchFileId")]
-        public long? BatchFileId { get; set; }
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class Response13
-    {
-        /// <summary>
-        /// * INVALID_BATCH_IMPORT_FORMAT - Batch-Import-Format unsupported
-        /// <br/>* BATCH_CONTENT_INVALID - Batch content doesn't match to declared Batch-Import-Format
-        /// <br/>* BATCH_ALREADY_IMPORTED - Batch has already been imported (based on checksum)
-        /// <br/>
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("error")]
-        [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
-        public Response13Error? Error { get; set; }
-
-        [System.Text.Json.Serialization.JsonPropertyName("error_description")]
-        public string Error_description { get; set; }
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class Response14
-    {
-
-        [System.Text.Json.Serialization.JsonPropertyName("error")]
-        [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
-        public Response14Error? Error { get; set; }
-
-        [System.Text.Json.Serialization.JsonPropertyName("error_description")]
-        public string Error_description { get; set; }
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class Response15
-    {
-
-        [System.Text.Json.Serialization.JsonPropertyName("error")]
-        [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
-        public Response15Error? Error { get; set; }
-
-        [System.Text.Json.Serialization.JsonPropertyName("error_description")]
-        public string Error_description { get; set; }
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class Response16
-    {
-
-        [System.Text.Json.Serialization.JsonPropertyName("error")]
-        [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
-        public Response16Error? Error { get; set; }
-
-        [System.Text.Json.Serialization.JsonPropertyName("error_description")]
-        public string Error_description { get; set; }
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class Response17
-    {
-
-        [System.Text.Json.Serialization.JsonPropertyName("error")]
-        public string Error { get; set; }
-
-        [System.Text.Json.Serialization.JsonPropertyName("error_description")]
-        public string Error_description { get; set; }
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class Response18
-    {
-
-        [System.Text.Json.Serialization.JsonPropertyName("error")]
-        [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
-        public Response18Error? Error { get; set; }
-
-        [System.Text.Json.Serialization.JsonPropertyName("error_description")]
-        public string Error_description { get; set; }
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class Response19
-    {
-
-        [System.Text.Json.Serialization.JsonPropertyName("error")]
-        public string Error { get; set; }
-
-        [System.Text.Json.Serialization.JsonPropertyName("error_description")]
-        public string Error_description { get; set; }
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class Response20
-    {
-        /// <summary>
-        /// Batch name
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("batchName")]
-        public string BatchName { get; set; }
-
-        /// <summary>
-        /// Status of batch file import
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("batchFileStatus")]
-        [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
-        public Response20BatchFileStatus? BatchFileStatus { get; set; }
-
-        /// <summary>
-        /// The date when the batch was created
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("createDate")]
-        public System.DateOnly? CreateDate { get; set; }
-
-        [System.Text.Json.Serialization.JsonPropertyName("batchItems")]
-        public System.Collections.Generic.ICollection<BatchItems> BatchItems { get; set; }
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class Response21
-    {
-        /// <summary>
-        /// Invalid input.
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("error")]
-        [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
-        public Response21Error? Error { get; set; }
-
-        [System.Text.Json.Serialization.JsonPropertyName("error_description")]
-        public string Error_description { get; set; }
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class Response22
-    {
-
-        [System.Text.Json.Serialization.JsonPropertyName("error")]
-        [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
-        public Response22Error? Error { get; set; }
-
-        [System.Text.Json.Serialization.JsonPropertyName("error_description")]
-        public string Error_description { get; set; }
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class Response23
-    {
-
-        [System.Text.Json.Serialization.JsonPropertyName("error")]
-        [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
-        public Response23Error? Error { get; set; }
-
-        [System.Text.Json.Serialization.JsonPropertyName("error_description")]
-        public string Error_description { get; set; }
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class Response24
-    {
-
-        [System.Text.Json.Serialization.JsonPropertyName("error")]
-        [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
-        public Response24Error? Error { get; set; }
-
-        [System.Text.Json.Serialization.JsonPropertyName("error_description")]
-        public string Error_description { get; set; }
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class Response25
-    {
-
-        [System.Text.Json.Serialization.JsonPropertyName("error")]
-        [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
-        public Response25Error? Error { get; set; }
-
-        [System.Text.Json.Serialization.JsonPropertyName("error_description")]
-        public string Error_description { get; set; }
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class Response26
-    {
-        /// <summary>
-        /// An array of accounts.
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("accounts")]
-        public System.Collections.Generic.ICollection<Accounts> Accounts { get; set; }
-
-        /// <summary>
-        /// actual returned page
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("page")]
-        public int? Page { get; set; }
-
-        /// <summary>
-        /// Number of items on the page
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("size")]
-        public int? Size { get; set; }
-
-        /// <summary>
-        /// true for first page
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("first")]
-        public bool? First { get; set; }
-
-        /// <summary>
-        /// true for last page
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("last")]
-        public bool? Last { get; set; }
-
-        /// <summary>
-        /// total number of pages
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("totalPages")]
-        public int? TotalPages { get; set; }
-
-        /// <summary>
-        /// total number of items
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("totalSize")]
-        public int? TotalSize { get; set; }
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class Response27
-    {
-
-        [System.Text.Json.Serialization.JsonPropertyName("error")]
-        [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
-        public Response27Error? Error { get; set; }
-
-        [System.Text.Json.Serialization.JsonPropertyName("error_description")]
-        public string Error_description { get; set; }
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class Response28
-    {
-
-        [System.Text.Json.Serialization.JsonPropertyName("error")]
-        [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
-        public Response28Error? Error { get; set; }
-
-        [System.Text.Json.Serialization.JsonPropertyName("error_description")]
-        public string Error_description { get; set; }
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class Response29
-    {
-
-        [System.Text.Json.Serialization.JsonPropertyName("error")]
-        [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
-        public Response29Error? Error { get; set; }
-
-        [System.Text.Json.Serialization.JsonPropertyName("error_description")]
-        public string Error_description { get; set; }
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class Response30
-    {
-        /// <summary>
-        /// An array of statements.
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("statements")]
-        [System.ComponentModel.DataAnnotations.Required]
-        public System.Collections.Generic.ICollection<Statements> Statements { get; set; } = new System.Collections.ObjectModel.Collection<Statements>();
-
-        /// <summary>
-        /// Page number.
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("page")]
-        public int Page { get; set; }
-
-        /// <summary>
-        /// Page size.
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("size")]
-        public int Size { get; set; }
-
-        /// <summary>
-        /// Is this the first page?
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("first")]
-        public bool First { get; set; }
-
-        /// <summary>
-        /// Is this the last page?
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("last")]
-        public bool Last { get; set; }
-
-        /// <summary>
-        /// Total number of pages.
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("totalPages")]
-        public int TotalPages { get; set; }
-
-        /// <summary>
-        /// Total number of items.
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("totalSize")]
-        public int TotalSize { get; set; }
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class Response31
-    {
-        /// <summary>
-        /// Invalid date.
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("error")]
-        [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
-        public Response31Error? Error { get; set; }
-
-        [System.Text.Json.Serialization.JsonPropertyName("error_description")]
-        public string Error_description { get; set; }
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class Response32
-    {
-
-        [System.Text.Json.Serialization.JsonPropertyName("error")]
-        [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
-        public Response32Error? Error { get; set; }
-
-        [System.Text.Json.Serialization.JsonPropertyName("error_description")]
-        public string Error_description { get; set; }
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class Response33
-    {
-
-        [System.Text.Json.Serialization.JsonPropertyName("error")]
-        [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
-        public Response33Error? Error { get; set; }
-
-        [System.Text.Json.Serialization.JsonPropertyName("error_description")]
-        public string Error_description { get; set; }
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class Response34
-    {
-
-        [System.Text.Json.Serialization.JsonPropertyName("error")]
-        [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
-        public Response34Error? Error { get; set; }
-
-        [System.Text.Json.Serialization.JsonPropertyName("error_description")]
-        public string Error_description { get; set; }
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class Response35
-    {
-
-        [System.Text.Json.Serialization.JsonPropertyName("error")]
-        [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
-        public Response35Error? Error { get; set; }
-
-        [System.Text.Json.Serialization.JsonPropertyName("error_description")]
-        public string Error_description { get; set; }
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class Response36
-    {
-        /// <summary>
-        /// Invalid date.
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("error")]
-        [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
-        public Response36Error? Error { get; set; }
-
-        [System.Text.Json.Serialization.JsonPropertyName("error_description")]
-        public string Error_description { get; set; }
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class Response37
-    {
-
-        [System.Text.Json.Serialization.JsonPropertyName("error")]
-        [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
-        public Response37Error? Error { get; set; }
-
-        [System.Text.Json.Serialization.JsonPropertyName("error_description")]
-        public string Error_description { get; set; }
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class Response38
-    {
-
-        [System.Text.Json.Serialization.JsonPropertyName("error")]
-        [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
-        public Response38Error? Error { get; set; }
-
-        [System.Text.Json.Serialization.JsonPropertyName("error_description")]
-        public string Error_description { get; set; }
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class Response39
-    {
-
-        [System.Text.Json.Serialization.JsonPropertyName("error")]
-        [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
-        public Response39Error? Error { get; set; }
-
-        [System.Text.Json.Serialization.JsonPropertyName("error_description")]
-        public string Error_description { get; set; }
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class Response40
-    {
-
-        [System.Text.Json.Serialization.JsonPropertyName("error")]
-        [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
-        public Response40Error? Error { get; set; }
-
-        [System.Text.Json.Serialization.JsonPropertyName("error_description")]
-        public string Error_description { get; set; }
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class Response41
-    {
-
-        [System.Text.Json.Serialization.JsonPropertyName("error")]
-        [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
-        public Response41Error? Error { get; set; }
-
-        [System.Text.Json.Serialization.JsonPropertyName("error_description")]
-        public string Error_description { get; set; }
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class Response42
-    {
-
-        [System.Text.Json.Serialization.JsonPropertyName("error")]
-        [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
-        public Response42Error? Error { get; set; }
-
-        [System.Text.Json.Serialization.JsonPropertyName("error_description")]
-        public string Error_description { get; set; }
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal enum Request_bodyStatementLine
-    {
-
-        [System.Runtime.Serialization.EnumMember(Value = @"MAIN")]
-        MAIN = 0,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"ADDITIONAL")]
-        ADDITIONAL = 1,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"MT940")]
-        MT940 = 2,
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal enum Request_body2StatementFormat
-    {
-
-        [System.Runtime.Serialization.EnumMember(Value = @"pdf")]
-        Pdf = 0,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"xml")]
-        Xml = 1,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"MT940")]
-        MT940 = 2,
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class CurrencyFolders
-    {
-        /// <summary>
-        /// The currency of the currency folder
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("currency")]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        public string Currency { get; set; }
-
-        /// <summary>
-        /// The status of the currency folder (CATALOG: CURRENCYFOLDERSTATUS)
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("status")]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        public string Status { get; set; }
-
-        /// <summary>
-        /// the balances of the currencyFolder
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("balances")]
-        public System.Collections.Generic.ICollection<Balances> Balances { get; set; }
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal enum Response2Error
-    {
-
-        [System.Runtime.Serialization.EnumMember(Value = @"UNAUTHORISED")]
-        UNAUTHORISED = 0,
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal enum Response3Error
-    {
-
-        [System.Runtime.Serialization.EnumMember(Value = @"INSUFFICIENT_RIGHTS")]
-        INSUFFICIENT_RIGHTS = 0,
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal enum Response4Error
-    {
-
-        [System.Runtime.Serialization.EnumMember(Value = @"ID_NOT_FOUND")]
-        ID_NOT_FOUND = 0,
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal enum Response5Error
-    {
-
-        [System.Runtime.Serialization.EnumMember(Value = @"TOO_MANY_REQUESTS")]
-        TOO_MANY_REQUESTS = 0,
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class Transactions
-    {
-
-        [System.Text.Json.Serialization.JsonPropertyName("transaction")]
-        public System.Collections.Generic.ICollection<Transaction> Transaction { get; set; }
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal enum Response7Error
-    {
-
-        [System.Runtime.Serialization.EnumMember(Value = @"DT01")]
-        DT01 = 0,
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal enum Response8Error
-    {
-
-        [System.Runtime.Serialization.EnumMember(Value = @"UNAUTHORISED")]
-        UNAUTHORISED = 0,
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal enum Response9Error
-    {
-
-        [System.Runtime.Serialization.EnumMember(Value = @"INSUFFICIENT_RIGHTS")]
-        INSUFFICIENT_RIGHTS = 0,
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal enum Response10Error
-    {
-
-        [System.Runtime.Serialization.EnumMember(Value = @"ID_NOT_FOUND")]
-        ID_NOT_FOUND = 0,
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal enum Response11Error
-    {
-
-        [System.Runtime.Serialization.EnumMember(Value = @"TOO_MANY_REQUESTS")]
-        TOO_MANY_REQUESTS = 0,
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal enum Response13Error
-    {
-
-        [System.Runtime.Serialization.EnumMember(Value = @"INVALID_BATCH_IMPORT_FORMAT")]
-        INVALID_BATCH_IMPORT_FORMAT = 0,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"BATCH_CONTENT_INVALID")]
-        BATCH_CONTENT_INVALID = 1,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"BATCH_ALREADY_IMPORTED")]
-        BATCH_ALREADY_IMPORTED = 2,
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal enum Response14Error
-    {
-
-        [System.Runtime.Serialization.EnumMember(Value = @"UNAUTHORISED")]
-        UNAUTHORISED = 0,
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal enum Response15Error
-    {
-
-        [System.Runtime.Serialization.EnumMember(Value = @"INSUFFICIENT_RIGHTS")]
-        INSUFFICIENT_RIGHTS = 0,
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal enum Response16Error
-    {
-
-        [System.Runtime.Serialization.EnumMember(Value = @"BATCH_CONTENT_SIZE_EXCEEDED - Content exceeds maximum of 200 MB")]
-        BATCH_CONTENT_SIZE_EXCEEDED__Content_exceeds_maximum_of_200_MB = 0,
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal enum Response18Error
-    {
-
-        [System.Runtime.Serialization.EnumMember(Value = @"TOO_MANY_REQUESTS")]
-        TOO_MANY_REQUESTS = 0,
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal enum Response20BatchFileStatus
-    {
-
-        [System.Runtime.Serialization.EnumMember(Value = @"DELETED")]
-        DELETED = 0,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"OK")]
-        OK = 1,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"UPLOADED")]
-        UPLOADED = 2,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"PROCESSING")]
-        PROCESSING = 3,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"ERROR")]
-        ERROR = 4,
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class BatchItems
-    {
-        /// <summary>
-        /// Account info detail
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("accountInfo")]
-        public AccountInfo AccountInfo { get; set; }
-
-        /// <summary>
-        /// Number of payments within the batch
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("numberOfPayments")]
-        public int? NumberOfPayments { get; set; }
-
-        /// <summary>
-        /// Sum amount
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("sumAmount")]
-        public decimal? SumAmount { get; set; }
-
-        /// <summary>
-        /// The currency folder identification (CATALOG: CURRENCIES)
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("sumAmountCurrencyId")]
-        [System.ComponentModel.DataAnnotations.StringLength(3, MinimumLength = 3)]
-        public string SumAmountCurrencyId { get; set; }
-
-        /// <summary>
-        /// Batch transaction package payment type
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("batchType")]
-        [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
-        public BatchItemsBatchType? BatchType { get; set; }
-
-        /// <summary>
-        /// Bacth transaction package status
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("status")]
-        [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
-        public BatchItemsStatus? Status { get; set; }
-
-        /// <summary>
-        /// Name of user assigned to batch transaction package
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("assignedUserName")]
-        public string AssignedUserName { get; set; }
-
-        /// <summary>
-        /// Date and time of last change of batch transaction package
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("lastChangeDateTime")]
-        public System.DateTime? LastChangeDateTime { get; set; }
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal enum Response21Error
-    {
-
-        [System.Runtime.Serialization.EnumMember(Value = @"DT01")]
-        DT01 = 0,
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal enum Response22Error
-    {
-
-        [System.Runtime.Serialization.EnumMember(Value = @"UNAUTHORISED")]
-        UNAUTHORISED = 0,
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal enum Response23Error
-    {
-
-        [System.Runtime.Serialization.EnumMember(Value = @"INSUFFICIENT_RIGHTS")]
-        INSUFFICIENT_RIGHTS = 0,
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal enum Response24Error
-    {
-
-        [System.Runtime.Serialization.EnumMember(Value = @"ID_NOT_FOUND")]
-        ID_NOT_FOUND = 0,
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal enum Response25Error
-    {
-
-        [System.Runtime.Serialization.EnumMember(Value = @"TOO_MANY_REQUESTS")]
-        TOO_MANY_REQUESTS = 0,
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class Accounts
-    {
-        /// <summary>
-        /// The unique internal account id
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("accountId")]
-        public int AccountId { get; set; }
-
-        /// <summary>
-        /// The account name
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("accountName")]
-        public string AccountName { get; set; }
-
-        /// <summary>
-        /// The account nick name
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("friendlyName")]
-        public string FriendlyName { get; set; }
-
-        /// <summary>
-        /// The account number without prefix
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("accountNumber")]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        public string AccountNumber { get; set; }
-
-        /// <summary>
-        /// The account number prefix
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("accountNumberPrefix")]
-        public string AccountNumberPrefix { get; set; }
-
-        /// <summary>
-        /// The account number in IBAN format
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("iban")]
-        public string Iban { get; set; }
-
-        /// <summary>
-        /// The bank clearing code
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("bankCode")]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        public string BankCode { get; set; }
-
-        /// <summary>
-        /// The bank BIC (SWIFT) code
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("bankBicCode")]
-        public string BankBicCode { get; set; }
-
-        /// <summary>
-        /// The main currency of the account
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("mainCurrency")]
-        public string MainCurrency { get; set; }
-
-        /// <summary>
-        /// The account type
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("accountTypeId")]
-        public string AccountTypeId { get; set; }
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal enum Response27Error
-    {
-
-        [System.Runtime.Serialization.EnumMember(Value = @"UNAUTHORISED")]
-        UNAUTHORISED = 0,
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal enum Response28Error
-    {
-
-        [System.Runtime.Serialization.EnumMember(Value = @"INSUFFICIENT_RIGHTS")]
-        INSUFFICIENT_RIGHTS = 0,
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal enum Response29Error
-    {
-
-        [System.Runtime.Serialization.EnumMember(Value = @"TOO_MANY_REQUESTS")]
-        TOO_MANY_REQUESTS = 0,
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class Statements
-    {
-        /// <summary>
-        /// public id of the statement
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("statementId")]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        public string StatementId { get; set; }
-
-        /// <summary>
-        /// account id
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("accountId")]
-        public int AccountId { get; set; }
-
-        /// <summary>
-        /// number of the statement
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("statementNumber")]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        public string StatementNumber { get; set; }
-
-        /// <summary>
-        /// valid date from for statement
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("dateFrom")]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        public System.DateOnly DateFrom { get; set; }
-
-        /// <summary>
-        /// valid date to for statement
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("dateTo")]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        public System.DateOnly DateTo { get; set; }
-
-        /// <summary>
-        /// currency of the statement
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("currency")]
-        public string Currency { get; set; }
-
-        /// <summary>
-        /// set of document available formats (always in upper case notation).
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("statementFormats")]
-        [System.ComponentModel.DataAnnotations.Required]
-        public System.Collections.Generic.ICollection<string> StatementFormats { get; set; } = new System.Collections.ObjectModel.Collection<string>();
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal enum Response31Error
-    {
-
-        [System.Runtime.Serialization.EnumMember(Value = @"DT01")]
-        DT01 = 0,
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal enum Response32Error
-    {
-
-        [System.Runtime.Serialization.EnumMember(Value = @"UNAUTHORISED")]
-        UNAUTHORISED = 0,
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal enum Response33Error
-    {
-
-        [System.Runtime.Serialization.EnumMember(Value = @"INSUFFICIENT_RIGHTS")]
-        INSUFFICIENT_RIGHTS = 0,
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal enum Response34Error
-    {
-
-        [System.Runtime.Serialization.EnumMember(Value = @"ID_NOT_FOUND")]
-        ID_NOT_FOUND = 0,
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal enum Response35Error
-    {
-
-        [System.Runtime.Serialization.EnumMember(Value = @"TOO_MANY_REQUESTS")]
-        TOO_MANY_REQUESTS = 0,
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal enum Response36Error
-    {
-
-        [System.Runtime.Serialization.EnumMember(Value = @"DT01")]
-        DT01 = 0,
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal enum Response37Error
-    {
-
-        [System.Runtime.Serialization.EnumMember(Value = @"UNAUTHORISED")]
-        UNAUTHORISED = 0,
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal enum Response38Error
-    {
-
-        [System.Runtime.Serialization.EnumMember(Value = @"INSUFFICIENT_RIGHTS")]
-        INSUFFICIENT_RIGHTS = 0,
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal enum Response39Error
-    {
-
-        [System.Runtime.Serialization.EnumMember(Value = @"ID_NOT_FOUND")]
-        ID_NOT_FOUND = 0,
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal enum Response40Error
-    {
-
-        [System.Runtime.Serialization.EnumMember(Value = @"TOO_MANY_REQUESTS")]
-        TOO_MANY_REQUESTS = 0,
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal enum Response41Error
-    {
-
-        [System.Runtime.Serialization.EnumMember(Value = @"TOO_MANY_REQUESTS")]
-        TOO_MANY_REQUESTS = 0,
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal enum Response42Error
-    {
-
-        [System.Runtime.Serialization.EnumMember(Value = @"TOO_MANY_REQUESTS")]
-        TOO_MANY_REQUESTS = 0,
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class Balances
-    {
-        /// <summary>
-        /// the balance type (CODEBOOK: AccountBalanceTypes)
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("balanceType")]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        public string BalanceType { get; set; }
-
-        /// <summary>
-        /// The currency of the balance
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("currency")]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        public string Currency { get; set; }
-
-        /// <summary>
-        /// The balance amount
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("value")]
-        public double Value { get; set; }
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class Transaction
-    {
-        /// <summary>
-        /// Unique identification of the realized transaction.
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("entryReference")]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        public string EntryReference { get; set; }
-
-        [System.Text.Json.Serialization.JsonPropertyName("amount")]
-        [System.ComponentModel.DataAnnotations.Required]
-        public Amount Amount { get; set; } = new Amount();
-
-        [System.Text.Json.Serialization.JsonPropertyName("creditDebitIndication")]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
-        public TransactionCreditDebitIndication CreditDebitIndication { get; set; }
-
-        /// <summary>
-        /// Date of payment processing/posting by the bank.
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("bookingDate")]
-        public System.DateTime? BookingDate { get; set; }
-
-        /// <summary>
-        /// Transaction date; value date; date which is used to count interest; e.g. date when money were withdrawn from ATM.
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("valueDate")]
-        public System.DateTime? ValueDate { get; set; }
-
-        [System.Text.Json.Serialization.JsonPropertyName("bankTransactionCode")]
-        [System.ComponentModel.DataAnnotations.Required]
-        public BankTransactionCode BankTransactionCode { get; set; } = new BankTransactionCode();
-
-        [System.Text.Json.Serialization.JsonPropertyName("entryDetails")]
-        public EntryDetails EntryDetails { get; set; }
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class AccountInfo
-    {
-        /// <summary>
-        /// Account Id.
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("accountId")]
-        public long AccountId { get; set; }
-
-        /// <summary>
-        /// Charged account number prefix
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("accountNumberPrefix")]
-        public string AccountNumberPrefix { get; set; }
-
-        /// <summary>
-        /// Charged account number
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("accountNumber")]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        public string AccountNumber { get; set; }
-
-        /// <summary>
-        /// The currency folder identification (CATALOG: CURRENCIES)
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("mainCurrencyId")]
-        [System.ComponentModel.DataAnnotations.Required]
-        [System.ComponentModel.DataAnnotations.StringLength(3, MinimumLength = 3)]
-        public string MainCurrencyId { get; set; }
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal enum BatchItemsBatchType
-    {
-
-        [System.Runtime.Serialization.EnumMember(Value = @"DPO")]
-        DPO = 0,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"DD")]
-        DD = 1,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"FPO")]
-        FPO = 2,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"SEPA")]
-        SEPA = 3,
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal enum BatchItemsStatus
-    {
-
-        [System.Runtime.Serialization.EnumMember(Value = @"DRAFT")]
-        DRAFT = 0,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"ERROR")]
-        ERROR = 1,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"FOR_SIGN")]
-        FOR_SIGN = 2,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"VERIFIED")]
-        VERIFIED = 3,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"PASSING_TO_BANK")]
-        PASSING_TO_BANK = 4,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"PASSED")]
-        PASSED = 5,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"PASSED_TO_BANK_WITH_ERROR")]
-        PASSED_TO_BANK_WITH_ERROR = 6,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"UNDISCLOSED")]
-        UNDISCLOSED = 7,
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class Amount
-    {
-        /// <summary>
-        /// Amount of money
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("value")]
-        public double Value { get; set; }
-
-        /// <summary>
-        /// Currency code of the amount
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("currency")]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        public string Currency { get; set; }
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal enum TransactionCreditDebitIndication
-    {
-
-        [System.Runtime.Serialization.EnumMember(Value = @"DBIT")]
-        DBIT = 0,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"CRDT")]
-        CRDT = 1,
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class BankTransactionCode
-    {
-        /// <summary>
-        /// Transaction code in ISO20022 camt.53 format (e.g. 10000101000 - Odchozi tuzemska platba).
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("code")]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        public string Code { get; set; }
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class EntryDetails
-    {
-
-        [System.Text.Json.Serialization.JsonPropertyName("transactionDetails")]
-        public TransactionDetails TransactionDetails { get; set; }
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class TransactionDetails
-    {
-
-        [System.Text.Json.Serialization.JsonPropertyName("references")]
-        public References References { get; set; }
-
-        /// <summary>
-        /// Original amount in original currency - before currency conversion.
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("instructedAmount")]
-        public InstructedAmount InstructedAmount { get; set; }
-
-        [System.Text.Json.Serialization.JsonPropertyName("chargeBearer")]
-        [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
-        public TransactionDetailsChargeBearer? ChargeBearer { get; set; }
-
-        /// <summary>
-        /// Masked payment card number, if the transaction is related to debit card.
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("paymentCardNumber")]
-        public string PaymentCardNumber { get; set; }
-
-        [System.Text.Json.Serialization.JsonPropertyName("relatedParties")]
-        public RelatedParties RelatedParties { get; set; }
-
-        /// <summary>
-        /// Information that allow match and pairing transactions or further identifies it.
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("remittanceInformation")]
-        public RemittanceInformation RemittanceInformation { get; set; }
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class References
-    {
-        /// <summary>
-        /// Originator reference ID - End to End ID; The Originator's reference of the transaction
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("endToEndIdentification")]
-        public string EndToEndIdentification { get; set; }
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class InstructedAmount
-    {
-        /// <summary>
-        /// Amount of money
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("value")]
-        public double Value { get; set; }
-
-        /// <summary>
-        /// Currency code of the amount
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("currency")]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        public string Currency { get; set; }
-
-        [System.Text.Json.Serialization.JsonPropertyName("exchangeRate")]
-        public double? ExchangeRate { get; set; }
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal enum TransactionDetailsChargeBearer
-    {
-
-        [System.Runtime.Serialization.EnumMember(Value = @"DEBT")]
-        DEBT = 0,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"CRED")]
-        CRED = 1,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"SHAR")]
-        SHAR = 2,
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class RelatedParties
-    {
-        /// <summary>
-        /// Information about counter party (debtor or creditor) - always the other side of the transaction.
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("counterParty")]
-        public CounterParty CounterParty { get; set; }
-
-        [System.Text.Json.Serialization.JsonPropertyName("intermediaryInstitution")]
-        public IntermediaryInstitution IntermediaryInstitution { get; set; }
-
-        /// <summary>
-        /// Ultimate debtor or Ultimate creditor - always the other end.
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("ultimateCounterParty")]
-        public UltimateCounterParty UltimateCounterParty { get; set; }
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class RemittanceInformation
-    {
-        /// <summary>
-        /// Information from or for counter party. Information for creditor.
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("unstructured")]
-        public string Unstructured { get; set; }
-
-        [System.Text.Json.Serialization.JsonPropertyName("creditorReferenceInformation")]
-        public CreditorReferenceInformation CreditorReferenceInformation { get; set; }
-
-        /// <summary>
-        /// Private description of the transaction. Only available to account holder.
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("originatorMessage")]
-        public string OriginatorMessage { get; set; }
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class CounterParty
-    {
-        /// <summary>
-        /// Bank account name
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("name")]
-        public string Name { get; set; }
-
-        [System.Text.Json.Serialization.JsonPropertyName("postalAddress")]
-        public PostalAddress PostalAddress { get; set; }
-
-        [System.Text.Json.Serialization.JsonPropertyName("organisationIdentification")]
-        public OrganisationIdentification OrganisationIdentification { get; set; }
-
-        [System.Text.Json.Serialization.JsonPropertyName("account")]
-        public Account Account { get; set; }
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class IntermediaryInstitution
-    {
-
-        [System.Text.Json.Serialization.JsonPropertyName("name")]
-        public string Name { get; set; }
-
-        /// <summary>
-        /// SWIFT/BIC code of the bank.
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("bicOrBei")]
-        public string BicOrBei { get; set; }
-
-        /// <summary>
-        /// Proprietary bank code in local format (e.g. 5500) or in foreign format.
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("bankCode")]
-        public string BankCode { get; set; }
-
-        [System.Text.Json.Serialization.JsonPropertyName("postalAddress")]
-        public PostalAddress2 PostalAddress { get; set; }
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class UltimateCounterParty
-    {
-        /// <summary>
-        /// Bank account name
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("name")]
-        public string Name { get; set; }
-
-        [System.Text.Json.Serialization.JsonPropertyName("postalAddress")]
-        public PostalAddress3 PostalAddress { get; set; }
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class CreditorReferenceInformation
-    {
-        /// <summary>
-        /// Variable symbol
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("variable")]
-        public string Variable { get; set; }
-
-        /// <summary>
-        /// Constant symbol
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("constant")]
-        public string Constant { get; set; }
-
-        /// <summary>
-        /// Specific symbol
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("specific")]
-        public string Specific { get; set; }
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class PostalAddress
-    {
-        /// <summary>
-        /// Street or 2nd line of the address
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("street")]
-        public string Street { get; set; }
-
-        /// <summary>
-        /// City or 3nd line of the address
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("city")]
-        public string City { get; set; }
-
-        /// <summary>
-        /// Country code - 4th line of the address.
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("country")]
-        public string Country { get; set; }
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class OrganisationIdentification
-    {
-
-        [System.Text.Json.Serialization.JsonPropertyName("name")]
-        public string Name { get; set; }
-
-        /// <summary>
-        /// SWIFT/BIC code of the bank.
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("bicOrBei")]
-        public string BicOrBei { get; set; }
-
-        /// <summary>
-        /// Proprietary bank code in local format (e.g. 5500) or in foreign format.
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("bankCode")]
-        public string BankCode { get; set; }
-
-        [System.Text.Json.Serialization.JsonPropertyName("postalAddress")]
-        public PostalAddress4 PostalAddress { get; set; }
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class Account
-    {
-        /// <summary>
-        /// IBAN code of the bank account if available
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("iban")]
-        public string Iban { get; set; }
-
-        /// <summary>
-        /// Prefix part of the bank account number (only for czech accounts)
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("accountNumberPrefix")]
-        public string AccountNumberPrefix { get; set; }
-
-        /// <summary>
-        /// Base part of the bank account number in czech fromat or in foreign format
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("accountNumber")]
-        public string AccountNumber { get; set; }
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class PostalAddress2
-    {
-        /// <summary>
-        /// Street or 2nd line of the address
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("street")]
-        public string Street { get; set; }
-
-        /// <summary>
-        /// City or 3nd line of the address
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("city")]
-        public string City { get; set; }
-
-        /// <summary>
-        /// Short address
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("shortAddress")]
-        public string ShortAddress { get; set; }
-
-        /// <summary>
-        /// Country code - 4th line of the address.
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("country")]
-        public string Country { get; set; }
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class PostalAddress3
-    {
-        /// <summary>
-        /// Street or 2nd line of the address
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("street")]
-        public string Street { get; set; }
-
-        /// <summary>
-        /// City or 3nd line of the address
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("city")]
-        public string City { get; set; }
-
-        /// <summary>
-        /// Country code - 4th line of the address.
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("country")]
-        public string Country { get; set; }
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class PostalAddress4
-    {
-        /// <summary>
-        /// Street or 2nd line of the address
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("street")]
-        public string Street { get; set; }
-
-        /// <summary>
-        /// City or 3nd line of the address
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("city")]
-        public string City { get; set; }
-
-        /// <summary>
-        /// Short address
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("shortAddress")]
-        public string ShortAddress { get; set; }
-
-        /// <summary>
-        /// Country code - 4th line of the address.
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("country")]
-        public string Country { get; set; }
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NSwag", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class FileResponse : System.IDisposable
-    {
-        private System.IDisposable _client;
-        private System.IDisposable _response;
-
-        public int StatusCode { get; private set; }
-
-        public System.Collections.Generic.IReadOnlyDictionary<string, System.Collections.Generic.IEnumerable<string>> Headers { get; private set; }
-
-        public System.IO.Stream Stream { get; private set; }
-
-        public bool IsPartial
-        {
-            get { return StatusCode == 206; }
-        }
-
-        public FileResponse(int statusCode, System.Collections.Generic.IReadOnlyDictionary<string, System.Collections.Generic.IEnumerable<string>> headers, System.IO.Stream stream, System.IDisposable client, System.IDisposable response)
-        {
-            StatusCode = statusCode;
-            Headers = headers;
-            Stream = stream;
-            _client = client;
-            _response = response;
-        }
-
-        public void Dispose()
-        {
-            Stream.Dispose();
-            if (_response != null)
-                _response.Dispose();
-            if (_client != null)
-                _client.Dispose();
-        }
-    }
-
-
-    [System.CodeDom.Compiler.GeneratedCode("NSwag", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class ApiException : System.Exception
-    {
-        public int StatusCode { get; private set; }
-
-        public string Response { get; private set; }
-
-        public System.Collections.Generic.IReadOnlyDictionary<string, System.Collections.Generic.IEnumerable<string>> Headers { get; private set; }
-
-        public ApiException(string message, int statusCode, string response, System.Collections.Generic.IReadOnlyDictionary<string, System.Collections.Generic.IEnumerable<string>> headers, System.Exception innerException)
-            : base(message + "\n\nStatus: " + statusCode + "\nResponse: \n" + ((response == null) ? "(null)" : response.Substring(0, response.Length >= 512 ? 512 : response.Length)), innerException)
-        {
-            StatusCode = statusCode;
-            Response = response;
-            Headers = headers;
-        }
-
-        public override string ToString()
-        {
-            return string.Format("HTTP Response: \n\n{0}\n\n{1}", Response, base.ToString());
-        }
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NSwag", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class ApiException<TResult> : ApiException
-    {
-        public TResult Result { get; private set; }
-
-        public ApiException(string message, int statusCode, string response, System.Collections.Generic.IReadOnlyDictionary<string, System.Collections.Generic.IEnumerable<string>> headers, TResult result, System.Exception innerException)
-            : base(message, statusCode, response, headers, innerException)
-        {
-            Result = result;
         }
     }
 

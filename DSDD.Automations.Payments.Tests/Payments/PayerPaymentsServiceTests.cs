@@ -24,10 +24,10 @@ public class PayerPaymentsServiceTests
     {
         // Arrange
         Payer payer = new Payer(variableSymbol);
-        _payers.Setup(p => p.GetAsync(variableSymbol)).ReturnsAsync(payer);
+        _payers.Setup(p => p.GetAsync(variableSymbol, default)).ReturnsAsync(payer);
 
         // Act
-        await _sut.UpsertManualPaymentAsync(variableSymbol, paymentReference, constantSymbol, amountCzk, dateTime, description);
+        await _sut.UpsertManualPaymentAsync(variableSymbol, paymentReference, constantSymbol, amountCzk, dateTime, description, default);
 
         // Assert
         Assert.That(payer.ManualPayments, Has.Count.EqualTo(1));
@@ -40,8 +40,8 @@ public class PayerPaymentsServiceTests
         Assert.That(payer.ManualPayments.Single().DateTime, Is.EqualTo(dateTime));
         Assert.That(payer.ManualPayments.Single().Description, Is.EqualTo(description));
 
-        _payers.Verify(_ => _.GetAsync(variableSymbol), Times.Once);
-        _payers.Verify(_ => _.UpsertAync(payer), Times.Once);
+        _payers.Verify(_ => _.GetAsync(variableSymbol, default), Times.Once);
+        _payers.Verify(_ => _.UpsertAync(payer, default), Times.Once);
     }
 
     [Test]
@@ -55,9 +55,10 @@ public class PayerPaymentsServiceTests
             50,
             100,
             DateTime.Now,
-            null);
+            null,
+            default);
 
-        _payers.Verify(_ => _.UpsertAync(It.Is<Payer>(p => p.VariableSymbol == NEW_PAYER_SYMBOL)));
+        _payers.Verify(_ => _.UpsertAync(It.Is<Payer>(p => p.VariableSymbol == NEW_PAYER_SYMBOL), default));
     }
 
     [TestCase(1234567890ul, "ref123", 1234ul, "2023-07-17", "Updated description")]
@@ -80,23 +81,23 @@ public class PayerPaymentsServiceTests
 
         var payer = new Payer(variableSymbol);
         payer.BankPayments.Add(payment);
-        _payers.Setup(p => p.GetAsync(variableSymbol)).ReturnsAsync(payer);
+        _payers.Setup(p => p.GetAsync(variableSymbol, default)).ReturnsAsync(payer);
 
         // Act
-        await _sut.OverrideBankPaymentAsync(variableSymbol, paymentReference, constantSymbol, dateTime, description);
+        await _sut.OverrideBankPaymentAsync(variableSymbol, paymentReference, constantSymbol, dateTime, description, default);
 
         // Assert
         Assert.That(payment.Overrides.ConstantSymbol, Is.EqualTo(constantSymbol));
         Assert.That(payment.Overrides.DateTime, Is.EqualTo(dateTime));
         Assert.That(payment.Overrides.Description, Is.EqualTo(description));
 
-        _payers.Verify(_ => _.GetAsync(variableSymbol), Times.Once);
-        _payers.Verify(_ => _.UpsertAync(payer), Times.Once);
+        _payers.Verify(_ => _.GetAsync(variableSymbol, default), Times.Once);
+        _payers.Verify(_ => _.UpsertAync(payer, default), Times.Once);
     }
     
     [Test]
     public void OverrideBankPaymentAsync_NonExistingPayer()
-        => Assert.ThrowsAsync<NullReferenceException>(() => _sut.OverrideBankPaymentAsync(50, "foo", null, null, null));
+        => Assert.ThrowsAsync<NullReferenceException>(() => _sut.OverrideBankPaymentAsync(50, "foo", null, null, null, default));
 
     [Test]
     public void OverrideBankPaymentAsync_NonExistingPayment()
@@ -108,11 +109,11 @@ public class PayerPaymentsServiceTests
         Payer payer = new(VARIABLE_SYMBOL);
         payer.BankPayments.Add(new ("bar", PAYMENT_REFERENCE, null, 50, DateTime.Now, null, new(false, null, null, null)));
 
-        _payers.Setup(_ => _.GetAsync(VARIABLE_SYMBOL)).ReturnsAsync(payer);
+        _payers.Setup(_ => _.GetAsync(VARIABLE_SYMBOL, default)).ReturnsAsync(payer);
 
         // Act and assert
         Assert.ThrowsAsync<InvalidOperationException>(() =>
-            _sut.OverrideBankPaymentAsync(VARIABLE_SYMBOL, "other", null, null, null));
+            _sut.OverrideBankPaymentAsync(VARIABLE_SYMBOL, "other", null, null, null, default));
     }
 
     [Test]
@@ -125,16 +126,16 @@ public class PayerPaymentsServiceTests
         BankPayment bankPayment = new(REFERENCE, "FOO", null, 10, DateTime.Now, null, new(false, null, null, null));
         Payer payer = new(VARIABLE_SYMBOL);
         payer.BankPayments.Add(bankPayment);
-        _payers.Setup(p => p.GetAsync(VARIABLE_SYMBOL)).ReturnsAsync(payer);
+        _payers.Setup(p => p.GetAsync(VARIABLE_SYMBOL, default)).ReturnsAsync(payer);
 
         // Act
-        await _sut.RemovePaymentAsync(VARIABLE_SYMBOL, REFERENCE);
+        await _sut.RemovePaymentAsync(VARIABLE_SYMBOL, REFERENCE, default);
 
         // Assert
         Assert.That(payer.BankPayments.Single(bp => bp.Reference == REFERENCE).Overrides.Removed, Is.True);
 
-        _payers.Verify(_ => _.GetAsync(VARIABLE_SYMBOL), Times.Once);
-        _payers.Verify(_ => _.UpsertAync(payer), Times.Once);
+        _payers.Verify(_ => _.GetAsync(VARIABLE_SYMBOL, default), Times.Once);
+        _payers.Verify(_ => _.UpsertAync(payer, default), Times.Once);
     }
 
     [Test]
@@ -147,21 +148,21 @@ public class PayerPaymentsServiceTests
         ManualPayment manualPayment = new(REFERENCE, null, 0, DateTime.MinValue, null);
         Payer payer = new(VARIABLE_SYMBOL);
         payer.ManualPayments.Add(manualPayment);
-        _payers.Setup(p => p.GetAsync(VARIABLE_SYMBOL)).ReturnsAsync(payer);
+        _payers.Setup(p => p.GetAsync(VARIABLE_SYMBOL, default)).ReturnsAsync(payer);
 
         // Act
-        await _sut.RemovePaymentAsync(VARIABLE_SYMBOL, REFERENCE);
+        await _sut.RemovePaymentAsync(VARIABLE_SYMBOL, REFERENCE, default);
 
         // Assert
         Assert.That(payer.ManualPayments.Any(mp => mp.Reference == REFERENCE), Is.False);
 
-        _payers.Verify(_ => _.GetAsync(VARIABLE_SYMBOL), Times.Once);
-        _payers.Verify(_ => _.UpsertAync(payer), Times.Once);
+        _payers.Verify(_ => _.GetAsync(VARIABLE_SYMBOL, default), Times.Once);
+        _payers.Verify(_ => _.UpsertAync(payer, default), Times.Once);
     }
 
     [Test]
     public void RemovePaymentAsync_NonExistingPayer()
-        => Assert.ThrowsAsync<NullReferenceException>(() => _sut.RemovePaymentAsync(50, "foo"));
+        => Assert.ThrowsAsync<NullReferenceException>(() => _sut.RemovePaymentAsync(50, "foo", default));
 
     [Test]
     public void RemovePaymentAsync_NonExistingPayment()
@@ -170,10 +171,10 @@ public class PayerPaymentsServiceTests
         const ulong VARIABLE_SYMBOL = 4;
 
         Payer payer = new(VARIABLE_SYMBOL);
-        _payers.Setup(_ => _.GetAsync(VARIABLE_SYMBOL)).ReturnsAsync(payer);
+        _payers.Setup(_ => _.GetAsync(VARIABLE_SYMBOL, default)).ReturnsAsync(payer);
 
         // Act and assert
-        Assert.ThrowsAsync<NullReferenceException>(() => _sut.RemovePaymentAsync(VARIABLE_SYMBOL, "payment"));
+        Assert.ThrowsAsync<NullReferenceException>(() => _sut.RemovePaymentAsync(VARIABLE_SYMBOL, "payment", default));
     }
 
     [Test]
@@ -186,21 +187,21 @@ public class PayerPaymentsServiceTests
         BankPayment bankPayment = new(REFERENCE, "FOO", null, 10, DateTime.Now, null, new(true, null, null, null));
         Payer payer = new(VARIABLE_SYMBOL);
         payer.BankPayments.Add(bankPayment);
-        _payers.Setup(_ => _.GetAsync(VARIABLE_SYMBOL)).ReturnsAsync(payer);
+        _payers.Setup(_ => _.GetAsync(VARIABLE_SYMBOL, default)).ReturnsAsync(payer);
 
         // Act
-        await _sut.RestorePaymentAsync(VARIABLE_SYMBOL, REFERENCE);
+        await _sut.RestorePaymentAsync(VARIABLE_SYMBOL, REFERENCE, default);
 
         // Verify
         Assert.That(bankPayment.Overrides.Removed, Is.False);
 
-        _payers.Verify(_ => _.GetAsync(VARIABLE_SYMBOL), Times.Once);
-        _payers.Verify(_ => _.UpsertAync(payer), Times.Once);
+        _payers.Verify(_ => _.GetAsync(VARIABLE_SYMBOL, default), Times.Once);
+        _payers.Verify(_ => _.UpsertAync(payer, default), Times.Once);
     }
 
     [Test]
     public void RestorePaymentAsync_NonExistingPayer()
-        => Assert.ThrowsAsync<NullReferenceException>(() => _sut.RestorePaymentAsync(50, "foo"));
+        => Assert.ThrowsAsync<NullReferenceException>(() => _sut.RestorePaymentAsync(50, "foo", default));
     
     [Test]
     public void RestorePaymentAsync_NonExistingPayment()
@@ -209,10 +210,10 @@ public class PayerPaymentsServiceTests
         const ulong VARIABLE_SYMBOL = 4;
 
         Payer payer = new(VARIABLE_SYMBOL);
-        _payers.Setup(_ => _.GetAsync(VARIABLE_SYMBOL)).ReturnsAsync(payer);
+        _payers.Setup(_ => _.GetAsync(VARIABLE_SYMBOL, default)).ReturnsAsync(payer);
 
         // Act and assert
-        Assert.ThrowsAsync<InvalidOperationException>(() => _sut.RestorePaymentAsync(VARIABLE_SYMBOL, "payment"));
+        Assert.ThrowsAsync<InvalidOperationException>(() => _sut.RestorePaymentAsync(VARIABLE_SYMBOL, "payment", default));
     }
 
     [Test]
@@ -226,10 +227,10 @@ public class PayerPaymentsServiceTests
 
         Payer payer = new(VARIABLE_SYMBOL);
         payer.ManualPayments.Add(payment);
-        _payers.Setup(_ => _.GetAsync(VARIABLE_SYMBOL)).ReturnsAsync(payer);
+        _payers.Setup(_ => _.GetAsync(VARIABLE_SYMBOL, default)).ReturnsAsync(payer);
 
         // Act and assert
-        Assert.ThrowsAsync<InvalidOperationException>(() => _sut.RestorePaymentAsync(VARIABLE_SYMBOL, REFERENCE));
+        Assert.ThrowsAsync<InvalidOperationException>(() => _sut.RestorePaymentAsync(VARIABLE_SYMBOL, REFERENCE, default));
     }
 
     private Mock<IPayersDao> _payers;

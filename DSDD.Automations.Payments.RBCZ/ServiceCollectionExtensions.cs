@@ -8,5 +8,6 @@ public static class ServiceCollectionExtensions
     public static IServiceCollection AddPaymentsRBCZ(this IServiceCollection services)
         => services
             .AddApiClient()
-            .AddSingleton<IFxRates, FxRates>();
+            .AddSingleton<IFxRates, FxRates>()
+            .AddTransient<IBankPaymentsImporter, BankPaymentsImporter>();
 }

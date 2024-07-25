@@ -3,7 +3,7 @@
   "defaultVariables": null,
   "documentGenerator": {
     "fromDocument": {
-      "url": ".\\$(Environment).yaml"
+      "url": ".\\swagger.yaml"
     }
   },
   "codeGenerators": {
@@ -33,9 +33,9 @@
       "typeAccessModifier": "internal",
       "propertySetterAccessModifier": "",
       "generateNativeRecords": false,
-      "generateContractsOutput": false,
-      "contractsNamespace": null,
-      "contractsOutputFilePath": null,
+      "generateContractsOutput": true,
+      "contractsNamespace": "DSDD.Automations.Payments.RBCZ.PremiumApi",
+      "contractsOutputFilePath": "./Generated/Model.cs",
       "parameterDateTimeFormat": "s",
       "parameterDateFormat": "yyyy-MM-dd",
       "generateUpdateJsonSerializerSettingsMethod": true,
@@ -57,7 +57,7 @@
       "wrapResponseMethods": [],
       "generateResponseClasses": true,
       "responseClass": "SwaggerResponse",
-      "namespace": "DSDD.Automations.RBCZ.PremiumApi.$(Environment)",
+      "namespace": "DSDD.Automations.Payments.RBCZ.PremiumApi",
       "requiredPropertiesMustBeDefined": true,
       "dateType": "System.DateOnly",
       "jsonConverters": null,
@@ -91,7 +91,7 @@
       "templateDirectory": null,
       "serviceHost": null,
       "serviceSchemes": null,
-      "output": "./Generated/$(Environment).cs",
+      "output": "./Generated/Client.cs",
       "newLineBehavior": "Auto"
     }
   }

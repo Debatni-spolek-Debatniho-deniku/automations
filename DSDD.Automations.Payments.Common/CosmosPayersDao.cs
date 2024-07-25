@@ -16,15 +16,15 @@ public class CosmosPayersDao: IPayersDao, IDisposable
     /// <summary>
     /// Returns <see cref="null"/> if does not exist.
     /// </summary>
-    public async Task<Payer?> GetAsync(ulong variableSymbol)
+    public async Task<Payer?> GetAsync(ulong variableSymbol, CancellationToken ct)
     {
-        Container payers = await GetPayersContainer();
+        Container payers = await GetPayersContainer(ct);
 
         string id = variableSymbol.ToString();
 
         try
         {
-            return await payers.ReadItemAsync<Payer>(id, new PartitionKey(id));
+            return await payers.ReadItemAsync<Payer>(id, new PartitionKey(id), null, ct);
         }
         catch (CosmosException ex) when (ex.StatusCode == System.Net.HttpStatusCode.NotFound)
         {
@@ -32,10 +32,10 @@ public class CosmosPayersDao: IPayersDao, IDisposable
         }
     }
 
-    public async Task UpsertAync(Payer payer)
+    public async Task UpsertAync(Payer payer, CancellationToken ct)
     {
-        Container payers = await GetPayersContainer();
-        await payers.UpsertItemAsync(payer);
+        Container payers = await GetPayersContainer(ct);
+        await payers.UpsertItemAsync(payer, null, null, ct);
     }
     
     public void Dispose()
@@ -49,9 +49,9 @@ public class CosmosPayersDao: IPayersDao, IDisposable
     private const string PAYERS_DATABASE = "payers";
     private const string PAYERS_CONTAINER = "payers";
 
-    private async Task<Container> GetPayersContainer()
+    private async Task<Container> GetPayersContainer(CancellationToken ct)
     {
-        await _semaphore.WaitAsync();
+        await _semaphore.WaitAsync(ct);
 
         if (_client is null)
             _client = await new CosmosClientBuilder(_accountEndpoint, _tokenCredential)

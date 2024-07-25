@@ -10,16 +10,16 @@ public class PayerPaymentsService: IPaymentsService
         _payers = payers;
     }
 
-    public async Task<object> GetPaymentAsync(ulong variableSymbol, string paymentReference)
+    public async Task<object> GetPaymentAsync(ulong variableSymbol, string paymentReference, CancellationToken ct)
     {
-        Payer payer = await _payers.GetRequiredAsync(variableSymbol);
+        Payer payer = await _payers.GetRequiredAsync(variableSymbol, ct);
         return FilterOutPayment(payer, paymentReference, true)!;
     }
 
     public async Task UpsertManualPaymentAsync(ulong variableSymbol, string? paymentReference,
-        ulong? constantSymbol, decimal amountCzk, DateTime dateTime, string? description)
+        ulong? constantSymbol, decimal amountCzk, DateTime dateTime, string? description, CancellationToken ct)
     {
-        Payer? payer = await _payers.GetAsync(variableSymbol);
+        Payer? payer = await _payers.GetAsync(variableSymbol, ct);
         payer ??= new(variableSymbol);
 
         if (paymentReference is not null)
@@ -36,25 +36,25 @@ public class PayerPaymentsService: IPaymentsService
             dateTime, 
             description));
 
-        await _payers.UpsertAync(payer);
+        await _payers.UpsertAync(payer, ct);
     }
 
     public async Task OverrideBankPaymentAsync(ulong variableSymbol, string paymentReference, 
-        ulong? constantSymbol, DateTime? dateTime, string? description)
+        ulong? constantSymbol, DateTime? dateTime, string? description, CancellationToken ct)
     {
-        Payer payer = await _payers.GetRequiredAsync(variableSymbol);
+        Payer payer = await _payers.GetRequiredAsync(variableSymbol, ct);
 
         BankPayment payment = payer.BankPayments.Single(p => p.Reference == paymentReference);
         payment.Overrides.ConstantSymbol = constantSymbol;
         payment.Overrides.DateTime = dateTime;
         payment.Overrides.Description = description;
 
-        await _payers.UpsertAync(payer);
+        await _payers.UpsertAync(payer, ct);
     }
 
-    public async Task RemovePaymentAsync(ulong variableSymbol, string paymentReference)
+    public async Task RemovePaymentAsync(ulong variableSymbol, string paymentReference, CancellationToken ct)
     {
-        Payer payer = await _payers.GetRequiredAsync(variableSymbol);
+        Payer payer = await _payers.GetRequiredAsync(variableSymbol, ct);
         
         switch (FilterOutPayment(payer, paymentReference, true)!)
         {
@@ -68,12 +68,12 @@ public class PayerPaymentsService: IPaymentsService
                 throw new IndexOutOfRangeException();
         }
 
-        await _payers.UpsertAync(payer);
+        await _payers.UpsertAync(payer, ct);
     }
 
-    public async Task RestorePaymentAsync(ulong variableSymbol, string paymentReference)
+    public async Task RestorePaymentAsync(ulong variableSymbol, string paymentReference, CancellationToken ct)
     {
-        Payer payer = await _payers.GetRequiredAsync(variableSymbol);
+        Payer payer = await _payers.GetRequiredAsync(variableSymbol, ct);
 
         object? payment = FilterOutPayment(payer, paymentReference, false);
         if (payment is not BankPayment bankPayment)
@@ -81,7 +81,7 @@ public class PayerPaymentsService: IPaymentsService
 
         bankPayment.Overrides.Removed = false;
 
-        await _payers.UpsertAync(payer);
+        await _payers.UpsertAync(payer, ct);
     }
 
     private readonly IPayersDao _payers;

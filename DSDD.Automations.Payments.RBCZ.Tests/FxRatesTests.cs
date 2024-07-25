@@ -19,11 +19,10 @@ public class FxRatesTests
     public async Task ToCzkAsync(decimal value, string currency, decimal expected)
     {
         // Setup
-        _apiClient.Setup(_ => _.GetFxRateAsync("USD", default)).ReturnsAsync(21m);
-        _apiClient.Setup(_ => _.GetFxRateAsync("EUR", default)).ReturnsAsync(26m);
-        _apiClient.Setup(_ => _.GetFxRateAsync("ZMW", default)).ReturnsAsync(0.9m);
-
-
+        _apiClient.Setup(_ => _.GetFxRateAsync("USD", default)).ReturnsAsync(new ExchangeRate() { ExchangeRateCenter = 21 });
+        _apiClient.Setup(_ => _.GetFxRateAsync("EUR", default)).ReturnsAsync(new ExchangeRate() { ExchangeRateCenter = 26 });
+        _apiClient.Setup(_ => _.GetFxRateAsync("ZMW", default)).ReturnsAsync(new ExchangeRate() { ExchangeRateCenter = 0.9 });
+        
         // Act
         decimal result = await _sut.ToCzkAsync(value, currency, default);
 
@@ -35,7 +34,7 @@ public class FxRatesTests
     public async Task ToCzkAsync_Cache()
     {
         // Setup
-        _apiClient.Setup(_ => _.GetFxRateAsync("USD", default)).ReturnsAsync(21m);
+        _apiClient.Setup(_ => _.GetFxRateAsync("USD", default)).ReturnsAsync(new ExchangeRate() { ExchangeRateCenter = 21 });
 
 
         // Act
@@ -51,9 +50,9 @@ public class FxRatesTests
 
 
     [Test]
-    public async Task ToCzkAsync_UknownCurrency()
+    public void ToCzkAsync_UknownCurrency()
         => Assert.ThrowsAsync<InvalidOperationException>(() => _sut.ToCzkAsync(50, "USD", default));
 
-    private Mock<IApiClient> _apiClient = null!;
+    private Mock<IPremiumApiClient> _apiClient = null!;
     private FxRates _sut = null!;
 }

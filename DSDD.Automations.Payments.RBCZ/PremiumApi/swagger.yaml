@@ -3,8 +3,10 @@ x-headmatter:
 swagger: '2.0'
 info:
   version: 1.1.20230308
-  title: Production
+  title: Sandbox
   description: >
+    Sandbox environment.
+
     - Accounts list and balance
 
     - Transaction overview (also for saving accounts)
@@ -47,6 +49,10 @@ info:
     service and high user-experience of your app.
 
 
+    For testing purposes please download and use our <a href="assets/test_cert.p12" download>
+    test client certificate</a>. The certificate password is <i>test12345678</i>.
+
+
     **Note**: Be aware, that in certain error situations, API can return
     different error structure along with broader set of http status codes, than
     the one defined below
@@ -56,15 +62,15 @@ basePath: /
 schemes:
   - https
 paths:
-  '/rbcz/premium/api/accounts/{accountNumber}/balance':
+  '/rbcz/premium/{environment}/accounts/{accountNumber}/balance':
     get:
-      description: >
+      description: >-
         Get balance for given accounts.
-        
-        
-        The number of requests is limited to 10 per client per second and 5000 
-        per client per day. The consumer must be able to handle HTTP status 
-        429 (too many requests) in case of exceeding these limits.
+
+
+        In production environment the number of requests is limited according to you 
+        subscription plan. Therefore the consumer must be able to handle HTTP responses
+        status 429 (too many requests) in case of exceeding these limits.
       operationId: getBalance
       produces:
         - application/json
@@ -97,6 +103,11 @@ paths:
             closest IP address to the real end-user possible.
           type: string
           maxLength: 39
+        - name: environment
+          in: path
+          required: true
+          schema:
+            $ref: '#/definitions/Environment'
         - name: accountNumber
           in: path
           required: true
@@ -207,7 +218,7 @@ paths:
                   - TOO_MANY_REQUESTS
               error_description:
                 type: string
-  '/rbcz/premium/api/accounts/{accountNumber}/{currencyCode}/transactions':
+  '/rbcz/premium/{environment}/accounts/{accountNumber}/{currencyCode}/transactions':
     get:
       description: >-
         Get a list of posted transactions (including intraday). In addition,
@@ -219,11 +230,15 @@ paths:
         `page`. The request parameter/flag `lastPage` indicates whether the
         returned page is the last one or if there are more pages that you can
         iterate.
-        
-        
-        The number of requests is limited to 10 per client per second and 5000 
-        per client per day. The consumer must be able to handle HTTP status 
-        429 (too many requests) in case of exceeding these limits.
+
+
+        In production environment the number of requests is limited according to you 
+        subscription plan. Therefore the consumer must be able to handle HTTP responses
+        status 429 (too many requests) in case of exceeding these limits.
+
+
+        When iterating pages of transactions, your app may need to implement 
+        some delay in order not to break the limit of requests per second.
       operationId: getTransactionList
       produces:
         - application/json
@@ -256,6 +271,11 @@ paths:
             closest IP address to the real end-user possible.
           type: string
           maxLength: 39
+        - name: environment
+          in: path
+          required: true
+          schema:
+            $ref: '#/definitions/Environment'
         - name: accountNumber
           in: path
           required: true
@@ -656,7 +676,7 @@ paths:
                   - TOO_MANY_REQUESTS
               error_description:
                 type: string
-  /rbcz/premium/api/payments/batches:
+  /rbcz/premium/{environment}/payments/batches:
     post:
       description: >-
         Importing batch payments in one of [supported
@@ -694,9 +714,9 @@ paths:
         it is performed later and a possible error is provided in Internet Banking.
         
         
-        The number of requests is limited to 10 per client per second and 5000 
-        per client per day. The consumer must be able to handle HTTP status 
-        429 (too many requests) in case of exceeding these limits.
+        In production environment the number of requests is limited according to you 
+        subscription plan. Therefore the consumer must be able to handle HTTP responses
+        status 429 (too many requests) in case of exceeding these limits.
       operationId: importPayments
       produces:
         - application/json
@@ -770,7 +790,12 @@ paths:
             (working) day. Beware that this may affect if the payment will be sent as instant or not since only payments with valueDate same as
             actual date (during sending of payment to bank) can be sent as instant.
           type: boolean
-          default: true
+          default: true          
+        - name: environment
+          in: path
+          required: true
+          schema:
+            $ref: '#/definitions/Environment'
         - name: request body
           required: true
           in: body
@@ -876,7 +901,7 @@ paths:
                 type: string
               error_description:
                 type: string
-  '/rbcz/premium/api/payments/batches/{batchFileId}':
+  '/rbcz/premium/{environment}/payments/batches/{batchFileId}':
     get:
       description: >-
         Getting details about state of processing of imported batch file and
@@ -884,11 +909,11 @@ paths:
         
         
         All possible batch `status` values are: DRAFT, ERROR, FOR_SIGN, VERIFIED, PASSING_TO_BANK, PASSED, PASSED_TO_BANK_WITH_ERROR, UNDISCLOSED
-
-
-        The number of requests is limited to 10 per client per second and 5000 
-        per client per day. The consumer must be able to handle HTTP status 
-        429 (too many requests) in case of exceeding these limits.
+        
+        
+        In production environment the number of requests is limited according to you 
+        subscription plan. Therefore the consumer must be able to handle HTTP responses
+        status 429 (too many requests) in case of exceeding these limits.
       operationId: getBatchDetail
       produces:
         - application/json
@@ -920,7 +945,12 @@ paths:
             need to know the IP address of his browser. Always provide the
             closest IP address to the real end-user possible.
           type: string
-          maxLength: 39
+          maxLength: 39          
+        - name: environment
+          in: path
+          required: true
+          schema:
+            $ref: '#/definitions/Environment'
         - name: batchFileId
           in: path
           required: true
@@ -1084,15 +1114,15 @@ paths:
                   - TOO_MANY_REQUESTS
               error_description:
                 type: string
-  '/rbcz/premium/api/accounts':
+  '/rbcz/premium/{environment}/accounts':
     get:
-      description: >
+      description: >-
         Get list of accounts for given certificate. First page is 1.
-        
-        
-        The number of requests is limited to 10 per client per second and 5000 
-        per client per day. The consumer must be able to handle HTTP status 
-        429 (too many requests) in case of exceeding these limits.
+
+
+        In production environment the number of requests is limited according to you 
+        subscription plan. Therefore the consumer must be able to handle HTTP responses
+        status 429 (too many requests) in case of exceeding these limits.
       tags:
         - Get Accounts
       operationId: getAccounts
@@ -1124,7 +1154,12 @@ paths:
             need to know the IP address of his browser. Always provide the
             closest IP address to the real end-user possible.
           type: string
-          maxLength: 39
+          maxLength: 39          
+        - name: environment
+          in: path
+          required: true
+          schema:
+            $ref: '#/definitions/Environment'
         - name: page
           description: Number of the requested page. Default is 1.
           in: query
@@ -1246,15 +1281,15 @@ paths:
                   - TOO_MANY_REQUESTS
               error_description:
                 type: string
-  '/rbcz/premium/api/accounts/statements':
+  '/rbcz/premium/{environment}/accounts/statements':
     post:
-      description: >
+      description: >-
         Lists statements for all available accounts for which the client has appropriate access rights.
-        
-        
-        The number of requests is limited to 10 per client per second and 5000 
-        per client per day. The consumer must be able to handle HTTP status 
-        429 (too many requests) in case of exceeding these limits.
+
+
+        In production environment the number of requests is limited according to you 
+        subscription plan. Therefore the consumer must be able to handle HTTP responses
+        status 429 (too many requests) in case of exceeding these limits.
       tags:
         - Get Statement List
       operationId: getStatements
@@ -1288,7 +1323,12 @@ paths:
             need to know the IP address of his browser. Always provide the
             closest IP address to the real end-user possible.
           type: string
-          maxLength: 39
+          maxLength: 39          
+        - name: environment
+          in: path
+          required: true
+          schema:
+            $ref: '#/definitions/Environment'
         - name: page
           description: Number of the requested page. Default is 1.
           in: query
@@ -1476,9 +1516,9 @@ paths:
                   - TOO_MANY_REQUESTS
               error_description:
                 type: string
-  '/rbcz/premium/api/accounts/statements/download':
+  '/rbcz/premium/{environment}/accounts/statements/download':
     post:
-      description: >
+      description: >-
         Download the selected statement.
 
         
@@ -1486,10 +1526,10 @@ paths:
         the downloaded document type: <code>application/pdf</code>, <code>application/xml</code>,
         <code>text/mt940</code>, <code>application/json</code> (in case of an error).
 
-        
-        The number of requests is limited to 5 per client per second and 1500 
-        per client per day. The consumer must be able to handle HTTP status 
-        429 (too many requests) in case of exceeding these limits.
+
+        In production environment the number of requests is limited according to you 
+        subscription plan. Therefore the consumer must be able to handle HTTP responses
+        status 429 (too many requests) in case of exceeding these limits.
       tags:
         - Download Statement
       operationId: downloadStatement
@@ -1520,7 +1560,7 @@ paths:
           description: >-
             The Accept-Language request HTTP header is used to determine document 
             language. Supported languages are `cs` and `en`.
-          type: string          
+          type: string
         - name: PSU-IP-Address
           in: header
           description: >-
@@ -1530,7 +1570,12 @@ paths:
             need to know the IP address of his browser. Always provide the
             closest IP address to the real end-user possible.
           type: string
-          maxLength: 39
+          maxLength: 39          
+        - name: environment
+          in: path
+          required: true
+          schema:
+            $ref: '#/definitions/Environment'
         - name: request body
           required: true
           in: body
@@ -1623,18 +1668,15 @@ paths:
                   - TOO_MANY_REQUESTS
               error_description:
                 type: string
-  '/rbcz/premium/api/fxrates':
+  '/rbcz/premium/{environment}/fxrates':
     get:
-      description: >
+      description: >-
         Returns foreign exchange rates for all available currencies.
-        
-        
-        This operation does not require a client certificate.
 
         
-        The number of requests is limited to 10 per client per second and 5000 
-        per client per day. The consumer must be able to handle HTTP status 
-        429 (too many requests) in case of exceeding these limits.
+        In production environment the number of requests is limited according to you 
+        subscription plan. Therefore the consumer must be able to handle HTTP responses
+        status 429 (too many requests) in case of exceeding these limits.
       tags:
         - Get Fx Rates List
       operationId: getFxRatesList
@@ -1666,7 +1708,12 @@ paths:
             need to know the IP address of his browser. Always provide the
             closest IP address to the real end-user possible.
           type: string
-          maxLength: 39
+          maxLength: 39          
+        - name: environment
+          in: path
+          required: true
+          schema:
+            $ref: '#/definitions/Environment'
         - name: date
           description: >-
             The effective date for which the FX rates list is requested.
@@ -1691,18 +1738,15 @@ paths:
                   - TOO_MANY_REQUESTS
               error_description:
                 type: string
-  '/rbcz/premium/api/fxrates/{currencyCode}':
+  '/rbcz/premium/{environment}/fxrates/{currencyCode}':
     get:
-      description: >
+      description: >-
         Returns foreign exchange rates for the given currency code.
-        
-        
-        This operation does not require a client certificate.
 
         
-        The number of requests is limited to 10 per client per second and 5000 
-        per client per day. The consumer must be able to handle HTTP status 
-        429 (too many requests) in case of exceeding these limits.
+        In production environment the number of requests is limited according to you 
+        subscription plan. Therefore the consumer must be able to handle HTTP responses
+        status 429 (too many requests) in case of exceeding these limits.
       tags:
         - Get Fx Rates
       operationId: getFxRates
@@ -1734,7 +1778,12 @@ paths:
             need to know the IP address of his browser. Always provide the
             closest IP address to the real end-user possible.
           type: string
-          maxLength: 39
+          maxLength: 39          
+        - name: environment
+          in: path
+          required: true
+          schema:
+            $ref: '#/definitions/Environment'
         - name: currencyCode
           in: path
           description: The foreign currency code in ISO-4217 format.
@@ -1872,3 +1921,8 @@ definitions:
         type: string
       variableCountryName:
         type: string
+  Environment:
+    type: string
+    enum:
+      - mock
+      - api

@@ -4,7 +4,7 @@ public class BankPayment
 {
     public string Reference { get; }
     
-    public string CounterpartyAccountNumber { get; }
+    public string CounterpartyAccountNumber { get; set; }
 
     public ulong? ConstantSymbol { get; }
 

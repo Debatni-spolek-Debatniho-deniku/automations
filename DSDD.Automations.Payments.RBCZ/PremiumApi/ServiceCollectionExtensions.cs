@@ -6,13 +6,8 @@ internal static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddApiClient(this IServiceCollection services)
     {
-        services.AddOptionsWithValidateOnStart<RbczApiClientOptions>().BindConfiguration("");
-
-#if DEBUG
-        services.AddSingleton<IApiClient, SandboxApiClient>();
-#else
-        services.AddSingleton<IApiClient, ProductionPremiumApiClient>();
-#endif
+        services.AddOptionsWithValidateOnStart<PremiumApiClientOptions>().BindConfiguration("");
+        services.AddSingleton<IPremiumApiClient, PremiumApiClient>();
 
         return services;
     }

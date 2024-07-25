@@ -5,7 +5,7 @@ namespace DSDD.Automations.Payments.RBCZ;
 
 internal class FxRates: IFxRates
 {
-    public FxRates(IApiClient client)
+    public FxRates(IPremiumApiClient client)
     {
         _client = client;
     }
@@ -20,10 +20,10 @@ internal class FxRates: IFxRates
 
             if (!_fxRateCache.TryGetValue(currencyCode, out decimal toCzkRate))
             {
-                decimal? maybeRate = await _client.GetFxRateAsync(currencyCode, ct);
+                ExchangeRate? maybeRate = await _client.GetFxRateAsync(currencyCode, ct);
                 if (maybeRate is null)
                     throw new InvalidOperationException($"No currency rate is known from {currencyCode} to CZK!");
-                toCzkRate = maybeRate.Value;
+                toCzkRate = (decimal)maybeRate.ExchangeRateCenter;
 
                 _fxRateCache.Add(currencyCode, toCzkRate);
             }
@@ -36,7 +36,7 @@ internal class FxRates: IFxRates
         }
     }
 
-    private readonly IApiClient _client;
+    private readonly IPremiumApiClient _client;
 
     private readonly ConcurrentDictionary<string, SemaphoreSlim> _currencySmaphores = new();
     private readonly Dictionary<string, decimal> _fxRateCache = new();

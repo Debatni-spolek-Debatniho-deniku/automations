@@ -40,7 +40,7 @@ public class MvcHttp
         string variableSymbol)
     {
         ulong longVariableSymbol = _numericSymbolParser.Parse(variableSymbol);
-        Payer? maybePayer = await _payers.GetAsync(longVariableSymbol);
+        Payer? maybePayer = await _payers.GetAsync(longVariableSymbol, req.HttpContext.RequestAborted);
 
         return new ContentResult()
         {
@@ -80,7 +80,8 @@ public class MvcHttp
             model.ConstantSymbol,
             model.AmountCzk,
             model.DateTime,
-            model.Description);
+            model.Description,
+            req.HttpContext.RequestAborted);
 
         return new RedirectResult($"/payers/{variableSymbol}");
     }
@@ -101,9 +102,9 @@ public class MvcHttp
         async Task<string> GetContent()
         {
             ulong longVariableSymbol = _numericSymbolParser.Parse(variableSymbol);
-            Payer payer = await _payers.GetRequiredAsync(longVariableSymbol);
+            Payer payer = await _payers.GetRequiredAsync(longVariableSymbol, req.HttpContext.RequestAborted);
 
-            switch (await _paymentsService.GetPaymentAsync(longVariableSymbol, paymentReference))
+            switch (await _paymentsService.GetPaymentAsync(longVariableSymbol, paymentReference, req.HttpContext.RequestAborted))
             {
                 case BankPayment bankPayment:
                     return await _engine.CompileRenderAsync(
@@ -129,7 +130,10 @@ public class MvcHttp
 
         IFormCollection form = await req.ReadFormAsync();
 
-        bool isBank = (await _paymentsService.GetPaymentAsync(longVariableSymbol, paymentReference)) is BankPayment;
+        bool isBank = (await _paymentsService.GetPaymentAsync(
+            longVariableSymbol, 
+            paymentReference, 
+            req.HttpContext.RequestAborted)) is BankPayment;
 
         if (isBank)
         {
@@ -139,7 +143,8 @@ public class MvcHttp
                 paymentReference,
                 model.ConstantSymbol,
                 model.DateTime,
-                model.Description);
+                model.Description,
+                req.HttpContext.RequestAborted);
         }
         else
         {
@@ -150,7 +155,8 @@ public class MvcHttp
                 model.ConstantSymbol,
                 model.AmountCzk,
                 model.DateTime,
-                model.Description);
+                model.Description,
+                req.HttpContext.RequestAborted);
         }
 
         return new RedirectResult($"/payers/{variableSymbol}");
@@ -164,7 +170,8 @@ public class MvcHttp
     {
         await _paymentsService.RemovePaymentAsync(
             _numericSymbolParser.Parse(variableSymbol), 
-            paymentReference);
+            paymentReference,
+            req.HttpContext.RequestAborted);
 
         return new RedirectResult($"/payers/{variableSymbol}");
     }
@@ -177,7 +184,8 @@ public class MvcHttp
     {
         await _paymentsService.RestorePaymentAsync(
             _numericSymbolParser.Parse(variableSymbol),
-            paymentReference);
+            paymentReference,
+            req.HttpContext.RequestAborted);
 
         return new RedirectResult($"/payers/{variableSymbol}");
     }
