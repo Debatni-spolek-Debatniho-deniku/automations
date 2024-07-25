@@ -331,297 +331,10 @@ paths:
                 example: true
               transactions:
                 description: ' An array of transactions.'
-                type: object
-                properties:
-                  transaction:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        entryReference:
-                          type: string
-                          description: Unique identification of the realized transaction.
-                          example: 3887196517
-                        amount:
-                          type: object
-                          properties:
-                            value:
-                              type: number
-                              format: double
-                              description: Amount of money
-                              example: -1668.59
-                            currency:
-                              type: string
-                              description: Currency code of the amount
-                              example: CZK
-                          required:
-                            - value
-                            - currency
-                        creditDebitIndication:
-                          type: string
-                          enum:
-                            - DBIT
-                            - CRDT
-                          example: DBIT
-                        bookingDate:
-                          type: string
-                          format: date-time
-                          description: Date of payment processing/posting by the bank.
-                        valueDate:
-                          type: string
-                          format: date-time
-                          description: >-
-                            Transaction date; value date; date which is used to
-                            count interest; e.g. date when money were withdrawn
-                            from ATM.
-                        bankTransactionCode:
-                          type: object
-                          properties:
-                            code:
-                              type: string
-                              description: >-
-                                Transaction code in ISO20022 camt.53 format
-                                (e.g. 10000101000 - Odchozi tuzemska platba).
-                              example: '10000401000'
-                          required:
-                            - code
-                        entryDetails:
-                          type: object
-                          properties:
-                            transactionDetails:
-                              type: object
-                              properties:
-                                references:
-                                  type: object
-                                  properties:
-                                    endToEndIdentification:
-                                      type: string
-                                      description: >-
-                                        Originator reference ID - End to End ID;
-                                        The Originator's reference of the
-                                        transaction
-                                      example: EBGTF015477198
-                                instructedAmount:
-                                  description: >-
-                                    Original amount in original currency -
-                                    before currency conversion.
-                                  type: object
-                                  properties:
-                                    value:
-                                      type: number
-                                      format: double
-                                      description: Amount of money
-                                      example: 61
-                                    currency:
-                                      type: string
-                                      description: Currency code of the amount
-                                      example: EUR
-                                    exchangeRate:
-                                      type: number
-                                      format: double
-                                      example: 0.03656
-                                  required:
-                                    - value
-                                    - currency
-                                chargeBearer:
-                                  type: string
-                                  enum:
-                                    - DEBT
-                                    - CRED
-                                    - SHAR
-                                  example: SHAR
-                                paymentCardNumber:
-                                  type: string
-                                  description: >-
-                                    Masked payment card number, if the
-                                    transaction is related to debit card.
-                                  example: 547872XXXXXX9475
-                                relatedParties:
-                                  type: object
-                                  properties:
-                                    counterParty:
-                                      description: >-
-                                        Information about counter party (debtor
-                                        or creditor) - always the other side of
-                                        the transaction.
-                                      type: object
-                                      properties:
-                                        name:
-                                          type: string
-                                          description: Bank account name
-                                          example: Firma Ltd.
-                                        postalAddress:
-                                          type: object
-                                          properties:
-                                            street:
-                                              type: string
-                                              description: Street or 2nd line of the address
-                                              example: Na dlouh?m l?nu 35
-                                            city:
-                                              type: string
-                                              description: City or 3nd line of the address
-                                              example: Praha 6
-                                            country:
-                                              type: string
-                                              description: Country code - 4th line of the address.
-                                              example: CZ
-                                        organisationIdentification:
-                                          type: object
-                                          properties:
-                                            name:
-                                              type: string
-                                              example: Firma Ltd.
-                                            bicOrBei:
-                                              type: string
-                                              description: SWIFT/BIC code of the bank.
-                                              example: KOMBCZPP
-                                            bankCode:
-                                              type: string
-                                              description: >-
-                                                Proprietary bank code in local format
-                                                (e.g. 5500) or in foreign format.
-                                              example: '0100'
-                                            postalAddress:
-                                              type: object
-                                              properties:
-                                                street:
-                                                  type: string
-                                                  description: Street or 2nd line of the address
-                                                  example: Na dlouh?m l?nu 35
-                                                city:
-                                                  type: string
-                                                  description: City or 3nd line of the address
-                                                  example: Praha 6
-                                                shortAddress:
-                                                  type: string
-                                                  description: Short address
-                                                  example: 'Na dlouh?m l?nu 35, Praha, CZ'
-                                                country:
-                                                  type: string
-                                                  description: Country code - 4th line of the address.
-                                                  example: CZ
-                                        account:
-                                          type: object
-                                          properties:
-                                            iban:
-                                              type: string
-                                              description: >-
-                                                IBAN code of the bank account if
-                                                available
-                                              example: CZ0801000000192000145399
-                                            accountNumberPrefix:
-                                              type: string
-                                              description: >-
-                                                Prefix part of the bank account number
-                                                (only for czech accounts)
-                                              example: 000019
-                                            accountNumber:
-                                              type: string
-                                              description: >-
-                                                Base part of the bank account number in
-                                                czech fromat or in foreign format
-                                              example: '2000145399'
-                                    intermediaryInstitution:
-                                      type: object
-                                      properties:
-                                        name:
-                                          type: string
-                                          example: 'Komer?n? banka, a.s.'
-                                        bicOrBei:
-                                          type: string
-                                          description: SWIFT/BIC code of the bank.
-                                          example: KOMBCZPP
-                                        bankCode:
-                                          type: string
-                                          description: >-
-                                            Proprietary bank code in local format
-                                            (e.g. 5500) or in foreign format.
-                                          example: '0100'
-                                        postalAddress:
-                                          type: object
-                                          properties:
-                                            street:
-                                              type: string
-                                              description: Street or 2nd line of the address
-                                              example: Na p??kop? 969/33
-                                            city:
-                                              type: string
-                                              description: City or 3nd line of the address
-                                              example: Praha 1
-                                            shortAddress:
-                                              type: string
-                                              description: Short address
-                                              example: 'Na p??kop? 969/33, Praha, CZ'
-                                            country:
-                                              type: string
-                                              description: Country code - 4th line of the address.
-                                              example: CZ
-                                    ultimateCounterParty:
-                                      description: >-
-                                        Ultimate debtor or Ultimate creditor -
-                                        always the other end.
-                                      type: object
-                                      properties:
-                                        name:
-                                          type: string
-                                          description: Bank account name
-                                          example: CZ0801000000192000145399
-                                        postalAddress:
-                                          type: object
-                                          properties:
-                                            street:
-                                              type: string
-                                              description: Street or 2nd line of the address
-                                              example: Na dlouh?m l?nu 35
-                                            city:
-                                              type: string
-                                              description: City or 3nd line of the address
-                                              example: Praha 6
-                                            country:
-                                              type: string
-                                              description: Country code - 4th line of the address.
-                                              example: CZ
-                                remittanceInformation:
-                                  description: >-
-                                    Information that allow match and pairing
-                                    transactions or further identifies it.
-                                  type: object
-                                  properties:
-                                    unstructured:
-                                      type: string
-                                      description: >-
-                                        Information from or for counter party.
-                                        Information for creditor.
-                                      example: >-
-                                        61 EUR;FIRMA LTD;12345678 RADEK DVA
-                                        RADEK TRI RADEK CTYRI
-                                    creditorReferenceInformation:
-                                      type: object
-                                      properties:
-                                        variable:
-                                          type: string
-                                          description: Variable symbol
-                                          example: '1234567890'
-                                        constant:
-                                          type: string
-                                          description: Constant symbol
-                                          example: '558'
-                                        specific:
-                                          type: string
-                                          description: Specific symbol
-                                          example: '1234567890'
-                                    originatorMessage:
-                                      type: string
-                                      description: >-
-                                        Private description of the transaction.
-                                        Only available to account holder.
-                                      example: na?e platba
-                      required:
-                        - entryReference
-                        - amount
-                        - creditDebitIndication
-                        - bankTransactionCode
-                    minItems: 0
+                type: array
+                items:
+                  $ref: '#/definitions/Transaction'
+                minItems: 0
         '204':
           description: |
             Nonexisting page or empty content.
@@ -1926,3 +1639,289 @@ definitions:
     enum:
       - mock
       - api
+  Transaction:
+    type: object
+    properties:
+      entryReference:
+        type: string
+        description: Unique identification of the realized transaction.
+        example: 3887196517
+      amount:
+        type: object
+        properties:
+          value:
+            type: number
+            format: double
+            description: Amount of money
+            example: -1668.59
+          currency:
+            type: string
+            description: Currency code of the amount
+            example: CZK
+        required:
+          - value
+          - currency
+      creditDebitIndication:
+        type: string
+        enum:
+          - DBIT
+          - CRDT
+        example: DBIT
+      bookingDate:
+        type: string
+        format: date-time
+        description: Date of payment processing/posting by the bank.
+      valueDate:
+        type: string
+        format: date-time
+        description: >-
+          Transaction date; value date; date which is used to
+          count interest; e.g. date when money were withdrawn
+          from ATM.
+      bankTransactionCode:
+        type: object
+        properties:
+          code:
+            type: string
+            description: >-
+              Transaction code in ISO20022 camt.53 format
+              (e.g. 10000101000 - Odchozi tuzemska platba).
+            example: '10000401000'
+        required:
+          - code
+      entryDetails:
+        type: object
+        properties:
+          transactionDetails:
+            type: object
+            properties:
+              references:
+                type: object
+                properties:
+                  endToEndIdentification:
+                    type: string
+                    description: >-
+                      Originator reference ID - End to End ID;
+                      The Originator's reference of the
+                      transaction
+                    example: EBGTF015477198
+              instructedAmount:
+                description: >-
+                  Original amount in original currency -
+                  before currency conversion.
+                type: object
+                properties:
+                  value:
+                    type: number
+                    format: double
+                    description: Amount of money
+                    example: 61
+                  currency:
+                    type: string
+                    description: Currency code of the amount
+                    example: EUR
+                  exchangeRate:
+                    type: number
+                    format: double
+                    example: 0.03656
+                required:
+                  - value
+                  - currency
+              chargeBearer:
+                type: string
+                enum:
+                  - DEBT
+                  - CRED
+                  - SHAR
+                example: SHAR
+              paymentCardNumber:
+                type: string
+                description: >-
+                  Masked payment card number, if the
+                  transaction is related to debit card.
+                example: 547872XXXXXX9475
+              relatedParties:
+                type: object
+                properties:
+                  counterParty:
+                    description: >-
+                      Information about counter party (debtor
+                      or creditor) - always the other side of
+                      the transaction.
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                        description: Bank account name
+                        example: Firma Ltd.
+                      postalAddress:
+                        type: object
+                        properties:
+                          street:
+                            type: string
+                            description: Street or 2nd line of the address
+                            example: Na dlouh?m l?nu 35
+                          city:
+                            type: string
+                            description: City or 3nd line of the address
+                            example: Praha 6
+                          country:
+                            type: string
+                            description: Country code - 4th line of the address.
+                            example: CZ
+                      organisationIdentification:
+                        type: object
+                        properties:
+                          name:
+                            type: string
+                            example: Firma Ltd.
+                          bicOrBei:
+                            type: string
+                            description: SWIFT/BIC code of the bank.
+                            example: KOMBCZPP
+                          bankCode:
+                            type: string
+                            description: >-
+                              Proprietary bank code in local format
+                              (e.g. 5500) or in foreign format.
+                            example: '0100'
+                          postalAddress:
+                            type: object
+                            properties:
+                              street:
+                                type: string
+                                description: Street or 2nd line of the address
+                                example: Na dlouh?m l?nu 35
+                              city:
+                                type: string
+                                description: City or 3nd line of the address
+                                example: Praha 6
+                              shortAddress:
+                                type: string
+                                description: Short address
+                                example: 'Na dlouh?m l?nu 35, Praha, CZ'
+                              country:
+                                type: string
+                                description: Country code - 4th line of the address.
+                                example: CZ
+                      account:
+                        type: object
+                        properties:
+                          iban:
+                            type: string
+                            description: >-
+                              IBAN code of the bank account if
+                              available
+                            example: CZ0801000000192000145399
+                          accountNumberPrefix:
+                            type: string
+                            description: >-
+                              Prefix part of the bank account number
+                              (only for czech accounts)
+                            example: 000019
+                          accountNumber:
+                            type: string
+                            description: >-
+                              Base part of the bank account number in
+                              czech fromat or in foreign format
+                            example: '2000145399'
+                  intermediaryInstitution:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                        example: 'Komer?n? banka, a.s.'
+                      bicOrBei:
+                        type: string
+                        description: SWIFT/BIC code of the bank.
+                        example: KOMBCZPP
+                      bankCode:
+                        type: string
+                        description: >-
+                          Proprietary bank code in local format
+                          (e.g. 5500) or in foreign format.
+                        example: '0100'
+                      postalAddress:
+                        type: object
+                        properties:
+                          street:
+                            type: string
+                            description: Street or 2nd line of the address
+                            example: Na p??kop? 969/33
+                          city:
+                            type: string
+                            description: City or 3nd line of the address
+                            example: Praha 1
+                          shortAddress:
+                            type: string
+                            description: Short address
+                            example: 'Na p??kop? 969/33, Praha, CZ'
+                          country:
+                            type: string
+                            description: Country code - 4th line of the address.
+                            example: CZ
+                  ultimateCounterParty:
+                    description: >-
+                      Ultimate debtor or Ultimate creditor -
+                      always the other end.
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                        description: Bank account name
+                        example: CZ0801000000192000145399
+                      postalAddress:
+                        type: object
+                        properties:
+                          street:
+                            type: string
+                            description: Street or 2nd line of the address
+                            example: Na dlouh?m l?nu 35
+                          city:
+                            type: string
+                            description: City or 3nd line of the address
+                            example: Praha 6
+                          country:
+                            type: string
+                            description: Country code - 4th line of the address.
+                            example: CZ
+              remittanceInformation:
+                description: >-
+                  Information that allow match and pairing
+                  transactions or further identifies it.
+                type: object
+                properties:
+                  unstructured:
+                    type: string
+                    description: >-
+                      Information from or for counter party.
+                      Information for creditor.
+                    example: >-
+                      61 EUR;FIRMA LTD;12345678 RADEK DVA
+                      RADEK TRI RADEK CTYRI
+                  creditorReferenceInformation:
+                    type: object
+                    properties:
+                      variable:
+                        type: string
+                        description: Variable symbol
+                        example: '1234567890'
+                      constant:
+                        type: string
+                        description: Constant symbol
+                        example: '558'
+                      specific:
+                        type: string
+                        description: Specific symbol
+                        example: '1234567890'
+                  originatorMessage:
+                    type: string
+                    description: >-
+                      Private description of the transaction.
+                      Only available to account holder.
+                    example: na?e platba
+    required:
+      - entryReference
+      - amount
+      - creditDebitIndication
+      - bankTransactionCode

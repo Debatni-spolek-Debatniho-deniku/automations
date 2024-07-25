@@ -17,6 +17,11 @@ internal class PremiumApiClient: IPremiumApiClient
             ? Environment.Mock 
             : Environment.Api;
 
+#if !DEBUG
+        if (_environment == Environment.Mock)
+            throw new InvalidOperationException($"Mock environment cannot be used in production!");
+#endif
+
         logger.LogInformation($"Using {_environment} as RBCZ environment.");
 
         X509Certificate2 certificate = new(
@@ -68,10 +73,10 @@ internal class PremiumApiClient: IPremiumApiClient
                 page,
                 ct);
 
-            foreach (Transaction transaction in response.Transactions.Transaction)
+            foreach (Transaction transaction in response.Transactions)
                 yield return transaction;
 
-            if (response.LastPage is not true)
+            if (response.LastPage is true)
                 break;
 
             page++;

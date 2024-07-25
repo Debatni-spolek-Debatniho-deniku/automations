@@ -9,20 +9,18 @@ using DSDD.Automations.Payments.Views.Payer;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Functions.Worker;
-using Microsoft.Extensions.Logging;
 using RazorLight;
 
 namespace DSDD.Automations.Payments;
 
 public class MvcHttp
 {
-    public MvcHttp(IRazorLightEngine engine, IPayersDao payers, IPaymentsService paymentsService, INumericSymbolParser numericSymbolParser, ILogger<MvcHttp> logger)
+    public MvcHttp(IRazorLightEngine engine, IPayersDao payers, IPaymentsService paymentsService, INumericSymbolParser numericSymbolParser)
     {
         _engine = engine;
         _payers = payers;
         _paymentsService = paymentsService;
         _numericSymbolParser = numericSymbolParser;
-        _logger = logger;
     }
 
     [Function(nameof(MvcHttp) + "-" + nameof(GetIndex))]
@@ -194,7 +192,6 @@ public class MvcHttp
     private readonly IPayersDao _payers;
     private readonly IPaymentsService _paymentsService;
     private readonly INumericSymbolParser _numericSymbolParser;
-    private readonly ILogger<MvcHttp> _logger;
 
     private ManualPaymentFormViewModel BindToManualPaymentFormViewModel(IFormCollection form)
     {

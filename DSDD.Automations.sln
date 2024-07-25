@@ -20,7 +20,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DSDD.Automations.Payments.C
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DSDD.Automations.Payments.Tests", "DSDD.Automations.Payments.Tests\DSDD.Automations.Payments.Tests.csproj", "{5F65EF51-20E0-474A-8BF4-8A476B1E919C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DSDD.Automations.Payments.RBCZ.Tests", "DSDD.Automations.Payments.RBCZ.Tests\DSDD.Automations.Payments.RBCZ.Tests.csproj", "{5A7EEFC8-22AA-402F-805D-297B5322A9C6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DSDD.Automations.Payments.RBCZ.Tests", "DSDD.Automations.Payments.RBCZ.Tests\DSDD.Automations.Payments.RBCZ.Tests.csproj", "{5A7EEFC8-22AA-402F-805D-297B5322A9C6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -6,7 +6,6 @@ using DSDD.Automations.Payments.Middleware;
 using DSDD.Automations.Payments.Payments;
 using DSDD.Automations.Payments.RBCZ;
 using Microsoft.Azure.Functions.Worker;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using RazorLight;

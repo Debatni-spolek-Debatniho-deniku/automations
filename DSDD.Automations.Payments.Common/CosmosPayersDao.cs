@@ -2,15 +2,16 @@
 using DSDD.Automations.Payments.Model;
 using Microsoft.Azure.Cosmos;
 using Microsoft.Azure.Cosmos.Fluent;
+using Microsoft.Extensions.Options;
 
 namespace DSDD.Automations.Payments;
 
 public class CosmosPayersDao: IPayersDao, IDisposable
 {
-    public CosmosPayersDao(TokenCredential tokenCredential, string accountEndpoint)
+    public CosmosPayersDao(TokenCredential tokenCredential, IOptions<CosmosOptions> cosmosOptions)
     {
         _tokenCredential = tokenCredential;
-        _accountEndpoint = accountEndpoint;
+        _accountEndpoint = cosmosOptions.Value.AccountEndpont;
     }
 
     /// <summary>

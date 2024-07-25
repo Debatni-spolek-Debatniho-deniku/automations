@@ -53,7 +53,7 @@ internal class BankPaymentsImporter: IBankPaymentsImporter
                     .EntryDetails
                     .TransactionDetails
                     .RemittanceInformation
-                    .CreditorReferenceInformation
+                    .CreditorReferenceInformation?
                     .Variable;
 
                 ulong? variableSymbol = string.IsNullOrWhiteSpace(variableSymbolRaw)

@@ -141,6 +141,49 @@ namespace DSDD.Automations.Payments.RBCZ.PremiumApi
 
     }
 
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
+    internal partial class Transaction
+    {
+        /// <summary>
+        /// Unique identification of the realized transaction.
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("entryReference")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        public string EntryReference { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("amount")]
+        [System.ComponentModel.DataAnnotations.Required]
+        public Amount Amount { get; set; } = new Amount();
+
+        [System.Text.Json.Serialization.JsonPropertyName("creditDebitIndication")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
+        public TransactionCreditDebitIndication CreditDebitIndication { get; set; }
+
+        /// <summary>
+        /// Date of payment processing/posting by the bank.
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("bookingDate")]
+        public System.DateTime? BookingDate { get; set; }
+
+        /// <summary>
+        /// Transaction date; value date; date which is used to count interest; e.g. date when money were withdrawn from ATM.
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("valueDate")]
+        public System.DateTime? ValueDate { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("bankTransactionCode")]
+        [System.ComponentModel.DataAnnotations.Required]
+        public BankTransactionCode BankTransactionCode { get; set; } = new BankTransactionCode();
+
+        [System.Text.Json.Serialization.JsonPropertyName("entryDetails")]
+        public EntryDetails EntryDetails { get; set; }
+
+    }
+
     /// <summary>
     /// Format of imported batch. For CCT format please use option SEPA-XML.
     /// </summary>
@@ -361,7 +404,7 @@ namespace DSDD.Automations.Payments.RBCZ.PremiumApi
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("transactions")]
-        public Transactions Transactions { get; set; }
+        public System.Collections.Generic.ICollection<Transaction> Transactions { get; set; }
 
     }
 
@@ -949,6 +992,60 @@ namespace DSDD.Automations.Payments.RBCZ.PremiumApi
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
+    internal partial class Amount
+    {
+        /// <summary>
+        /// Amount of money
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("value")]
+        public double Value { get; set; }
+
+        /// <summary>
+        /// Currency code of the amount
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("currency")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        public string Currency { get; set; }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
+    internal enum TransactionCreditDebitIndication
+    {
+
+        [System.Runtime.Serialization.EnumMember(Value = @"DBIT")]
+        DBIT = 0,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"CRDT")]
+        CRDT = 1,
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
+    internal partial class BankTransactionCode
+    {
+        /// <summary>
+        /// Transaction code in ISO20022 camt.53 format (e.g. 10000101000 - Odchozi tuzemska platba).
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("code")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        public string Code { get; set; }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
+    internal partial class EntryDetails
+    {
+
+        [System.Text.Json.Serialization.JsonPropertyName("transactionDetails")]
+        public TransactionDetails TransactionDetails { get; set; }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
     internal enum Request_bodyStatementLine
     {
 
@@ -1039,15 +1136,6 @@ namespace DSDD.Automations.Payments.RBCZ.PremiumApi
 
         [System.Runtime.Serialization.EnumMember(Value = @"TOO_MANY_REQUESTS")]
         TOO_MANY_REQUESTS = 0,
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class Transactions
-    {
-
-        [System.Text.Json.Serialization.JsonPropertyName("transaction")]
-        public System.Collections.Generic.ICollection<Transaction> Transaction { get; set; }
 
     }
 
@@ -1549,6 +1637,43 @@ namespace DSDD.Automations.Payments.RBCZ.PremiumApi
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
+    internal partial class TransactionDetails
+    {
+
+        [System.Text.Json.Serialization.JsonPropertyName("references")]
+        public References References { get; set; }
+
+        /// <summary>
+        /// Original amount in original currency - before currency conversion.
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("instructedAmount")]
+        public InstructedAmount InstructedAmount { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("chargeBearer")]
+        [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
+        public TransactionDetailsChargeBearer? ChargeBearer { get; set; }
+
+        /// <summary>
+        /// Masked payment card number, if the transaction is related to debit card.
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("paymentCardNumber")]
+        public string PaymentCardNumber { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("relatedParties")]
+        public RelatedParties RelatedParties { get; set; }
+
+        /// <summary>
+        /// Information that allow match and pairing transactions or further identifies it.
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("remittanceInformation")]
+        public RemittanceInformation RemittanceInformation { get; set; }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
     internal partial class Balances
     {
         /// <summary>
@@ -1573,49 +1698,6 @@ namespace DSDD.Automations.Payments.RBCZ.PremiumApi
 
         [System.Text.Json.Serialization.JsonPropertyName("value")]
         public double Value { get; set; }
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class Transaction
-    {
-        /// <summary>
-        /// Unique identification of the realized transaction.
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("entryReference")]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        public string EntryReference { get; set; }
-
-        [System.Text.Json.Serialization.JsonPropertyName("amount")]
-        [System.ComponentModel.DataAnnotations.Required]
-        public Amount Amount { get; set; } = new Amount();
-
-        [System.Text.Json.Serialization.JsonPropertyName("creditDebitIndication")]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
-        public TransactionCreditDebitIndication CreditDebitIndication { get; set; }
-
-        /// <summary>
-        /// Date of payment processing/posting by the bank.
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("bookingDate")]
-        public System.DateTime? BookingDate { get; set; }
-
-        /// <summary>
-        /// Transaction date; value date; date which is used to count interest; e.g. date when money were withdrawn from ATM.
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("valueDate")]
-        public System.DateTime? ValueDate { get; set; }
-
-        [System.Text.Json.Serialization.JsonPropertyName("bankTransactionCode")]
-        [System.ComponentModel.DataAnnotations.Required]
-        public BankTransactionCode BankTransactionCode { get; set; } = new BankTransactionCode();
-
-        [System.Text.Json.Serialization.JsonPropertyName("entryDetails")]
-        public EntryDetails EntryDetails { get; set; }
 
     }
 
@@ -1700,97 +1782,6 @@ namespace DSDD.Automations.Payments.RBCZ.PremiumApi
 
         [System.Runtime.Serialization.EnumMember(Value = @"UNDISCLOSED")]
         UNDISCLOSED = 7,
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class Amount
-    {
-        /// <summary>
-        /// Amount of money
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("value")]
-        public double Value { get; set; }
-
-        /// <summary>
-        /// Currency code of the amount
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("currency")]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        public string Currency { get; set; }
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal enum TransactionCreditDebitIndication
-    {
-
-        [System.Runtime.Serialization.EnumMember(Value = @"DBIT")]
-        DBIT = 0,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"CRDT")]
-        CRDT = 1,
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class BankTransactionCode
-    {
-        /// <summary>
-        /// Transaction code in ISO20022 camt.53 format (e.g. 10000101000 - Odchozi tuzemska platba).
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("code")]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        public string Code { get; set; }
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class EntryDetails
-    {
-
-        [System.Text.Json.Serialization.JsonPropertyName("transactionDetails")]
-        public TransactionDetails TransactionDetails { get; set; }
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    internal partial class TransactionDetails
-    {
-
-        [System.Text.Json.Serialization.JsonPropertyName("references")]
-        public References References { get; set; }
-
-        /// <summary>
-        /// Original amount in original currency - before currency conversion.
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("instructedAmount")]
-        public InstructedAmount InstructedAmount { get; set; }
-
-        [System.Text.Json.Serialization.JsonPropertyName("chargeBearer")]
-        [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
-        public TransactionDetailsChargeBearer? ChargeBearer { get; set; }
-
-        /// <summary>
-        /// Masked payment card number, if the transaction is related to debit card.
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("paymentCardNumber")]
-        public string PaymentCardNumber { get; set; }
-
-        [System.Text.Json.Serialization.JsonPropertyName("relatedParties")]
-        public RelatedParties RelatedParties { get; set; }
-
-        /// <summary>
-        /// Information that allow match and pairing transactions or further identifies it.
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("remittanceInformation")]
-        public RemittanceInformation RemittanceInformation { get; set; }
 
     }
 
