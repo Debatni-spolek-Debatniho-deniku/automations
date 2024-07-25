@@ -15,7 +15,7 @@ public class BankPaymentFormViewModel
         Description = description;
     }
 
-    public BankPaymentFormViewModel(Model.BankPayment payment)
-        : this(payment.Overrides.ConstantSymbol, payment.Overrides.DateTime, payment.Overrides.Description)
+    public BankPaymentFormViewModel(Model.BankPaymentOverrides overrides)
+        : this(overrides.ConstantSymbol, overrides.DateTime, overrides.Description)
     { }
 }
