@@ -23,7 +23,7 @@ internal class BankPaymentsImporter: IBankPaymentsImporter
 
         ILookup<ulong, Transaction> byVaraibleSymbol = await GetTransactionsAsync(ct);
 
-        foreach (IGrouping<ulong, Transaction> group in byVaraibleSymbol)
+        IEnumerable<Task> tasks = byVaraibleSymbol.Select(async group =>
         {
             _logger.LogInformation("Working on varaible symbol {VariableSymbol}", group.Key);
 
@@ -33,7 +33,9 @@ internal class BankPaymentsImporter: IBankPaymentsImporter
             await MergePaymentsAsync(payer.BankPayments, group, ct);
 
             await _payers.UpsertAync(payer, ct);
-        }
+        });
+
+        await Task.WhenAll(tasks);
 
         _logger.LogInformation("Finished importing RBCZ payments.");
     }
@@ -96,7 +98,9 @@ internal class BankPaymentsImporter: IBankPaymentsImporter
     {
         HashSet<string> alreadyContains = current.Select(p => p.Reference).ToHashSet();
 
-        foreach (Transaction transaction in incoming.Where(t => !alreadyContains.Contains(t.EntryReference)))
+        foreach (Transaction transaction in incoming
+                      // Skip payments that have been imported before
+                     .Where(t => !alreadyContains.Contains(t.EntryReference)))
         {
             current.Add(new(
                 transaction.EntryReference,
