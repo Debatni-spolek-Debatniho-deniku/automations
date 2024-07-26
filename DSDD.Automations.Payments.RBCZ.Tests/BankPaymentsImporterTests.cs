@@ -308,7 +308,7 @@ internal class BankPaymentsImporterTests
             .Property(nameof(BankPayment.CounterpartyAccountNumber)).EqualTo($"{ACCOUNTNUMBER}/{BANKCODE}"));
     }
 
-    public static IEnumerable ImportAsync_MissingVariableSymbol_Source
+    public static IEnumerable ImportAsync_Skips_Source
     {
         get
         {
@@ -405,7 +405,7 @@ internal class BankPaymentsImporterTests
         }
     }
 
-    [TestCaseSource(nameof(ImportAsync_MissingVariableSymbol_Source))]
+    [TestCaseSource(nameof(ImportAsync_Skips_Source))]
     public async Task ImportAsync_Skips(Transaction transaction)
     {
         _premiumApiClient

@@ -3,14 +3,14 @@ using Microsoft.Azure.Functions.Worker;
 
 namespace DSDD.Automations.Payments;
 
-public class RbczBankPaymentsImportTimer
+public class RbczImportTimer
 {
-    public RbczBankPaymentsImportTimer(IBankPaymentsImporter importer)
+    public RbczImportTimer(IBankPaymentsImporter importer)
     {
         _importer = importer;
     }
 
-    [Function("RbczImportPaymentsTimer")]
+    [Function(nameof(RbczImportTimer))]
     public Task Run([TimerTrigger("0 0 1 * * *"
 #if DEBUG
         , RunOnStartup=true
