@@ -1,0 +1,36 @@
+﻿@inherits DSDD.Automations.Payments.Views.ShimTemplatePage<DSDD.Automations.Payments.Views.Payer.PayerViewModel>
+
+@{
+    Layout = "Layout._Layout.cshtml";
+}
+
+<style>
+    .row-removed {
+        opacity: 0.5
+    }
+</style>
+
+<div class="mb-2">
+    <a href="/payers" class="btn btn-secondary">Zpět</a>
+    <a href="/payers/@Model.VariableSymbol/payments/new" class="btn btn-success"><i class="bi bi-plus"></i>Nová platba</a>
+</div>
+
+<table class="table table-bordered">
+    <thead class="table-light">
+        <tr>
+            <th>@DisplayNameFor(model => model.Payments.First().Type)</th>
+            <th>@DisplayNameFor(model => model.Payments.First().CounterpartyAccountNumber)</th>
+            <th>@DisplayNameFor(model => model.Payments.First().ConstantSymbol)</th>
+            <th>@DisplayNameFor(model => model.Payments.First().AmountCzk)</th>
+            <th>@DisplayNameFor(model => model.Payments.First().DateTime)</th>
+            <th>@DisplayNameFor(model => model.Payments.First().Description)</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var payment in Model.Payments)
+        {
+            await IncludeAsync("Payer._Payment.cshtml", payment);
+        }
+    </tbody>
+</table>

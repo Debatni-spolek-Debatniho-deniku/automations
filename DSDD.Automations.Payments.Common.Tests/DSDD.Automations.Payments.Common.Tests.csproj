@@ -1,0 +1,5 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <ProjectReference Include="..\DSDD.Automations.Payments.Common\DSDD.Automations.Payments.Common.csproj" />
+  </ItemGroup>
+</Project>

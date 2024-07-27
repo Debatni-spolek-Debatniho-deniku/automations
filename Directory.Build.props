@@ -1,0 +1,35 @@
+<Project>
+    <PropertyGroup>
+        <!-- For non-SDK projects that import this file and then import Microsoft.Common.props,
+            tell Microsoft.Common.props not to import Directory.Build.props again. -->
+        <ImportDirectoryBuildProps>false</ImportDirectoryBuildProps>
+        <!-- Enable .NET code analysis (this is necessary for projects that target 3.1 or earlier). -->
+        <EnableNETAnalyzers>true</EnableNETAnalyzers>
+        <AnalysisLevel>latest</AnalysisLevel>
+        <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+    </PropertyGroup>
+    
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+	<PropertyGroup>
+		<IsTestProject>$(MSBuildProjectName.EndsWith(`Tests`, true, null))</IsTestProject>
+		<IsPackable>!$(IsTestProject)</IsPackable>
+	</PropertyGroup>
+
+	<ItemGroup Condition="$(IsTestProject)">
+		<Using Include="NUnit.Framework" />
+		<Using Include="Moq" />
+	</ItemGroup>
+
+	<ItemGroup Condition="$(IsTestProject)">
+		<PackageReference Include="Microsoft.NET.Test.Sdk" />
+		<PackageReference Include="Moq" />
+		<PackageReference Include="NUnit" />
+		<PackageReference Include="NUnit.Analyzers" />
+		<PackageReference Include="NUnit3TestAdapter" />
+	</ItemGroup>
+</Project>

@@ -1,0 +1,60 @@
+﻿@inherits DSDD.Automations.Payments.Views.ShimTemplatePage<DSDD.Automations.Payments.Views.BankPayment.BankPaymentViewModel>
+
+@{
+    Layout = "Layout._Layout.cshtml";
+}
+
+<div class="mb-2">
+    <a href="/payers/@Model.VariableSymbol" class="btn btn-secondary">Zpět</a>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-12">
+                <h4>Bankovní hodnoty</h4>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-8">
+                <label>Protiúčet</label>
+                <div class="form-control-plaintext">
+                    @Model.CounterpartyAccountNumber
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-4">
+                <label>Částka</label>
+                <div class="form-control-plaintext">
+                    @Model.AmountCzk
+                    CZK
+                </div>
+            </div>
+            <div class="form-group col-4">
+                <label>Datum a čas</label>
+                <div class="form-control-plaintext">
+                    @Model.DateTime.ToString("dd.MM.yyyy HH:mm")
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-4">
+                <label>Konstantní symbol</label>
+                <div class="form-control-plaintext">
+                    @(Model.ConstantSymbol?.ToString() ?? "-")
+                </div>
+            </div>
+            <div class="form-group col-8">
+                <label>Popis platby</label>
+                <div class="form-control-plaintext">
+                    @(Model.Description?.ToString() ?? "-")
+                </div>
+            </div>
+        </div>
+    </div>
+    @{
+        await IncludeAsync("BankPayment._BankPaymentForm.cshtml", Model.Payment);
+    }
+</div>
+
