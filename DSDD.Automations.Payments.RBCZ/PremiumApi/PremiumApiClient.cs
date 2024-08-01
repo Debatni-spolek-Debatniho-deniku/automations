@@ -1,14 +1,20 @@
 ﻿using System.Runtime.CompilerServices;
 using System.Security.Cryptography.X509Certificates;
+using DSDD.Automations.Payments.RBCZ.Certificates;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
 namespace DSDD.Automations.Payments.RBCZ.PremiumApi;
 
 internal class PremiumApiClient: IPremiumApiClient
-{
-    public PremiumApiClient(IOptions<PremiumApiClientOptions> clientOptions, ILogger<PremiumApiClient> logger)
+{   
+    public PremiumApiClient(
+        IAccountCertificateProvider certificateProvider, 
+        IOptions<PremiumApiClientOptions> clientOptions,
+        ILogger<PremiumApiClient> logger)
     {
+        _certificateProvider = certificateProvider;
+
         _clientId = clientOptions.Value.ClientId;
         _auditIpAddress = clientOptions.Value.AuditIpAddress;
         _accountNumber = clientOptions.Value.AccountNumber;
@@ -23,20 +29,12 @@ internal class PremiumApiClient: IPremiumApiClient
 #endif
 
         logger.LogInformation($"Using {_environment} as RBCZ environment.");
-
-        X509Certificate2 certificate = new(
-            clientOptions.Value.CertificatePath,
-            clientOptions.Value.CertificatePassword);
-
-        HttpClientHandler handler = new();
-        handler.ClientCertificates.Add(certificate);
-
-        _client = new(new(handler));
     }
 
     public async Task<ExchangeRate?> GetFxRateAsync(string nonCzkCurrency, CancellationToken ct)
     {
-        CurrencyListSimple result = await _client.GetFxRatesAsync(
+        Client client = await GetClientAsync(ct);
+        CurrencyListSimple result = await client.GetFxRatesAsync(
             _clientId,
             RequestId(),
             _auditIpAddress,
@@ -61,7 +59,8 @@ internal class PremiumApiClient: IPremiumApiClient
         int page = 1;
         while (true)
         {
-            Response6 response = await _client.GetTransactionListAsync(
+            Client client = await GetClientAsync(ct);
+            Response6 response = await client.GetTransactionListAsync(
                 _clientId,
                 RequestId(),
                 _auditIpAddress,
@@ -83,7 +82,11 @@ internal class PremiumApiClient: IPremiumApiClient
         }
     }
 
-    private readonly Client _client;
+    private Client? _client;
+    private readonly SemaphoreSlim _semaphore = new(1, 1);
+
+    private readonly IAccountCertificateProvider _certificateProvider;
+
     private readonly string _clientId;
     private readonly string _auditIpAddress;
     private readonly string _accountNumber;
@@ -92,4 +95,23 @@ internal class PremiumApiClient: IPremiumApiClient
 
     private string RequestId()
         => Guid.NewGuid().ToString();
+
+    private async Task<Client> GetClientAsync(CancellationToken ct)
+    {
+        await _semaphore.WaitAsync(ct);
+
+        if (_client is null)
+        {
+            X509Certificate certificate = await _certificateProvider.GetAsync(ct);
+
+            HttpClientHandler handler = new();
+            handler.ClientCertificates.Add(certificate);
+
+            _client = new(new(handler));
+        }
+
+        _semaphore.Release(1);
+        
+        return _client;
+    }
 }

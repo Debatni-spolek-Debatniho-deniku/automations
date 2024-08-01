@@ -19,7 +19,7 @@ public class CosmosPayersDao: IPayersDao, IDisposable
     /// </summary>
     public async Task<Payer?> GetAsync(ulong variableSymbol, CancellationToken ct)
     {
-        Container payers = await GetPayersContainer(ct);
+        Container payers = await GetPayersContainerAsync(ct);
 
         string id = variableSymbol.ToString();
 
@@ -35,7 +35,7 @@ public class CosmosPayersDao: IPayersDao, IDisposable
 
     public async Task UpsertAync(Payer payer, CancellationToken ct)
     {
-        Container payers = await GetPayersContainer(ct);
+        Container payers = await GetPayersContainerAsync(ct);
         await payers.UpsertItemAsync(payer, null, null, ct);
     }
     
@@ -50,7 +50,7 @@ public class CosmosPayersDao: IPayersDao, IDisposable
     private const string PAYERS_DATABASE = "payers";
     private const string PAYERS_CONTAINER = "payers";
 
-    private async Task<Container> GetPayersContainer(CancellationToken ct)
+    private async Task<Container> GetPayersContainerAsync(CancellationToken ct)
     {
         await _semaphore.WaitAsync(ct);
 
