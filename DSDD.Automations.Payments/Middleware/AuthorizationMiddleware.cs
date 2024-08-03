@@ -5,11 +5,17 @@ using System.Security.Claims;
 using System.Text.Json;
 using System.Text;
 using System.Text.Json.Serialization;
+using Microsoft.Extensions.Logging;
 
 namespace DSDD.Automations.Payments.Middleware;
 
 public class AuthorizationMiddleware: IFunctionsWorkerMiddleware
 {
+    public AuthorizationMiddleware(ILogger<AuthorizationMiddleware> logger)
+    {
+        _logger = logger;
+    }
+
     public async Task Invoke(FunctionContext ctx, FunctionExecutionDelegate next)
     {
 #if !DEBUG
@@ -66,15 +72,18 @@ public class AuthorizationMiddleware: IFunctionsWorkerMiddleware
     /// <summary>
     /// Code below originally from Microsoft Docs - https://learn.microsoft.com/en-us/azure/app-service/configure-authentication-user-identities
     /// </summary>
-    public static ClaimsPrincipal Parse(HttpRequest req)
+    public ClaimsPrincipal Parse(HttpRequest req)
     {
         ClientPrincipal? principal = null;
-
+        
         if (req.Headers.TryGetValue("x-ms-client-principal", out var header))
         {
             var data = header.First();
             var decoded = Convert.FromBase64String(data);
             var json = Encoding.UTF8.GetString(decoded);
+
+            _logger.LogDebug("User principal: {Principal}", json);
+
             principal = JsonSerializer.Deserialize<ClientPrincipal>(json, new JsonSerializerOptions { PropertyNameCaseInsensitive = true })!;
         }
 
@@ -83,4 +92,6 @@ public class AuthorizationMiddleware: IFunctionsWorkerMiddleware
 
         return new ClaimsPrincipal(identity);
     }
+
+    private readonly ILogger<AuthorizationMiddleware> _logger;
 }
