@@ -11,11 +11,6 @@ namespace DSDD.Automations.Payments.Middleware;
 
 public class AuthorizationMiddleware: IFunctionsWorkerMiddleware
 {
-    public AuthorizationMiddleware(ILogger<AuthorizationMiddleware> logger)
-    {
-        _logger = logger;
-    }
-
     public async Task Invoke(FunctionContext ctx, FunctionExecutionDelegate next)
     {
 #if !DEBUG
@@ -87,6 +82,7 @@ public class AuthorizationMiddleware: IFunctionsWorkerMiddleware
             var data = header.First();
             var decoded = Convert.FromBase64String(data);
             var json = Encoding.UTF8.GetString(decoded);
+
             principal = JsonSerializer.Deserialize<ClientPrincipal>(json, new JsonSerializerOptions { PropertyNameCaseInsensitive = true })!;
         }
 
@@ -100,6 +96,4 @@ public class AuthorizationMiddleware: IFunctionsWorkerMiddleware
 
         return new ClaimsPrincipal(identity);
     }
-
-    private readonly ILogger<AuthorizationMiddleware> _logger;
 }
