@@ -22,6 +22,7 @@ var host = new HostBuilder()
         services.ConfigureFunctionsApplicationInsights();
         services.AddRazorLight(() => new RazorLightEngineBuilder()
             .UseEmbeddedResourcesProject(Assembly.GetExecutingAssembly(), "DSDD.Automations.Payments.Views")
+            .ExcludeAssemblies(typeof(System.Security.Cryptography.Pkcs.AlgorithmIdentifier).Assembly.GetName().Name) // Workaround for loading CompileLibraries
             .UseMemoryCachingProvider()
             .EnableDebugMode()
             .Build());
