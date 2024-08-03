@@ -14,6 +14,7 @@ using RazorLight.Extensions;
 var host = new HostBuilder()
     .ConfigureFunctionsWebApplication(app =>
     {
+        app.UseMiddleware<AuthorizationMiddleware>();
         app.UseMiddleware<ErrorPageMiddleware>();
     })
     .ConfigureServices((ctx, services) =>
