@@ -35,6 +35,12 @@ public class AuthorizationMiddleware: IFunctionsWorkerMiddleware
 
     private const string ROLE_NAME = "payments-administrator";
 
+    /// <summary>
+    /// For some strange reason role_typ claim name is not the same claim name used for App roles.
+    /// https://learn.microsoft.com/en-us/entra/external-id/customers/how-to-use-app-roles-customers
+    /// </summary>
+    private const string APP_ROLE_CLAIM = "roles";
+
     private class ClientPrincipalClaim
     {
         [JsonPropertyName("typ")]
@@ -81,15 +87,16 @@ public class AuthorizationMiddleware: IFunctionsWorkerMiddleware
             var data = header.First();
             var decoded = Convert.FromBase64String(data);
             var json = Encoding.UTF8.GetString(decoded);
-
-            _logger.LogInformation("User principal: {Principal}", json);
-
             principal = JsonSerializer.Deserialize<ClientPrincipal>(json, new JsonSerializerOptions { PropertyNameCaseInsensitive = true })!;
-        } else
-            _logger.LogInformation("No principal header");
+        }
 
-        var identity = new ClaimsIdentity(principal?.IdentityProvider, principal?.NameClaimType, principal?.RoleClaimType);
-        identity.AddClaims(principal?.Claims.Select(c => new Claim(c.Type, c.Value)) ?? Enumerable.Empty<Claim>());
+        var identity = new ClaimsIdentity(principal?.IdentityProvider, principal?.NameClaimType, APP_ROLE_CLAIM);
+        identity.AddClaims(principal?.Claims.Select(c => new Claim(
+            c.Type == principal.RoleClaimType 
+                // Unify multiple role claim names. 
+                ? APP_ROLE_CLAIM 
+                : c.Type,
+            c.Value)) ?? Enumerable.Empty<Claim>());
 
         return new ClaimsPrincipal(identity);
     }
