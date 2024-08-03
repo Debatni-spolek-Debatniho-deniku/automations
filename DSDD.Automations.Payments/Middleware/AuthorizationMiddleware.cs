@@ -82,11 +82,11 @@ public class AuthorizationMiddleware: IFunctionsWorkerMiddleware
             var decoded = Convert.FromBase64String(data);
             var json = Encoding.UTF8.GetString(decoded);
 
-            _logger.LogDebug("User principal: {Principal}", json);
+            _logger.LogInformation("User principal: {Principal}", json);
 
             principal = JsonSerializer.Deserialize<ClientPrincipal>(json, new JsonSerializerOptions { PropertyNameCaseInsensitive = true })!;
         } else
-            _logger.LogDebug("No principal header");
+            _logger.LogInformation("No principal header");
 
         var identity = new ClaimsIdentity(principal?.IdentityProvider, principal?.NameClaimType, principal?.RoleClaimType);
         identity.AddClaims(principal?.Claims.Select(c => new Claim(c.Type, c.Value)) ?? Enumerable.Empty<Claim>());
