@@ -1,5 +1,7 @@
 using System.Reflection;
 using DSDD.Automations.Hosting;
+using DSDD.Automations.Payments;
+using DSDD.Automations.Reports.Members;
 using DSDD.Automations.Reports.Middleware;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.DependencyInjection;
@@ -24,9 +26,14 @@ var host = new HostBuilder()
             .PartManager
             .ApplicationParts
             .Add(part);
-
+        
         services.AddTransient<IRazorRenderer, RazorRenderer>();
+
+        services.AddPaymentsCommon();
+        services.AddMembers();
     })
     .Build();
+
+host.Services.GetRequiredService<IMembersProvider>().GetMembersAsync(default);
 
 host.Run();

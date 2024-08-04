@@ -1,4 +1,5 @@
 ﻿using System.Net.Mime;
+using DSDD.Automations.Reports.Members;
 using DSDD.Automations.Reports.Razor;
 using DSDD.Automations.Reports.Views;
 using Microsoft.AspNetCore.Http;
