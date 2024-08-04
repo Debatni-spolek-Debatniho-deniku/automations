@@ -9,25 +9,11 @@
 	  <MvcRazorExcludeRefAssembliesFromPublish>false</MvcRazorExcludeRefAssembliesFromPublish>
 	</PropertyGroup>
 	<ItemGroup>
-	  <None Remove="Views\BankPayment\BankPayment.cshtml" />
-	  <None Remove="Views\BankPayment\_BankPaymentForm.cshtml" />
-	  <None Remove="Views\Error\Error.cshtml" />
-	  <None Remove="Views\ManualPayment\ManualPayment.cshtml" />
-	  <None Remove="Views\ManualPayment\_ManualPaymentForm.cshtml" />
-	  <None Remove="Views\Payer\Payer.cshtml" />
-	  <None Remove="Views\Payer\_Payment.cshtml" />
-	</ItemGroup>
-	<ItemGroup>
 		<FrameworkReference Include="Microsoft.AspNetCore.App" />
-		<PackageReference Include="Azure.Identity" />
 		<PackageReference Include="Microsoft.Azure.Functions.Worker" />
 		<PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.Http" />
-		<PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.Http.AspNetCore" />
 		<PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.Timer" />
 		<PackageReference Include="Microsoft.Azure.Functions.Worker.Sdk" />
-		<PackageReference Include="Microsoft.ApplicationInsights.WorkerService" />
-		<PackageReference Include="Microsoft.Azure.Functions.Worker.ApplicationInsights" />
-		<PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" />
 		<PackageReference Include="RazorLight" />
 	</ItemGroup>
 	<ItemGroup>
@@ -40,35 +26,18 @@
 		</None>
 	</ItemGroup>
 	<ItemGroup>
-		<EmbeddedResource Include="Views\BankPayment\BankPayment.cshtml">
-		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</EmbeddedResource>
-		<EmbeddedResource Include="Views\BankPayment\_BankPaymentForm.cshtml">
-		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</EmbeddedResource>
-		<EmbeddedResource Include="Views\Error\Error.cshtml">
-		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</EmbeddedResource>
-		<EmbeddedResource Include="Views\Index\Index.cshtml">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</EmbeddedResource>
-		<EmbeddedResource Include="Views\Layout\_Layout.cshtml">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</EmbeddedResource>
-		<EmbeddedResource Include="Views\ManualPayment\ManualPayment.cshtml">
-		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</EmbeddedResource>
-		<EmbeddedResource Include="Views\ManualPayment\_ManualPaymentForm.cshtml">
-		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</EmbeddedResource>
-		<EmbeddedResource Include="Views\Payer\_Payment.cshtml">
-		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</EmbeddedResource>
-		<EmbeddedResource Include="Views\Payer\Payer.cshtml">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</EmbeddedResource>
+		<EmbeddedResource Include="Views\BankPayment\BankPayment.cshtml" />
+		<EmbeddedResource Include="Views\BankPayment\_BankPaymentForm.cshtml" />
+		<EmbeddedResource Include="Views\Error\Error.cshtml" />
+		<EmbeddedResource Include="Views\Index\Index.cshtml" />
+		<EmbeddedResource Include="Views\Layout\_Layout.cshtml" />
+		<EmbeddedResource Include="Views\ManualPayment\ManualPayment.cshtml" />
+		<EmbeddedResource Include="Views\ManualPayment\_ManualPaymentForm.cshtml" />
+		<EmbeddedResource Include="Views\Payer\_Payment.cshtml" />
+		<EmbeddedResource Include="Views\Payer\Payer.cshtml" />
 	</ItemGroup>
 	<ItemGroup>
+	  <ProjectReference Include="..\DSDD.Automations.Hosting\DSDD.Automations.Hosting.csproj" />
 	  <ProjectReference Include="..\DSDD.Automations.Payments.Common\DSDD.Automations.Payments.Common.csproj" />
 	  <ProjectReference Include="..\DSDD.Automations.Payments.RBCZ\DSDD.Automations.Payments.RBCZ.csproj" />
 	</ItemGroup>
