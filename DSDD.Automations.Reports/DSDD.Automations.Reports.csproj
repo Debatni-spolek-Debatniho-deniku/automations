@@ -16,6 +16,7 @@
     <PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.Timer" />
     <PackageReference Include="Microsoft.Azure.Functions.Worker.Sdk" />
     <PackageReference Include="PnP.Core" />
+    <PackageReference Include="PnP.Core.Auth" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DSDD.Automations.Hosting\DSDD.Automations.Hosting.csproj" />

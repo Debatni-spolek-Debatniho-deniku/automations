@@ -21,6 +21,10 @@ public static class HostBuilderExtensions
             app.Services.AddApplicationInsightsTelemetryWorkerService();
             app.Services.ConfigureFunctionsApplicationInsights();
 
-            app.Services.AddSingleton<TokenCredential>(new DefaultAzureCredential(new DefaultAzureCredentialOptions()));
+#if DEBUG
+            app.Services.AddSingleton<TokenCredential>(new EnvironmentCredential());
+#else
+            app.Services.AddSingleton<TokenCredential>(new ManagedIdentityCredential());
+#endif
         });
 }
