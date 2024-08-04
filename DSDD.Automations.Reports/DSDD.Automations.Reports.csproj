@@ -10,6 +10,12 @@
 	  <MvcRazorExcludeRefAssembliesFromPublish>False</MvcRazorExcludeRefAssembliesFromPublish>
   </PropertyGroup>
   <ItemGroup>
+    <Content Remove="Views\Error.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\Error.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.Azure.Functions.Worker" />
     <PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.Http" />

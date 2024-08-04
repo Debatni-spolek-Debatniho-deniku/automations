@@ -10,6 +10,7 @@ var host = new HostBuilder()
     .ConfigureAutomationsFunctionsWebApplication(app =>
     {
         app.UseMiddleware<ReportsReaderAuthorizationMiddleware>();
+        app.UseMiddleware<ErrorPageMiddleware>();
     })
     .ConfigureServices(services =>
     {

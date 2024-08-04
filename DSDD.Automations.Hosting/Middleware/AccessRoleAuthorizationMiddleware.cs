@@ -14,12 +14,12 @@ public abstract class AccessRoleAuthorizationMiddlewareBase: IFunctionsWorkerMid
 
     public async Task Invoke(FunctionContext ctx, FunctionExecutionDelegate next)
     {
-#if  !DEBUG
+#if !DEBUG
         if (ctx.GetHttpContext() is HttpContext httpCtx && !httpCtx.User.IsInRole(_role))
         {
             httpCtx.Response.StatusCode = StatusCodes.Status403Forbidden;
 
-            string? errorPage = await RenderErrorPage();
+            string? errorPage = await RenderErrorPage(httpCtx);
             if (!string.IsNullOrWhiteSpace(errorPage))
             {
                 httpCtx.Response.ContentType = MediaTypeNames.Text.Html;
@@ -31,11 +31,11 @@ public abstract class AccessRoleAuthorizationMiddlewareBase: IFunctionsWorkerMid
             return;
         }
 #endif
-        
+
         await next(ctx);
     }
 
-    protected virtual Task<string?> RenderErrorPage()
+    protected virtual Task<string?> RenderErrorPage(HttpContext httpContext)
         => Task.FromResult<string?>(null);
 
     private readonly string _role;
