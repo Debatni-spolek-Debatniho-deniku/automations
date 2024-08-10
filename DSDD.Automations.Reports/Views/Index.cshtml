@@ -4,60 +4,16 @@
     Layout = "Shared/_Layout.cshtml";
 }
 
-
 <div class="row">
     <div class="col-4 mt-4">
-        <div class="card">
-            <img src="https://via.placeholder.com/150" class="card-img-top" alt="Card 1 Image">
-            <div class="card-body">
-                <h5 class="card-title">Card 1 Title</h5>
-                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-            </div>
-        </div>
+        @await Html.PartialAsync("Reports/_MemberFeesForm")
+    </div>
+</div>
+ <div class="row">
+    <div class="col-4 mt-4">
+        @await Html.PartialAsync("Reports/_PayerPaymentsForm")
     </div>
     <div class="col-4 mt-4">
-        <div class="card">
-            <img src="https://via.placeholder.com/150" class="card-img-top" alt="Card 1 Image">
-            <div class="card-body">
-                <h5 class="card-title">Card 1 Title</h5>
-                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-            </div>
-        </div>
-    </div>
-    <div class="col-4 mt-4">
-        <div class="card">
-            <img src="https://via.placeholder.com/150" class="card-img-top" alt="Card 1 Image">
-            <div class="card-body">
-                <h5 class="card-title">Card 1 Title</h5>
-                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-            </div>
-        </div>
-    </div>
-    <div class="col-4 mt-4">
-        <div class="card">
-            <img src="https://via.placeholder.com/150" class="card-img-top" alt="Card 1 Image">
-            <div class="card-body">
-                <h5 class="card-title">Card 1 Title</h5>
-                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-            </div>
-        </div>
-    </div>
-        <div class="col-4 mt-4">
-        <div class="card">
-            <img src="https://via.placeholder.com/150" class="card-img-top" alt="Card 1 Image">
-            <div class="card-body">
-                <h5 class="card-title">Card 1 Title</h5>
-                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-            </div>
-        </div>
-    </div>
-    <div class="col-4 mt-4">
-        <div class="card">
-            <img src="https://via.placeholder.com/150" class="card-img-top" alt="Card 1 Image">
-            <div class="card-body">
-                <h5 class="card-title">Card 1 Title</h5>
-                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-            </div>
-        </div>
+        @await Html.PartialAsync("Reports/_PayedTotalForm")
     </div>
 </div>

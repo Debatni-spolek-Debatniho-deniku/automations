@@ -1,0 +1,22 @@
+﻿@using ViewModel = DSDD.Automations.Reports.Views.Reports.PayedTotalFormViewModel;
+
+<form class="card" method="POST" action="/reports/payed-total">
+    <div class="card-body">
+        <h5 class="card-title">Celkem zaplaceno</h5>
+        <p class="card-text">Vygeneruje XLSX obsahující přehled kolik jednotlivý poplatníci zaplatili na daný konstantní symbol.</p>
+    </div>
+    <div class="card-footer">
+        <div class="row">
+            <div class="col-6">
+                <div class="form-group">
+                    <label for="constant-symbol" class="required">Konstantní symbol</label>
+                    <input type="number" class="form-control" id="constant-symbol" name="@nameof(ViewModel.ConstantSymbol)" min="0" step="1" required>
+                </div>
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-success mt-3">
+            Stáhnout
+        </button>
+    </div>
+</form>

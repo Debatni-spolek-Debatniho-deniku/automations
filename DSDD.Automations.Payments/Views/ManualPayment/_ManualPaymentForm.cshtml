@@ -1,4 +1,5 @@
-﻿@inherits DSDD.Automations.Payments.Views.ShimTemplatePage<DSDD.Automations.Payments.Views.ManualPayment.ManualPaymentFormViewModel?>
+﻿@using ViewModel = DSDD.Automations.Payments.Views.ManualPayment.ManualPaymentFormViewModel;
+@inherits DSDD.Automations.Payments.Views.ShimTemplatePage<ViewModel?>
 
 <form class="card" method="post">
     <div class="card-body">
@@ -6,23 +7,23 @@
             <div class="col-4 form-group">
                 <label for="amount-value" class="required">Částka</label>
                 <div class="d-flex align-items-center">
-                    <input type="number" class="form-control" id="amount-value" name="AmountCzk" value="@Model?.AmountCzk" required>
+                    <input type="number" class="form-control" id="amount-value" name="@nameof(ViewModel.AmountCzk)" value="@Model?.AmountCzk" required>
                     <span class="px-2">CZK</span>
                 </div>
             </div>
             <div class="col-4 form-group">
                 <label for="date-time" class="required">Datum a čas</label>
-                <input type="datetime-local" class="form-control" id="date-time" name="DateTime" value="@Model?.DateTime.ToString("yyy-MM-ddTHH:mm")" required>
+                <input type="datetime-local" class="form-control" id="date-time" name="@nameof(ViewModel.DateTime)" value="@Model?.DateTime.ToString("yyy-MM-ddTHH:mm")" required>
             </div>
         </div>
         <div class="row">
             <div class="col-4 form-group">
                 <label for="constant-symbol">Konstantní symbol</label>
-                <input type="number" class="form-control" id="constant-symbol" name="ConstantSymbol" min="0" step="1" value="@Model?.ConstantSymbol">
+                <input type="number" class="form-control" id="constant-symbol" name="@nameof(ViewModel.ConstantSymbol)" min="0" step="1" value="@Model?.ConstantSymbol">
             </div>
             <div class="col-8 form-group">
                 <label for="description">Popis platby</label>
-                <input type="text" class="form-control" id="description" name="Description" value="@Model?.Description">
+                <input type="text" class="form-control" id="description" name="@nameof(ViewModel.Description)" value="@Model?.Description">
             </div>
         </div>
     </div>

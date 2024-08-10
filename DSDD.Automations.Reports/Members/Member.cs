@@ -6,9 +6,9 @@ public class Member
 
     public string LastName { get; }
 
-    public int VariableSymbol { get; }
+    public ulong VariableSymbol { get; }
 
-    public Member(string firstName, string lastName, int variableSymbol)
+    public Member(string firstName, string lastName, ulong variableSymbol)
     {
         FirstName = firstName;
         LastName = lastName;

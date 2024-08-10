@@ -29,9 +29,11 @@ public static class ServiceCollectionExtensions
             });
 
         services.AddOptionsWithValidateOnStart<SharePointMembersProviderOptions>().BindConfiguration("");
+        services.AddOptionsWithValidateOnStart<ClosedXMLMembersExtractorOptions>().BindConfiguration("");
 
         services.AddTransient<IMembersProvider, SharePointMembersProvider>();
-        
+        services.AddTransient<IMembersExtractor, ClosedXMLMembersExtractor>();
+
         return services;
     }
 }

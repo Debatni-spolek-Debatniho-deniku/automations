@@ -34,6 +34,4 @@ var host = new HostBuilder()
     })
     .Build();
 
-host.Services.GetRequiredService<IMembersProvider>().GetMembersAsync(default);
-
 host.Run();

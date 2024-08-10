@@ -6,9 +6,11 @@ namespace DSDD.Automations.Reports.Members;
 
 public class SharePointMembersProvider: IMembersProvider
 {
-    public SharePointMembersProvider(IPnPContextFactory contextFactory, IOptions<SharePointMembersProviderOptions> options)
+    public SharePointMembersProvider(IPnPContextFactory contextFactory, IMembersExtractor membersExtractor,
+        IOptions<SharePointMembersProviderOptions> options)
     {
         _contextFactory = contextFactory;
+        _membersExtractor = membersExtractor;
         _options = options.Value;
     }
 
@@ -18,10 +20,10 @@ public class SharePointMembersProvider: IMembersProvider
         
        IFile membersFile = await ctx.Web.GetFileByIdAsync(_options.MembersDocumentId);
 
-       return null!;
+       return _membersExtractor.Extract(await membersFile.GetContentAsync());
     }
 
     private readonly IPnPContextFactory _contextFactory;
-
+    private readonly IMembersExtractor _membersExtractor;
     private readonly SharePointMembersProviderOptions _options;
 }
