@@ -29,8 +29,11 @@ public static class ClosedXmlHelpers
         return result;
     }
 
-    public static void ApplyCzkFormatting(IXLRangeBase range)
+    public static void ApplyCzkFormat(IXLRangeBase range)
         => range.Style.NumberFormat.Format = "# ##0.00 \"CZK\"";
+
+    public static void ApplyCommonTableTheme(IXLTable table)
+        => table.Theme = XLTableTheme.TableStyleMedium18;
 
     public static MemoryStream ToSingleTableWorkbook<T>(IEnumerable<T> data)
     {
@@ -54,7 +57,7 @@ public static class ClosedXmlHelpers
             {
                 AssertDecimal(property);
 
-                ApplyCzkFormatting(field.Column);
+                ApplyCzkFormat(field.Column);
             }
 
             if (configuration.TotalsFunction != XLTotalsRowFunction.None)

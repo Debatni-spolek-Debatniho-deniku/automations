@@ -36,8 +36,8 @@ public class ClosedXmlMemberFeesReport: IMemberFeesReport
             cell => cell.Value = XLCellValue.FromObject("VS"),
             (cell, monthYear) =>
             {
-                ClosedXmlHelpers.ApplyCzkFormatting(cell.WorksheetColumn());
-
+                ClosedXmlHelpers.ApplyCzkFormat(cell.WorksheetColumn());
+                
                 cell.Style.DateFormat.Format = "mmmm yyyy";
                 cell.Value = XLCellValue.FromObject(new DateTime(monthYear.Year, monthYear.Month, 1));
             });
@@ -79,14 +79,32 @@ public class ClosedXmlMemberFeesReport: IMemberFeesReport
 
         foreach (IXLColumn column in worksheet.ColumnsUsed())
             column.AdjustToContents();
-        
+
+        IXLRange range = worksheet.RangeUsed();
+        range.Style.Border.SetOutsideBorder(XLBorderStyleValues.Medium);
+        range
+            .Row(1)
+            .Style
+            .Border
+            .SetBottomBorder(XLBorderStyleValues.Medium);
+        range
+            .Row(1)
+            .Style
+            .Font
+            .Bold = true;
+        range
+            .Range(2, 3, range.LastRow().RowNumber(), 3)
+            .Style
+            .Border
+            .SetRightBorder(XLBorderStyleValues.Thin);
+
         return ClosedXmlHelpers.SaveToMemory(workbook);
     }
 
     private readonly IMembersProvider _membersProvider;
     private readonly IPayersDao _payersDao;
     private readonly ClosedXmlMemberFeesReportOptions _options;
-
+    
     private delegate void WriteRowByMonth(
         IXLRow row,
         Action<IXLCell> setupFirstNameCell,

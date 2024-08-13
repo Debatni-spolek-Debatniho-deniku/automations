@@ -1,5 +1,4 @@
-﻿using ClosedXML.Excel;
-using DSDD.Automations.Payments;
+﻿using DSDD.Automations.Payments;
 using DSDD.Automations.Payments.Model;
 
 namespace DSDD.Automations.Reports.Reports;
@@ -13,25 +12,22 @@ public class ClosedXmlPayerPaymentsReport: IPayerPaymentsReport
 
     public async Task<Stream> GenerateXlsxAsync(ulong variableSymbol, ulong? constantSymbol, CancellationToken ct)
     {
-        Payment[] payments = await _payersDao
-            .GetAllAsync(ct)
-            .SelectMany(payer => payer
-                .BankPayments
-                .Select(p => new Payment(p))
-                .Concat(payer
-                    .ManualPayments
-                    .Select(p => new Payment(p)))
-                .ToAsyncEnumerable()
-            )
+        Payer? payer = await _payersDao.GetAsync(variableSymbol, ct);
+        payer ??= new(variableSymbol);
+
+        Payment[] payments = payer
+            .BankPayments
+            .Select(p => new Payment(p))
+            .Concat(payer
+                .ManualPayments
+                .Select(p => new Payment(p)))
             .Where(p =>
             {
                 if (constantSymbol is not { } cs)
                     return true;
                 return p.ConstantSymbol == cs;
             })
-            .OrderByDescending(p => p.DateTime)
-            .ToArrayAsync(ct);
-
+            .ToArray();
 
         return ClosedXmlHelpers.ToSingleTableWorkbook(payments);
     }
