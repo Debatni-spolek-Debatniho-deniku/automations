@@ -12,7 +12,7 @@ public static class ClosedXmlHelpers
         
         public bool IsCzk { get; init; }
 
-        public XLTotalsRowFunction? TotalsFunction { get; init; }
+        public XLTotalsRowFunction TotalsFunction { get; init; }
 
         public ConfigurationAttribute(string name)
         {
@@ -45,12 +45,12 @@ public static class ClosedXmlHelpers
                 field.Column.Style.NumberFormat.Format = "# ##0.00 \"CZK\"";
             }
 
-            if (configuration.TotalsFunction is {} totalsFunction)
+            if (configuration.TotalsFunction != XLTotalsRowFunction.None)
             {
                 AssertDecimal(property);
 
                 table.ShowTotalsRow = true;
-                field.TotalsRowFunction = totalsFunction;
+                field.TotalsRowFunction = configuration.TotalsFunction;
             }
 
             if (property.PropertyType == typeof(DateTime))

@@ -1,4 +1,5 @@
 ﻿using System.Data;
+using ClosedXML.Excel;
 using DSDD.Automations.Payments;
 using DSDD.Automations.Reports.Members;
 
@@ -40,12 +41,16 @@ public class ClosedXmlPayedTotalReport: IPayedTotalReport
 
     private struct SummedPayer
     {
+        [ClosedXmlHelpers.Configuration("Jméno")]
         public string FirstName { get; }
 
+        [ClosedXmlHelpers.Configuration("Přjmení")]
         public string LastName { get; }
 
+        [ClosedXmlHelpers.Configuration("VS")]
         public ulong VariableSymbol { get; }
 
+        [ClosedXmlHelpers.Configuration("Částka", IsCzk = true, TotalsFunction = XLTotalsRowFunction.Sum)]
         public decimal AmountCzk { get; }
 
         public SummedPayer(string firstName, string lastName, ulong variableSymbol, decimal amountCzk)
