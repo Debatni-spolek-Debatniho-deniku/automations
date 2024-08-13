@@ -17,14 +17,22 @@
 		<PackageReference Include="RazorLight" />
 	</ItemGroup>
 	<ItemGroup>
-		<None Include="host.json">
+		<None Update="host.json">
 		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Include="local.settings.json">
-		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		  <CopyToPublishDirectory>Never</CopyToPublishDirectory>
 		</None>
 	</ItemGroup>
+
+	<ItemGroup Condition="'$(Configuration)'=='Release'">
+		<None Include="local.settings.json">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
+	<ItemGroup Condition="'$(Configuration)'!='Release'">
+		<None Include="local.settings.json">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
+
 	<ItemGroup>
 		<EmbeddedResource Include="Views\BankPayment\BankPayment.cshtml" />
 		<EmbeddedResource Include="Views\BankPayment\_BankPaymentForm.cshtml" />
