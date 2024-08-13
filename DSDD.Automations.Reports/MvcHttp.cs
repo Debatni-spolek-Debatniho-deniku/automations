@@ -33,20 +33,19 @@ public class MvcHttp
         };
 
     [Function(nameof(MvcHttp) + "-" + nameof(PostPayerPayments))]
-    public async Task<IActionResult> PostPayerPayments([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "reports/payer-payments")] HttpRequest req)
+    public async Task<IActionResult> PostPayerPayments([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "reports/payer-payments")] HttpRequest req, CancellationToken ct)
     {
         PayerPaymentsFormViewModel model = BindToPayerPaymentsFormViewModel(await req.ReadFormAsync());
-        Stream xlsx = await _payerPaymentsReport.GenerateXlsxAsync(model.VariableSymbol, model.ConstantSymbol);
+        Stream xlsx = await _payerPaymentsReport.GenerateXlsxAsync(model.VariableSymbol, model.ConstantSymbol, ct);
         return CreateXlsxResult(xlsx, $"payments-{model.VariableSymbol}{(model.ConstantSymbol is ulong cs ? $"-on-{cs}" : "")}");
     }
 
     [Function(nameof(MvcHttp) + "-" + nameof(PostPayedTotal))]
-    public async Task<IActionResult> PostPayedTotal([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "reports/payed-total")] HttpRequest req)
+    public async Task<IActionResult> PostPayedTotal([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "reports/payed-total")] HttpRequest req, CancellationToken ct)
     {
         PayedTotalFormViewModel model = BindToPayedTotalFormViewModel(await req.ReadFormAsync());
-        Stream xlsx = await _payedTotalReport.GenerateXlsxAsync(model.ConstantSymbol);
+        Stream xlsx = await _payedTotalReport.GenerateXlsxAsync(model.ConstantSymbol, ct);
         return CreateXlsxResult(xlsx, $"payer-total-{model.ConstantSymbol}");
-
     }
 
     [Function(nameof(MvcHttp) + "-" + nameof(PostMemberFees))]

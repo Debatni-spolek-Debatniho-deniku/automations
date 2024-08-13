@@ -1,4 +1,5 @@
-﻿using Azure.Core;
+﻿using System.Runtime.CompilerServices;
+using Azure.Core;
 using DSDD.Automations.Payments.Model;
 using Microsoft.Azure.Cosmos;
 using Microsoft.Azure.Cosmos.Fluent;
@@ -30,6 +31,20 @@ public class CosmosPayersDao: IPayersDao, IDisposable
         catch (CosmosException ex) when (ex.StatusCode == System.Net.HttpStatusCode.NotFound)
         {
             return null;
+        }
+    }
+
+    public async IAsyncEnumerable<Payer> GetAllAsync([EnumeratorCancellation] CancellationToken ct)
+    {
+        Container payers = await GetPayersContainerAsync(ct);
+
+        FeedIterator<Payer> iterator = payers.GetItemQueryIterator<Payer>();
+
+        while (iterator.HasMoreResults)
+        {
+            FeedResponse<Payer> response = await iterator.ReadNextAsync(ct);
+            foreach (Payer payer in response.Resource)
+                yield return payer;
         }
     }
 

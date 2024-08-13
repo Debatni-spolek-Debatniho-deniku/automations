@@ -8,7 +8,9 @@ public class Member
 
     public ulong VariableSymbol { get; }
 
-    public Member(string firstName, string lastName, ulong variableSymbol)
+    public DateOnly Enlisted { get; }
+
+    public Member(string firstName, string lastName, ulong variableSymbol, DateOnly enlisted)
     {
         FirstName = firstName;
         LastName = lastName;

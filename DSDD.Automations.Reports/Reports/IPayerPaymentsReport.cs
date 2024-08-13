@@ -2,5 +2,5 @@
 
 public interface IPayerPaymentsReport
 {
-    Task<Stream> GenerateXlsxAsync(ulong variableSymbol, ulong? constantSymbol);
+    Task<Stream> GenerateXlsxAsync(ulong variableSymbol, ulong? constantSymbol, CancellationToken ct);
 }

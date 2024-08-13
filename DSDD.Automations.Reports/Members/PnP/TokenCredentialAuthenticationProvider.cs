@@ -2,7 +2,7 @@
 using Azure.Core;
 using PnP.Core.Services;
 
-namespace DSDD.Automations.Reports.Members;
+namespace DSDD.Automations.Reports.Members.PnP;
 
 public class TokenCredentialAuthenticationProvider : IAuthenticationProvider
 {

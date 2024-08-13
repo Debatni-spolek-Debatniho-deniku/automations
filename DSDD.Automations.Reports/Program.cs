@@ -6,6 +6,7 @@ using DSDD.Automations.Reports.Middleware;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using DSDD.Automations.Reports.Razor;
+using DSDD.Automations.Reports.Reports;
 using Microsoft.AspNetCore.Mvc.ApplicationParts;
 
 var host = new HostBuilder()
@@ -31,6 +32,10 @@ var host = new HostBuilder()
 
         services.AddPaymentsCommon();
         services.AddMembers();
+
+        services.AddTransient<IMemberFeesReport, MemberFeesReport>();
+        services.AddTransient<IPayerPaymentsReport, PayerPaymentsReport>();
+        services.AddTransient<IPayedTotalReport, PayedTotalReport>();
     })
     .Build();
 

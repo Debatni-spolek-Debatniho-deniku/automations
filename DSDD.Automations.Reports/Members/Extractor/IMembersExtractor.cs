@@ -1,4 +1,4 @@
-﻿namespace DSDD.Automations.Reports.Members;
+﻿namespace DSDD.Automations.Reports.Members.Extractor;
 
 public interface IMembersExtractor
 {

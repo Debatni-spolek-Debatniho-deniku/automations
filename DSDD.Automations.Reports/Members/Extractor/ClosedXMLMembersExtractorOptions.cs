@@ -1,7 +1,7 @@
-﻿using Microsoft.Extensions.Configuration;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
+using Microsoft.Extensions.Configuration;
 
-namespace DSDD.Automations.Reports.Members;
+namespace DSDD.Automations.Reports.Members.Extractor;
 
 public class ClosedXMLMembersExtractorOptions
 {
@@ -19,4 +19,7 @@ public class ClosedXMLMembersExtractorOptions
 
     [ConfigurationKeyName("SPO_MEMBERS_VARIABLE_SYMBOL_COL"), Required]
     public string VariableSymbolColumn { get; set; } = "";
+
+    [ConfigurationKeyName("SPO_MEMBERS_ENLISTED_COL"), Required]
+    public string EnlistedColumn { get; set; } = "";
 }

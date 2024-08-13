@@ -1,5 +1,7 @@
 ﻿using System.Security.Cryptography.X509Certificates;
 using Azure.Core;
+using DSDD.Automations.Reports.Members.Extractor;
+using DSDD.Automations.Reports.Members.PnP;
 using Microsoft.Extensions.DependencyInjection;
 using PnP.Core.Auth;
 using PnP.Core.Services.Builder.Configuration;
@@ -29,9 +31,9 @@ public static class ServiceCollectionExtensions
             });
 
         services.AddOptionsWithValidateOnStart<SharePointMembersProviderOptions>().BindConfiguration("");
-        services.AddOptionsWithValidateOnStart<ClosedXMLMembersExtractorOptions>().BindConfiguration("");
-
         services.AddTransient<IMembersProvider, SharePointMembersProvider>();
+
+        services.AddOptionsWithValidateOnStart<ClosedXMLMembersExtractorOptions>().BindConfiguration("");
         services.AddTransient<IMembersExtractor, ClosedXMLMembersExtractor>();
 
         return services;

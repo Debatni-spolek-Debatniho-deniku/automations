@@ -1,8 +1,9 @@
-﻿using Microsoft.Extensions.Options;
+﻿using DSDD.Automations.Reports.Members.Extractor;
+using Microsoft.Extensions.Options;
 using PnP.Core.Model.SharePoint;
 using PnP.Core.Services;
 
-namespace DSDD.Automations.Reports.Members;
+namespace DSDD.Automations.Reports.Members.PnP;
 
 public class SharePointMembersProvider: IMembersProvider
 {

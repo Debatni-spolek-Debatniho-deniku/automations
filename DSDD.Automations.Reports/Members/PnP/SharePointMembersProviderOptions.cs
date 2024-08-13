@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Microsoft.Extensions.Configuration;
 
-namespace DSDD.Automations.Reports.Members;
+namespace DSDD.Automations.Reports.Members.PnP;
 
 public class SharePointMembersProviderOptions
 {

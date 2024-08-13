@@ -2,7 +2,7 @@
 using DSDD.Automations.Payments.Helpers;
 using Microsoft.Extensions.Options;
 
-namespace DSDD.Automations.Reports.Members;
+namespace DSDD.Automations.Reports.Members.Extractor;
 
 public class ClosedXMLMembersExtractor: IMembersExtractor
 {
@@ -40,7 +40,12 @@ public class ClosedXMLMembersExtractor: IMembersExtractor
                     .Value
                     .ToString());
 
-            members.Add(new(firstName, lastName, variableSymbol));
+            DateOnly enlisted = DateOnly.FromDateTime(row
+                .Cell(_options.EnlistedColumn)
+                .Value
+                .GetDateTime());
+
+            members.Add(new(firstName, lastName, variableSymbol, enlisted));
         }
         return members;
     }

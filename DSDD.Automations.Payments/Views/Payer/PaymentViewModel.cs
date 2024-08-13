@@ -39,7 +39,7 @@ public class PaymentViewModel
         Type = payment switch
         {
             { Overrides: { Removed: true } } => PaymentType.BANK_REMOVED,
-            { Overrides: { Overriden: true } } => PaymentType.BANK_OVERRIDED,
+            { Overriden: true } => PaymentType.BANK_OVERRIDED,
             _ => PaymentType.BANK,
         };
     }
