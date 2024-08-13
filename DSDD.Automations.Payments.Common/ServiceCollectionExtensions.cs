@@ -1,5 +1,4 @@
-﻿using Azure.Core;
-using DSDD.Automations.Payments.Helpers;
+﻿using DSDD.Automations.Payments.Helpers;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace DSDD.Automations.Payments;

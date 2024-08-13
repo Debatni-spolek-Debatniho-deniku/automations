@@ -1,0 +1,28 @@
+﻿@using ViewModel = DSDD.Automations.Reports.Views.Reports.PayerPaymentsFormViewModel;
+
+<form class="card" method="POST" action="/reports/payer-payments">
+    <div class="card-body">
+        <h5 class="card-title">Platby poplatníka</h5>
+        <p class="card-text">Vygeneruje XLSX obsahující jednotlivé platby poplatníka. Výběr může být omezen na konkrétní konstantní symbol.</p>
+    </div>
+    <div class="card-footer">
+        <div class="row">
+            <div class="col">
+                <div class="form-group">
+                    <label for="variable-symbol" class="required">Variabilní symbol</label>
+                    <input type="number" class="form-control" id="variable-symbol" name="@nameof(ViewModel.VariableSymbol)" required min="0" step="1">
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    <label for="constant-symbol">Konstantní symbol</label>
+                    <input type="number" class="form-control" id="constant-symbol" name="@nameof(ViewModel.ConstantSymbol)" min="0" step="1">
+                </div>
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-success mt-3">
+            Stáhnout
+        </button>
+    </div>
+</form>

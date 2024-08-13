@@ -1,0 +1,36 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
+  <PropertyGroup>
+	<AzureFunctionsVersion>v4</AzureFunctionsVersion>
+    <OutputType>Exe</OutputType>
+
+	  <AddRazorSupportForMvc>True</AddRazorSupportForMvc>
+	  <RazorCompileOnBuild>True</RazorCompileOnBuild>
+	  <RazorCompileOnPublish>True</RazorCompileOnPublish>
+	  <RazorEmbeddedResource>True</RazorEmbeddedResource>
+	  <MvcRazorExcludeRefAssembliesFromPublish>False</MvcRazorExcludeRefAssembliesFromPublish>
+  </PropertyGroup>
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="ClosedXML" />
+    <PackageReference Include="Microsoft.Azure.Functions.Worker" />
+    <PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.Http" />
+    <PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.Timer" />
+    <PackageReference Include="Microsoft.Azure.Functions.Worker.Sdk" />
+    <PackageReference Include="PnP.Core" />
+    <PackageReference Include="PnP.Core.Auth" />
+    <PackageReference Include="System.Linq.Async" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DSDD.Automations.Hosting\DSDD.Automations.Hosting.csproj" />
+    <ProjectReference Include="..\DSDD.Automations.Payments.Common\DSDD.Automations.Payments.Common.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="host.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="local.settings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+    </None>
+  </ItemGroup>
+</Project>

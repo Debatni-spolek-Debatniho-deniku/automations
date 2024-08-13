@@ -1,0 +1,25 @@
+﻿@model DSDD.Automations.Reports.Views.IndexViewModel
+
+@{
+    Layout = "Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div class="col-4 mt-4">
+        @await Html.PartialAsync("Reports/_MemberFeesForm")
+    </div>
+</div>
+ <div class="row">
+    <div class="col-4 mt-4">
+        @await Html.PartialAsync("Reports/_PayerPaymentsForm")
+    </div>
+    <div class="col-4 mt-4">
+        @await Html.PartialAsync("Reports/_PayedTotalForm")
+    </div>
+</div>
+
+<hr />
+
+<a href="@Model.SisterAppUrl" class="btn btn-warning">
+    Správa plateb
+</a>

@@ -10,9 +10,15 @@
         <input type="number" class="form-control" id="variable-symbol" required min="0" step="1">
     </div>
     <div class="card-footer d-flex justify-content-end">
-        <button type="submit" class="btn btn-success ml-auto">Uložit</button>
+        <button type="submit" class="btn btn-success">Uložit</button>
     </div>
 </form>
+
+<hr />
+
+<a href="@Model.SisterAppUrl" class="btn btn-warning">
+    Generování reportů
+</a>
 
 <script>
     function onSubmit(event) {

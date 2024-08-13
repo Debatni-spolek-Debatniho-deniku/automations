@@ -4,10 +4,15 @@ namespace DSDD.Automations.Payments.Views.Error;
 
 public class ErrorViewModel: LayoutViewModel
 {
-    public Exception Exception { get; }
+    public string Message { get; }
 
-    public ErrorViewModel(Exception exception) : base("Error")
+    public ErrorViewModel(Exception exception) : this(exception.Message)
     {
-        Exception = exception;
+
+    }
+
+    public ErrorViewModel(string message) : base("Error")
+    {
+        Message = message;
     }
 }

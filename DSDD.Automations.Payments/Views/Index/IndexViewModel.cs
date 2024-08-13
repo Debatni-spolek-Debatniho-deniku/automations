@@ -4,7 +4,10 @@ namespace DSDD.Automations.Payments.Views.Index;
 
 public class IndexViewModel : LayoutViewModel
 {
-    public IndexViewModel() : base("Výběr poplatníka")
+    public string SisterAppUrl { get; }
+
+    public IndexViewModel(string sisterAppUrl) : base("Výběr poplatníka")
     {
+        SisterAppUrl = sisterAppUrl;
     }
 }
