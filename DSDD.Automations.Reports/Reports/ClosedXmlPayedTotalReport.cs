@@ -1,14 +1,12 @@
 ﻿using System.Data;
-using ClosedXML.Excel;
 using DSDD.Automations.Payments;
-using DSDD.Automations.Payments.Model;
 using DSDD.Automations.Reports.Members;
 
 namespace DSDD.Automations.Reports.Reports;
 
-public class PayedTotalReport: IPayedTotalReport
+public class ClosedXmlPayedTotalReport: IPayedTotalReport
 {
-    public PayedTotalReport(IMembersProvider membersProvider, IPayersDao payersDao)
+    public ClosedXmlPayedTotalReport(IMembersProvider membersProvider, IPayersDao payersDao)
     {
         _membersProvider = membersProvider;
         _payersDao = payersDao;
@@ -31,36 +29,10 @@ public class PayedTotalReport: IPayedTotalReport
                     return new SummedPayer(payer.VariableSymbol, total);
                 return new SummedPayer(member.FirstName, member.LastName, member.VariableSymbol, total);
             })
+            .OrderBy(p => p.LastName)
             .ToArrayAsync(ct);
 
-        using XLWorkbook workbook = new();
-        IXLWorksheet worksheet = workbook.AddWorksheet();
-        IXLTable table = worksheet.FirstCell().InsertTable(payers.OrderBy(p => p.LastName));
-        table.ShowTotalsRow = true;
-        table.Theme = XLTableTheme.TableStyleMedium18;
-
-        IXLTableField amountCzk = table.Field(nameof(SummedPayer.AmountCzk));
-        amountCzk.Name = "Částka";
-        amountCzk.TotalsRowFunction = XLTotalsRowFunction.Sum;
-        amountCzk.Column.Style.NumberFormat.Format = "# ##0.00 \"CZK\"";
-
-        IXLTableField firstName = table.Field(nameof(SummedPayer.FirstName));
-        firstName.Name = "Jméno";
-
-        IXLTableField lastName = table.Field(nameof(SummedPayer.LastName));
-        lastName.Name = "Přijmení";
-
-        IXLTableField varaibleSymbol = table.Field(nameof(SummedPayer.VariableSymbol));
-        varaibleSymbol.Name = "VS";
-
-        foreach (IXLRangeColumn column in table.ColumnsUsed())
-            column.WorksheetColumn().AdjustToContents();
-
-        MemoryStream result = new();
-        workbook.SaveAs(result);
-        result.Seek(0, SeekOrigin.Begin);
-
-        return result;
+        return ClosedXmlHelpers.ToSingleTableWorkbook(payers);
     }
 
     private readonly IMembersProvider _membersProvider;

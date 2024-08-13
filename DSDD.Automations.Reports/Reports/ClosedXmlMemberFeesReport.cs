@@ -1,6 +1,6 @@
 ﻿namespace DSDD.Automations.Reports.Reports;
 
-public class MemberFeesReport: IMemberFeesReport
+public class ClosedXmlMemberFeesReport: IMemberFeesReport
 {
     public Task<Stream> GenerateXlsxAsync()
     {

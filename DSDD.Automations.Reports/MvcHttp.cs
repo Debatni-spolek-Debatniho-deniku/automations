@@ -1,5 +1,4 @@
 ﻿using System.Net.Mime;
-using DocumentFormat.OpenXml.EMMA;
 using DSDD.Automations.Payments.Helpers;
 using DSDD.Automations.Reports.Razor;
 using DSDD.Automations.Reports.Reports;

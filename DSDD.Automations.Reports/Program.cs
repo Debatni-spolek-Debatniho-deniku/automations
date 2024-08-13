@@ -32,10 +32,7 @@ var host = new HostBuilder()
 
         services.AddPaymentsCommon();
         services.AddMembers();
-
-        services.AddTransient<IMemberFeesReport, MemberFeesReport>();
-        services.AddTransient<IPayerPaymentsReport, PayerPaymentsReport>();
-        services.AddTransient<IPayedTotalReport, PayedTotalReport>();
+        services.AddReports();
     })
     .Build();
 
