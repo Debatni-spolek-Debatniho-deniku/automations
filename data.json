@@ -1,0 +1,723 @@
+[
+  {
+    "id": "1",
+    "variableSymbol": "1",
+    "manualPayments": [],
+    "bankPayments": [
+      {
+        "dateTime": "2024-07-08T00:00:00",
+        "counterpartyAccountNumber": "123-3511250267/0100",
+        "amountCzk": 100,
+        "constantSymbol": 100,
+        "reference": "001-08072024 1602 602013 766611",
+        "description": "PROCHÁZKA LUKÁŠ",
+        "overrides": {
+          "removed": false,
+          "constantSymbol": null,
+          "dateTime": null,
+          "description": null
+        }
+      }
+    ]
+  },
+  {
+    "id": "2",
+    "variableSymbol": "2",
+    "manualPayments": [],
+    "bankPayments": [
+      {
+        "dateTime": "2024-07-08T00:00:00",
+        "counterpartyAccountNumber": "4382124073/0800",
+        "amountCzk": 300,
+        "constantSymbol": 101,
+        "reference": "361-07072024 1086 086151 503465",
+        "description": "Brávek Šimon",
+        "overrides": {
+          "removed": false,
+          "constantSymbol": null,
+          "dateTime": null,
+          "description": null
+        }
+      },
+      {
+        "dateTime": "2024-07-08T00:00:00",
+        "counterpartyAccountNumber": "4382124073/0800",
+        "amountCzk": 100,
+        "constantSymbol": 100,
+        "reference": "361-07072024 1086 086142 103461",
+        "description": "Brávek Šimon",
+        "overrides": {
+          "removed": false,
+          "constantSymbol": null,
+          "dateTime": null,
+          "description": null
+        }
+      }
+    ]
+  },
+  {
+    "id": "3",
+    "variableSymbol": "3",
+    "manualPayments": [],
+    "bankPayments": [
+      {
+        "dateTime": "2024-07-06T00:00:00",
+        "counterpartyAccountNumber": "3192586133/0800",
+        "amountCzk": 500,
+        "constantSymbol": 100,
+        "reference": "361-06072024 1086 086146 501993",
+        "description": "Chajda Kryštof",
+        "overrides": {
+          "removed": false,
+          "constantSymbol": null,
+          "dateTime": null,
+          "description": null
+        }
+      },
+      {
+        "dateTime": "2024-07-06T00:00:00",
+        "counterpartyAccountNumber": "3192586133/0800",
+        "amountCzk": 300,
+        "constantSymbol": 101,
+        "reference": "361-06072024 1086 086143 101998",
+        "description": "Chajda Kryštof",
+        "overrides": {
+          "removed": false,
+          "constantSymbol": null,
+          "dateTime": null,
+          "description": null
+        }
+      }
+    ]
+  },
+  {
+    "id": "5",
+    "variableSymbol": "5",
+    "manualPayments": [],
+    "bankPayments": [
+      {
+        "dateTime": "2024-07-06T00:00:00",
+        "counterpartyAccountNumber": "1381286026/3030",
+        "amountCzk": 300,
+        "constantSymbol": 101,
+        "reference": "361-06072024 1086 086150 502106",
+        "description": "Kateøina Divišová",
+        "overrides": {
+          "removed": false,
+          "constantSymbol": null,
+          "dateTime": null,
+          "description": null
+        }
+      }
+    ]
+  },
+  {
+    "id": "6",
+    "variableSymbol": "6",
+    "manualPayments": [],
+    "bankPayments": [
+      {
+        "dateTime": "2024-07-08T00:00:00",
+        "counterpartyAccountNumber": "2217710010/3030",
+        "amountCzk": 300,
+        "constantSymbol": 101,
+        "reference": "361-07072024 1086 086143 100046",
+        "description": "Jiøí Dlabal",
+        "overrides": {
+          "removed": false,
+          "constantSymbol": null,
+          "dateTime": null,
+          "description": null
+        }
+      },
+      {
+        "dateTime": "2024-07-08T00:00:00",
+        "counterpartyAccountNumber": "2217710010/3030",
+        "amountCzk": 101.69,
+        "constantSymbol": 100,
+        "reference": "361-07072024 1086 086144 500050",
+        "description": "Jiøí Dlabal",
+        "overrides": {
+          "removed": false,
+          "constantSymbol": null,
+          "dateTime": null,
+          "description": null
+        }
+      }
+    ]
+  },
+  {
+    "id": "7",
+    "variableSymbol": "7",
+    "manualPayments": [],
+    "bankPayments": [
+      {
+        "dateTime": "2024-07-06T00:00:00",
+        "counterpartyAccountNumber": "670100-2223217070/6210",
+        "amountCzk": 300,
+        "constantSymbol": 101,
+        "reference": "361-06072024 1086 086147 102220",
+        "description": "FILIP DRAŠAR",
+        "overrides": {
+          "removed": false,
+          "constantSymbol": null,
+          "dateTime": null,
+          "description": null
+        }
+      },
+      {
+        "dateTime": "2024-07-08T00:00:00",
+        "counterpartyAccountNumber": "670100-2223217070/6210",
+        "amountCzk": 100,
+        "constantSymbol": 100,
+        "reference": "120-20240706 T02AR0IHQ67PM",
+        "description": "FILIP DRASAR",
+        "overrides": {
+          "removed": false,
+          "constantSymbol": null,
+          "dateTime": null,
+          "description": null
+        }
+      }
+    ]
+  },
+  {
+    "id": "9",
+    "variableSymbol": "9",
+    "manualPayments": [],
+    "bankPayments": [
+      {
+        "dateTime": "2024-07-08T00:00:00",
+        "counterpartyAccountNumber": "1785585014/3030",
+        "amountCzk": 100,
+        "constantSymbol": 100,
+        "reference": "361-08072024 1086 086142 509802",
+        "description": "Vít Filko",
+        "overrides": {
+          "removed": false,
+          "constantSymbol": null,
+          "dateTime": null,
+          "description": null
+        }
+      }
+    ]
+  },
+  {
+    "id": "12",
+    "variableSymbol": "12",
+    "manualPayments": [],
+    "bankPayments": [
+      {
+        "dateTime": "2024-07-08T00:00:00",
+        "counterpartyAccountNumber": "266574618/0300",
+        "amountCzk": 1000,
+        "constantSymbol": 100,
+        "reference": "120-20240704 PR00000390310",
+        "description": "TIMOFEY KOZHUKHOV",
+        "overrides": {
+          "removed": false,
+          "constantSymbol": null,
+          "dateTime": null,
+          "description": null
+        }
+      },
+      {
+        "dateTime": "2024-07-08T00:00:00",
+        "counterpartyAccountNumber": "266574618/0300",
+        "amountCzk": 300,
+        "constantSymbol": 101,
+        "reference": "120-20240704 PR00000389996",
+        "description": "TIMOFEY KOZHUKHOV",
+        "overrides": {
+          "removed": false,
+          "constantSymbol": null,
+          "dateTime": null,
+          "description": null
+        }
+      },
+      {
+        "dateTime": "2024-07-18T00:00:00",
+        "counterpartyAccountNumber": "266574618/0300",
+        "amountCzk": 600,
+        "constantSymbol": 101,
+        "reference": "120-20240718 PR00000034937",
+        "description": "TIMOFEY KOZHUKHOV",
+        "overrides": {
+          "removed": false,
+          "constantSymbol": null,
+          "dateTime": null,
+          "description": null
+        }
+      }
+    ]
+  },
+  {
+    "id": "14",
+    "variableSymbol": "14",
+    "manualPayments": [],
+    "bankPayments": [
+      {
+        "dateTime": "2024-07-05T00:00:00",
+        "counterpartyAccountNumber": "2402529168/2010",
+        "amountCzk": 100,
+        "constantSymbol": 100,
+        "reference": "361-05072024 1086 086143 100671",
+        "description": "Nìmec, Václav",
+        "overrides": {
+          "removed": false,
+          "constantSymbol": null,
+          "dateTime": null,
+          "description": null
+        }
+      }
+    ]
+  },
+  {
+    "id": "17",
+    "variableSymbol": "17",
+    "manualPayments": [],
+    "bankPayments": [
+      {
+        "dateTime": "2024-07-08T00:00:00",
+        "counterpartyAccountNumber": "4713347053/0800",
+        "amountCzk": 300,
+        "constantSymbol": 101,
+        "reference": "361-08072024 1086 086142 509566",
+        "description": "Plaèek Patrik",
+        "overrides": {
+          "removed": false,
+          "constantSymbol": null,
+          "dateTime": null,
+          "description": null
+        }
+      },
+      {
+        "dateTime": "2024-07-08T00:00:00",
+        "counterpartyAccountNumber": "4713347053/0800",
+        "amountCzk": 100,
+        "constantSymbol": 100,
+        "reference": "361-08072024 1086 086148 509581",
+        "description": "Plaèek Patrik",
+        "overrides": {
+          "removed": false,
+          "constantSymbol": null,
+          "dateTime": null,
+          "description": null
+        }
+      }
+    ]
+  },
+  {
+    "id": "18",
+    "variableSymbol": "18",
+    "manualPayments": [],
+    "bankPayments": [
+      {
+        "dateTime": "2024-07-06T00:00:00",
+        "counterpartyAccountNumber": "123-3511250267/0100",
+        "amountCzk": 1000,
+        "constantSymbol": 100,
+        "reference": "001-06072024 1602 602018 393931",
+        "description": "PROCHÁZKA LUKÁŠ",
+        "overrides": {
+          "removed": false,
+          "constantSymbol": null,
+          "dateTime": null,
+          "description": null
+        }
+      },
+      {
+        "dateTime": "2024-07-06T00:00:00",
+        "counterpartyAccountNumber": "123-3511250267/0100",
+        "amountCzk": 300,
+        "constantSymbol": 101,
+        "reference": "001-06072024 1602 602026 394011",
+        "description": "PROCHÁZKA LUKÁŠ",
+        "overrides": {
+          "removed": false,
+          "constantSymbol": null,
+          "dateTime": null,
+          "description": null
+        }
+      }
+    ]
+  },
+  {
+    "id": "20",
+    "variableSymbol": "20",
+    "manualPayments": [],
+    "bankPayments": [
+      {
+        "dateTime": "2024-07-08T00:00:00",
+        "counterpartyAccountNumber": "2601917948/2010",
+        "amountCzk": 100,
+        "constantSymbol": 100,
+        "reference": "361-08072024 1086 086144 109776",
+        "description": "Rowan, Orion",
+        "overrides": {
+          "removed": false,
+          "constantSymbol": null,
+          "dateTime": null,
+          "description": null
+        }
+      },
+      {
+        "dateTime": "2024-07-10T00:00:00",
+        "counterpartyAccountNumber": "2601917948/2010",
+        "amountCzk": 300,
+        "constantSymbol": 101,
+        "reference": "361-10072024 1086 086142 103795",
+        "description": "Rowan, Orion",
+        "overrides": {
+          "removed": false,
+          "constantSymbol": null,
+          "dateTime": null,
+          "description": null
+        }
+      }
+    ]
+  },
+  {
+    "id": "21",
+    "variableSymbol": "21",
+    "manualPayments": [],
+    "bankPayments": [
+      {
+        "dateTime": "2024-07-08T00:00:00",
+        "counterpartyAccountNumber": "4791110/5500",
+        "amountCzk": 300,
+        "constantSymbol": 101,
+        "reference": "361-08072024 1086 086148 506562",
+        "description": "Monika Rozínková",
+        "overrides": {
+          "removed": false,
+          "constantSymbol": null,
+          "dateTime": null,
+          "description": null
+        }
+      },
+      {
+        "dateTime": "2024-07-08T00:00:00",
+        "counterpartyAccountNumber": "4791110/5500",
+        "amountCzk": 200,
+        "constantSymbol": 100,
+        "reference": "361-08072024 1086 086150 506583",
+        "description": "Monika Rozínková",
+        "overrides": {
+          "removed": false,
+          "constantSymbol": null,
+          "dateTime": null,
+          "description": null
+        }
+      }
+    ]
+  },
+  {
+    "id": "22",
+    "variableSymbol": "22",
+    "manualPayments": [],
+    "bankPayments": [
+      {
+        "dateTime": "2024-07-09T00:00:00",
+        "counterpartyAccountNumber": "107-1018430257/0100",
+        "amountCzk": 300,
+        "constantSymbol": 101,
+        "reference": "001-09072024 1602 602012 473941",
+        "description": "ŠKRAÒKA MARTIN",
+        "overrides": {
+          "removed": false,
+          "constantSymbol": null,
+          "dateTime": null,
+          "description": null
+        }
+      },
+      {
+        "dateTime": "2024-07-09T00:00:00",
+        "counterpartyAccountNumber": "107-1018430257/0100",
+        "amountCzk": 155,
+        "constantSymbol": 100,
+        "reference": "001-09072024 1602 602000 574091",
+        "description": "ŠKRAÒKA MARTIN",
+        "overrides": {
+          "removed": false,
+          "constantSymbol": null,
+          "dateTime": null,
+          "description": null
+        }
+      }
+    ]
+  },
+  {
+    "id": "24",
+    "variableSymbol": "24",
+    "manualPayments": [],
+    "bankPayments": [
+      {
+        "dateTime": "2024-07-06T00:00:00",
+        "counterpartyAccountNumber": "3200842193/0800",
+        "amountCzk": 900,
+        "constantSymbol": 101,
+        "reference": "361-06072024 1086 086142 101366",
+        "description": "Šmejkal Jakub",
+        "overrides": {
+          "removed": false,
+          "constantSymbol": null,
+          "dateTime": null,
+          "description": null
+        }
+      },
+      {
+        "dateTime": "2024-07-06T00:00:00",
+        "counterpartyAccountNumber": "3200842193/0800",
+        "amountCzk": 117,
+        "constantSymbol": 100,
+        "reference": "361-06072024 1086 086149 101373",
+        "description": "Šmejkal Jakub",
+        "overrides": {
+          "removed": false,
+          "constantSymbol": null,
+          "dateTime": null,
+          "description": null
+        }
+      }
+    ]
+  },
+  {
+    "id": "26",
+    "variableSymbol": "26",
+    "manualPayments": [],
+    "bankPayments": [
+      {
+        "dateTime": "2024-07-08T00:00:00",
+        "counterpartyAccountNumber": "7239323161/5500",
+        "amountCzk": 150,
+        "constantSymbol": 100,
+        "reference": "361-08072024 1086 086143 503871",
+        "description": "Tadeáš Souba",
+        "overrides": {
+          "removed": false,
+          "constantSymbol": null,
+          "dateTime": null,
+          "description": null
+        }
+      },
+      {
+        "dateTime": "2024-07-10T00:00:00",
+        "counterpartyAccountNumber": "7239323161/5500",
+        "amountCzk": 300,
+        "constantSymbol": 101,
+        "reference": "361-10072024 1086 086150 100392",
+        "description": "Tadeáš Souba",
+        "overrides": {
+          "removed": false,
+          "constantSymbol": null,
+          "dateTime": null,
+          "description": null
+        }
+      }
+    ]
+  },
+  {
+    "id": "27",
+    "variableSymbol": "27",
+    "manualPayments": [],
+    "bankPayments": [
+      {
+        "dateTime": "2024-07-04T00:00:00",
+        "counterpartyAccountNumber": "1314117003/5500",
+        "amountCzk": 100,
+        "constantSymbol": 100,
+        "reference": "361-04072024 1086 086143 507078",
+        "description": "Vìra Šulová",
+        "overrides": {
+          "removed": false,
+          "constantSymbol": null,
+          "dateTime": null,
+          "description": null
+        }
+      },
+      {
+        "dateTime": "2024-07-08T00:00:00",
+        "counterpartyAccountNumber": "1314117003/5500",
+        "amountCzk": 300,
+        "constantSymbol": 101,
+        "reference": "361-08072024 1086 086147 106182",
+        "description": "Vìra Šulová",
+        "overrides": {
+          "removed": false,
+          "constantSymbol": null,
+          "dateTime": null,
+          "description": null
+        }
+      }
+    ]
+  },
+  {
+    "id": "29",
+    "variableSymbol": "29",
+    "manualPayments": [],
+    "bankPayments": [
+      {
+        "dateTime": "2024-07-06T00:00:00",
+        "counterpartyAccountNumber": "3122772133/0800",
+        "amountCzk": 100,
+        "constantSymbol": 100,
+        "reference": "361-06072024 1086 086147 101421",
+        "description": "Tománek Albert",
+        "overrides": {
+          "removed": false,
+          "constantSymbol": null,
+          "dateTime": null,
+          "description": null
+        }
+      }
+    ]
+  },
+  {
+    "id": "30",
+    "variableSymbol": "30",
+    "manualPayments": [],
+    "bankPayments": [
+      {
+        "dateTime": "2024-07-04T00:00:00",
+        "counterpartyAccountNumber": "2404202425/6363",
+        "amountCzk": 300,
+        "constantSymbol": 101,
+        "reference": "361-04072024 1086 086142 106729",
+        "description": "Tonar Radek",
+        "overrides": {
+          "removed": false,
+          "constantSymbol": null,
+          "dateTime": null,
+          "description": null
+        }
+      },
+      {
+        "dateTime": "2024-07-04T00:00:00",
+        "counterpartyAccountNumber": "2404202425/6363",
+        "amountCzk": 100,
+        "constantSymbol": 100,
+        "reference": "361-04072024 1086 086148 506762",
+        "description": "Tonar Radek",
+        "overrides": {
+          "removed": false,
+          "constantSymbol": null,
+          "dateTime": null,
+          "description": null
+        }
+      }
+    ]
+  },
+  {
+    "id": "31",
+    "variableSymbol": "31",
+    "manualPayments": [],
+    "bankPayments": [
+      {
+        "dateTime": "2024-07-06T00:00:00",
+        "counterpartyAccountNumber": "19-9224300257/0100",
+        "amountCzk": 900,
+        "constantSymbol": 101,
+        "reference": "001-06072024 1602 602035 417521",
+        "description": "TRUNEÈKA ADAM",
+        "overrides": {
+          "removed": false,
+          "constantSymbol": null,
+          "dateTime": null,
+          "description": null
+        }
+      },
+      {
+        "dateTime": "2024-07-06T00:00:00",
+        "counterpartyAccountNumber": "19-9224300257/0100",
+        "amountCzk": 100.69,
+        "constantSymbol": 100,
+        "reference": "001-06072024 1602 602013 425441",
+        "description": "TRUNEÈKA ADAM",
+        "overrides": {
+          "removed": false,
+          "constantSymbol": null,
+          "dateTime": null,
+          "description": null
+        }
+      }
+    ]
+  },
+  {
+    "id": "33",
+    "variableSymbol": "33",
+    "manualPayments": [],
+    "bankPayments": [
+      {
+        "dateTime": "2024-07-06T00:00:00",
+        "counterpartyAccountNumber": "293220305/0300",
+        "amountCzk": 300,
+        "constantSymbol": 101,
+        "reference": "361-06072024 1086 086151 102682",
+        "description": "VLK MAREK BARTOLOMEJ",
+        "overrides": {
+          "removed": false,
+          "constantSymbol": null,
+          "dateTime": null,
+          "description": null
+        }
+      }
+    ]
+  },
+  {
+    "id": "34",
+    "variableSymbol": "34",
+    "manualPayments": [],
+    "bankPayments": [
+      {
+        "dateTime": "2024-07-08T00:00:00",
+        "counterpartyAccountNumber": "3077705002/5500",
+        "amountCzk": 300,
+        "constantSymbol": 101,
+        "reference": "361-07072024 1086 086143 100280",
+        "description": "Matyáš Voboøil",
+        "overrides": {
+          "removed": false,
+          "constantSymbol": null,
+          "dateTime": null,
+          "description": null
+        }
+      },
+      {
+        "dateTime": "2024-07-08T00:00:00",
+        "counterpartyAccountNumber": "3077705002/5500",
+        "amountCzk": 123,
+        "constantSymbol": 100,
+        "reference": "361-07072024 1086 086142 100284",
+        "description": "Matyáš Voboøil",
+        "overrides": {
+          "removed": false,
+          "constantSymbol": null,
+          "dateTime": null,
+          "description": null
+        }
+      }
+    ]
+  },
+  {
+    "id": "35",
+    "variableSymbol": "35",
+    "manualPayments": [],
+    "bankPayments": [
+      {
+        "dateTime": "2024-07-09T00:00:00",
+        "counterpartyAccountNumber": "1973073016/3030",
+        "amountCzk": 100,
+        "constantSymbol": 100,
+        "reference": "361-09072024 1086 086148 105954",
+        "description": "Benjamín Josefus",
+        "overrides": {
+          "removed": false,
+          "constantSymbol": null,
+          "dateTime": null,
+          "description": null
+        }
+      }
+    ]
+  }
+]

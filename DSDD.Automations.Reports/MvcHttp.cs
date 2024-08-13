@@ -1,4 +1,5 @@
 ﻿using System.Net.Mime;
+using DSDD.Automations.Hosting.SisterApps;
 using DSDD.Automations.Payments.Helpers;
 using DSDD.Automations.Reports.Razor;
 using DSDD.Automations.Reports.Reports;
@@ -7,14 +8,16 @@ using DSDD.Automations.Reports.Views.Reports;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Functions.Worker;
+using Microsoft.Extensions.Options;
 
 namespace DSDD.Automations.Reports;
 
 public class MvcHttp
 {
-    public MvcHttp(IRazorRenderer renderer, INumericSymbolParser numericSymbolParser,
+    public MvcHttp(IOptions<SisterAppsOptions> sisterAppsOptions, IRazorRenderer renderer, INumericSymbolParser numericSymbolParser, 
         IPayedTotalReport payedTotalReport, IPayerPaymentsReport payerPaymentsReport, IMemberFeesReport memberFeesReport)
     {
+        _sisterAppsOptions = sisterAppsOptions;
         _renderer = renderer;
         _numericSymbolParser = numericSymbolParser;
         _payedTotalReport = payedTotalReport;
@@ -26,7 +29,7 @@ public class MvcHttp
     public async Task<IActionResult> GetIndex([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "reports")] HttpRequest req)
         => new ContentResult()
         {
-            Content = await _renderer.RenderAsync(req.HttpContext, "/Views/Index.cshtml", new IndexViewModel()),
+            Content = await _renderer.RenderAsync(req.HttpContext, "/Views/Index.cshtml", new IndexViewModel(_sisterAppsOptions.Value.SisterAppUrl)),
             ContentType = MediaTypeNames.Text.Html,
             StatusCode = StatusCodes.Status200OK
         };
@@ -48,11 +51,13 @@ public class MvcHttp
     }
 
     [Function(nameof(MvcHttp) + "-" + nameof(PostMemberFees))]
-    public async Task<IActionResult> PostMemberFees([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "reports/member-fees")] HttpRequest req)
+    public async Task<IActionResult> PostMemberFees([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "reports/member-fees")] HttpRequest req, CancellationToken ct)
     {
-        Stream xlsx = await _memberFeesReport.GenerateXlsxAsync();
+        Stream xlsx = await _memberFeesReport.GenerateXlsxAsync(ct);
         return CreateXlsxResult(xlsx, "member-fees");
     }
+
+    private readonly IOptions<SisterAppsOptions> _sisterAppsOptions;
 
     private readonly IRazorRenderer _renderer;
     private readonly INumericSymbolParser _numericSymbolParser;

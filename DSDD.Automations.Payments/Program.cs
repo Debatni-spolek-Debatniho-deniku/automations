@@ -1,5 +1,6 @@
 using System.Reflection;
 using DSDD.Automations.Hosting;
+using DSDD.Automations.Hosting.SisterApps;
 using DSDD.Automations.Payments;
 using DSDD.Automations.Payments.Middleware;
 using DSDD.Automations.Payments.Payments;
@@ -17,6 +18,8 @@ var host = new HostBuilder()
     })
     .ConfigureServices((ctx, services) =>
     {
+        services.ConfigureSisterApps();
+
         services.AddRazorLight(() => new RazorLightEngineBuilder()
             .UseEmbeddedResourcesProject(Assembly.GetExecutingAssembly(), "DSDD.Automations.Payments.Views")
             .UseMemoryCachingProvider()

@@ -20,7 +20,19 @@ public static class ClosedXmlHelpers
         }
     }
 
-    public static Stream ToSingleTableWorkbook<T>(IEnumerable<T> data)
+    public static MemoryStream SaveToMemory(XLWorkbook workbook)
+    {
+        MemoryStream result = new();
+        workbook.SaveAs(result);
+        result.Seek(0, SeekOrigin.Begin);
+
+        return result;
+    }
+
+    public static void ApplyCzkFormatting(IXLRangeBase range)
+        => range.Style.NumberFormat.Format = "# ##0.00 \"CZK\"";
+
+    public static MemoryStream ToSingleTableWorkbook<T>(IEnumerable<T> data)
     {
         using XLWorkbook workbook = new();
         IXLWorksheet worksheet = workbook.AddWorksheet();
@@ -42,7 +54,7 @@ public static class ClosedXmlHelpers
             {
                 AssertDecimal(property);
 
-                field.Column.Style.NumberFormat.Format = "# ##0.00 \"CZK\"";
+                ApplyCzkFormatting(field.Column);
             }
 
             if (configuration.TotalsFunction != XLTotalsRowFunction.None)
@@ -63,12 +75,8 @@ public static class ClosedXmlHelpers
         // Datetime is too narrow when auto adjusted and must be expanded.
         foreach (IXLColumn dateTimeColumn in dateTimeColumns)
             dateTimeColumn.Width += 1;
-        
-        MemoryStream result = new();
-        workbook.SaveAs(result);
-        result.Seek(0, SeekOrigin.Begin);
 
-        return result;
+        return SaveToMemory(workbook);
 
         void AssertDecimal(PropertyInfo property)
         {

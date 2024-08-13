@@ -2,5 +2,5 @@
 
 public interface IMemberFeesReport
 {
-    Task<Stream> GenerateXlsxAsync();
+    Task<Stream> GenerateXlsxAsync(CancellationToken ct);
 }

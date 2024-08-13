@@ -15,5 +15,6 @@ public class Member
         FirstName = firstName;
         LastName = lastName;
         VariableSymbol = variableSymbol;
+        Enlisted = enlisted;
     }
 }

@@ -4,7 +4,10 @@ namespace DSDD.Automations.Reports.Views;
 
 public class IndexViewModel : LayoutViewModel
 {
-    public IndexViewModel() : base("Reporty")
+    public string SisterAppUrl { get; } 
+
+    public IndexViewModel(string sisterAppUrl) : base("Reporty")
     {
+        SisterAppUrl = sisterAppUrl;
     }
 }

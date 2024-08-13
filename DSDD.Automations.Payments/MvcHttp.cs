@@ -1,4 +1,5 @@
 using System.Net.Mime;
+using DSDD.Automations.Hosting.SisterApps;
 using DSDD.Automations.Payments.Helpers;
 using DSDD.Automations.Payments.Model;
 using DSDD.Automations.Payments.Payments;
@@ -9,25 +10,28 @@ using DSDD.Automations.Payments.Views.Payer;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Functions.Worker;
+using Microsoft.Extensions.Options;
 using RazorLight;
 
 namespace DSDD.Automations.Payments;
 
 public class MvcHttp
 {
-    public MvcHttp(IRazorLightEngine engine, IPayersDao payers, IPaymentsService paymentsService, INumericSymbolParser numericSymbolParser)
+    public MvcHttp(IRazorLightEngine engine, IPayersDao payers, IPaymentsService paymentsService, 
+        INumericSymbolParser numericSymbolParser, IOptions<SisterAppsOptions> sisterAppsOptions)
     {
         _engine = engine;
         _payers = payers;
         _paymentsService = paymentsService;
         _numericSymbolParser = numericSymbolParser;
+        _sisterAppsOptions = sisterAppsOptions;
     }
 
     [Function(nameof(MvcHttp) + "-" + nameof(GetIndex))]
     public async Task<IActionResult> GetIndex([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "payers")] HttpRequest req)
         => new ContentResult()
         {
-            Content = await _engine.CompileRenderAsync("Index.Index.cshtml", new IndexViewModel()),
+            Content = await _engine.CompileRenderAsync("Index.Index.cshtml", new IndexViewModel(_sisterAppsOptions.Value.SisterAppUrl)),
             ContentType = MediaTypeNames.Text.Html,
             StatusCode = StatusCodes.Status200OK
         };
@@ -192,6 +196,7 @@ public class MvcHttp
     private readonly IPayersDao _payers;
     private readonly IPaymentsService _paymentsService;
     private readonly INumericSymbolParser _numericSymbolParser;
+    private readonly IOptions<SisterAppsOptions> _sisterAppsOptions;
 
     private ManualPaymentFormViewModel BindToManualPaymentFormViewModel(IFormCollection form)
     {

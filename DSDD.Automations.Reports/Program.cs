@@ -1,5 +1,6 @@
 using System.Reflection;
 using DSDD.Automations.Hosting;
+using DSDD.Automations.Hosting.SisterApps;
 using DSDD.Automations.Payments;
 using DSDD.Automations.Reports.Members;
 using DSDD.Automations.Reports.Middleware;
@@ -17,6 +18,8 @@ var host = new HostBuilder()
     })
     .ConfigureServices(services =>
     {
+        services.ConfigureSisterApps();
+
         // Required to access precompiled Razor views.
         CompiledRazorAssemblyPart part = new(Assembly.GetExecutingAssembly());
         
