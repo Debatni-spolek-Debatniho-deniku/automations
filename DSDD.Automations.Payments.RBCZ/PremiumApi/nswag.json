@@ -36,7 +36,7 @@
       "generateContractsOutput": true,
       "contractsNamespace": "DSDD.Automations.Payments.RBCZ.PremiumApi",
       "contractsOutputFilePath": "./Generated/Model.cs",
-      "parameterDateTimeFormat": "s",
+      "parameterDateTimeFormat": "o",
       "parameterDateFormat": "yyyy-MM-dd",
       "generateUpdateJsonSerializerSettingsMethod": true,
       "useRequestAndResponseSerializationSettings": false,
