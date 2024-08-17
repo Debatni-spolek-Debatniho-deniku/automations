@@ -68,7 +68,7 @@ public class ClaimsPrincipalPoplulatingMiddleware: IFunctionsWorkerMiddleware
         if (req.Headers.TryGetValue("x-ms-client-principal", out var header))
         {
             var data = header.First();
-            var decoded = Convert.FromBase64String(data);
+            var decoded = Convert.FromBase64String(data!);
             var json = Encoding.UTF8.GetString(decoded);
 
             principal = JsonSerializer.Deserialize<ClientPrincipal>(json, new JsonSerializerOptions { PropertyNameCaseInsensitive = true })!;

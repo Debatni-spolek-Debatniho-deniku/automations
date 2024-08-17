@@ -18,7 +18,8 @@ public static class ServiceCollectionExtensions
             .Configure<TokenCredential>((options, credential) =>
             {
 #if DEBUG
-                // In DEBUG EnviromentalCredential is used. These env variables are used by it, yet they are not accessible from the object.
+                // In DEBUG EnviromentalCredential (inhr. TokenCredential) is used.
+                // These env variables are used by it, yet they are not accessible from the TokenCredential object.
                 options.DefaultAuthenticationProvider = new X509CertificateAuthenticationProvider(
                     Environment.GetEnvironmentVariable("AZURE_CLIENT_ID"),
                     Environment.GetEnvironmentVariable("AZURE_TENANT_ID"),
@@ -26,7 +27,7 @@ public static class ServiceCollectionExtensions
                     StoreLocation.CurrentUser,
                     Environment.GetEnvironmentVariable("DEV_CERTIFICATE_THUMBPRINT"));
 #else
-            o.DefaultAuthenticationProvider = new TokenCredentialAuthenticationProvider(credential);
+                options.DefaultAuthenticationProvider = new TokenCredentialAuthenticationProvider(credential);
 #endif
             });
 
