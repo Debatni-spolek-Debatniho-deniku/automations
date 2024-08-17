@@ -53,8 +53,12 @@ internal class PremiumApiClient: IPremiumApiClient
 
     public async IAsyncEnumerable<Transaction> GetLast90DaysTransactionsAsync([EnumeratorCancellation] CancellationToken ct)
     {
-        DateTime today = DateTime.Today;
-        DateTime ago90days = today.AddDays(-90);
+        // Must be in format 2021-08-01T10:00:00.0Z
+        DateTime today = DateTime.UtcNow.Date;
+        DateTime.SpecifyKind(today, DateTimeKind.Utc);
+
+        // If added 90, api would throw as it "adds" extra day. Is this a bug or a feature?
+        DateTime ago90days = today.AddDays(-89);
 
         int page = 1;
         while (true)
