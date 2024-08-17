@@ -30,5 +30,5 @@ public class TokenCredentialAuthenticationProvider : IAuthenticationProvider
     private readonly TokenCredential _tokenCredential;
     
     private string[] GetRelevantScopes(Uri resourceUri)
-        => [$"{resourceUri.Scheme}://{resourceUri.DnsSafeHost}//.default"];
+        => [$"{resourceUri.Scheme}://{resourceUri.Authority}/.default"];
 }
