@@ -1,4 +1,4 @@
-﻿namespace DSDD.Automations.Payments.Views.Layout;
+﻿namespace DSDD.Automations.Payments.Views.Shared;
 
 public abstract class LayoutViewModel
 {

@@ -1,4 +1,4 @@
-﻿using DSDD.Automations.Payments.Views.Layout;
+﻿using DSDD.Automations.Payments.Views.Shared;
 
 namespace DSDD.Automations.Payments.Views.BankPayment;
 

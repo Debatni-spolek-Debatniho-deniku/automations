@@ -1,26 +1,26 @@
 using System.Net.Mime;
+using DSDD.Automations.Hosting.Razor;
 using DSDD.Automations.Hosting.SisterApps;
 using DSDD.Automations.Payments.Helpers;
 using DSDD.Automations.Payments.Model;
 using DSDD.Automations.Payments.Payments;
+using DSDD.Automations.Payments.Views;
 using DSDD.Automations.Payments.Views.BankPayment;
-using DSDD.Automations.Payments.Views.Index;
 using DSDD.Automations.Payments.Views.ManualPayment;
 using DSDD.Automations.Payments.Views.Payer;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Options;
-using RazorLight;
 
 namespace DSDD.Automations.Payments;
 
 public class MvcHttp
 {
-    public MvcHttp(IRazorLightEngine engine, IPayersDao payers, IPaymentsService paymentsService, 
+    public MvcHttp(IRazorRenderer rednerer, IPayersDao payers, IPaymentsService paymentsService, 
         INumericSymbolParser numericSymbolParser, IOptions<SisterAppsOptions> sisterAppsOptions)
     {
-        _engine = engine;
+        _rednerer = rednerer;
         _payers = payers;
         _paymentsService = paymentsService;
         _numericSymbolParser = numericSymbolParser;
@@ -31,7 +31,7 @@ public class MvcHttp
     public async Task<IActionResult> GetIndex([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "payers")] HttpRequest req)
         => new ContentResult()
         {
-            Content = await _engine.CompileRenderAsync("Index.Index.cshtml", new IndexViewModel(_sisterAppsOptions.Value.SisterAppUrl)),
+            Content = await _rednerer.RenderAsync(req.HttpContext, "/Views/Index.cshtml", new IndexViewModel(_sisterAppsOptions.Value.SisterAppUrl)),
             ContentType = MediaTypeNames.Text.Html,
             StatusCode = StatusCodes.Status200OK
         };
@@ -46,7 +46,7 @@ public class MvcHttp
 
         return new ContentResult()
         {
-            Content = await _engine.CompileRenderAsync("Payer.Payer.cshtml", maybePayer is not null
+            Content = await _rednerer.RenderAsync(req.HttpContext, "/Views/Payer/Payer.cshtml", maybePayer is not null
                 ? new PayerViewModel(maybePayer)
                 : new PayerViewModel(longVariableSymbol)),
             ContentType = MediaTypeNames.Text.Html,
@@ -63,7 +63,7 @@ public class MvcHttp
 
         return new ContentResult()
         {
-            Content = await _engine.CompileRenderAsync("ManualPayment.ManualPayment.cshtml", new ManualPaymentViewModel(longVariableSymbol)),
+            Content = await _rednerer.RenderAsync(req.HttpContext, "/Views/ManualPayment/ManualPayment.cshtml", new ManualPaymentViewModel(longVariableSymbol)),
             ContentType = MediaTypeNames.Text.Html,
             StatusCode = StatusCodes.Status200OK
         };
@@ -109,12 +109,14 @@ public class MvcHttp
             switch (await _paymentsService.GetPaymentAsync(longVariableSymbol, paymentReference, req.HttpContext.RequestAborted))
             {
                 case BankPayment bankPayment:
-                    return await _engine.CompileRenderAsync(
-                        "BankPayment.BankPayment.cshtml",
+                    return await _rednerer.RenderAsync(
+                        req.HttpContext,
+                        "/Views/BankPayment/BankPayment.cshtml",
                         new BankPaymentViewModel(longVariableSymbol, bankPayment));
                 case ManualPayment manualPayment:
-                    return await _engine.CompileRenderAsync(
-                        "ManualPayment.ManualPayment.cshtml",
+                    return await _rednerer.RenderAsync(
+                        req.HttpContext,
+                        "/Views/ManualPayment/ManualPayment.cshtml",
                         new ManualPaymentViewModel(longVariableSymbol, manualPayment));
                 default:
                     throw new IndexOutOfRangeException();
@@ -192,7 +194,7 @@ public class MvcHttp
         return new RedirectResult($"/payers/{variableSymbol}");
     }
 
-    private readonly IRazorLightEngine _engine;
+    private readonly IRazorRenderer _rednerer;
     private readonly IPayersDao _payers;
     private readonly IPaymentsService _paymentsService;
     private readonly INumericSymbolParser _numericSymbolParser;

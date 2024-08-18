@@ -1,21 +1,19 @@
 ﻿using DSDD.Automations.Hosting.Middleware;
-using DSDD.Automations.Payments.Views.Error;
-using Microsoft.AspNetCore.Http;
-using RazorLight;
+using DSDD.Automations.Hosting.Razor;
+using DSDD.Automations.Payments.Views;
 
 namespace DSDD.Automations.Payments.Middleware;
 
-public class PaymentsAdministratorAuthorizationMiddleware : AccessRoleAuthorizationMiddlewareBase
+public class PaymentsAdministratorAuthorizationMiddleware : AccessRoleAuthorizationMiddlewareBase<ErrorViewModel>
 {
-    public PaymentsAdministratorAuthorizationMiddleware(IRazorLightEngine engine) : base(ROLE_NAME)
+    public PaymentsAdministratorAuthorizationMiddleware(IRazorRenderer renderer) : base(renderer)
     {
-        _engine = engine;
     }
 
-    protected override Task<string?> RenderErrorPage(HttpContext _)
-        => _engine.CompileRenderAsync("Error.Error.cshtml", new ErrorViewModel($"Uživatel musí mít roli {ROLE_NAME}!"));
+    protected override string Role => "payments-administrator";
 
-    private const string ROLE_NAME = "payments-administrator";
+    protected override string ViewPath => "/Views/Error.cshtml";
 
-    private readonly IRazorLightEngine _engine;
+    protected override ErrorViewModel CreateModel(string message)
+        => new ErrorViewModel(message);
 }

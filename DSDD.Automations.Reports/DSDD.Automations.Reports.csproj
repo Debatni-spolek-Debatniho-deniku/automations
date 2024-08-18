@@ -1,13 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
   <PropertyGroup>
-	<AzureFunctionsVersion>v4</AzureFunctionsVersion>
+    <AzureFunctionsVersion>v4</AzureFunctionsVersion>
     <OutputType>Exe</OutputType>
 
-	  <AddRazorSupportForMvc>True</AddRazorSupportForMvc>
-	  <RazorCompileOnBuild>True</RazorCompileOnBuild>
-	  <RazorCompileOnPublish>True</RazorCompileOnPublish>
-	  <RazorEmbeddedResource>True</RazorEmbeddedResource>
-	  <MvcRazorExcludeRefAssembliesFromPublish>False</MvcRazorExcludeRefAssembliesFromPublish>
+    <AddRazorSupportForMvc>True</AddRazorSupportForMvc>
+    <RazorCompileOnBuild>True</RazorCompileOnBuild>
+    <RazorCompileOnPublish>True</RazorCompileOnPublish>
+    <RazorEmbeddedResource>True</RazorEmbeddedResource>
+    <MvcRazorExcludeRefAssembliesFromPublish>False</MvcRazorExcludeRefAssembliesFromPublish>
   </PropertyGroup>
   <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />

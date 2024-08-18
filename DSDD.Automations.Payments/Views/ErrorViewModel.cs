@@ -1,8 +1,8 @@
-﻿using DSDD.Automations.Payments.Views.Layout;
+﻿using DSDD.Automations.Payments.Views.Shared;
 
-namespace DSDD.Automations.Payments.Views.Error;
+namespace DSDD.Automations.Payments.Views;
 
-public class ErrorViewModel: LayoutViewModel
+public class ErrorViewModel : LayoutViewModel
 {
     public string Message { get; }
 
