@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 
-namespace DSDD.Automations.Reports.Razor;
+namespace DSDD.Automations.Hosting.Razor;
 
 public interface IRazorRenderer
 {

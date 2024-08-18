@@ -1,13 +1,15 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
-	<AzureFunctionsVersion>v4</AzureFunctionsVersion>
-	<OutputType>Exe</OutputType>
+		<AzureFunctionsVersion>v4</AzureFunctionsVersion>
+		<OutputType>Exe</OutputType>
 
-	  <_FunctionsSkipCleanOutput>true</_FunctionsSkipCleanOutput>
-	  <PreserveCompilationContext>true</PreserveCompilationContext>
-	  <MvcRazorCompileOnPublish>false</MvcRazorCompileOnPublish>
-	  <MvcRazorExcludeRefAssembliesFromPublish>false</MvcRazorExcludeRefAssembliesFromPublish>
+		<AddRazorSupportForMvc>True</AddRazorSupportForMvc>
+		<RazorCompileOnBuild>True</RazorCompileOnBuild>
+		<RazorCompileOnPublish>True</RazorCompileOnPublish>
+		<RazorEmbeddedResource>True</RazorEmbeddedResource>
+		<MvcRazorExcludeRefAssembliesFromPublish>False</MvcRazorExcludeRefAssembliesFromPublish>
 	</PropertyGroup>
+
 	<ItemGroup>
 		<FrameworkReference Include="Microsoft.AspNetCore.App" />
 		<PackageReference Include="Microsoft.Azure.Functions.Worker" />
@@ -16,6 +18,7 @@
 		<PackageReference Include="Microsoft.Azure.Functions.Worker.Sdk" />
 		<PackageReference Include="RazorLight" />
 	</ItemGroup>
+
 	<ItemGroup>
 		<None Update="host.json">
 		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

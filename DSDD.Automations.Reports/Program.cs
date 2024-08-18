@@ -1,12 +1,12 @@
 using System.Reflection;
 using DSDD.Automations.Hosting;
+using DSDD.Automations.Hosting.Razor;
 using DSDD.Automations.Hosting.SisterApps;
 using DSDD.Automations.Payments;
 using DSDD.Automations.Reports.Members;
 using DSDD.Automations.Reports.Middleware;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.DependencyInjection;
-using DSDD.Automations.Reports.Razor;
 using DSDD.Automations.Reports.Reports;
 using Microsoft.AspNetCore.Mvc.ApplicationParts;
 

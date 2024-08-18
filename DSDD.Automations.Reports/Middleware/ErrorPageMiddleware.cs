@@ -2,7 +2,7 @@
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Middleware;
 using System.Net.Mime;
-using DSDD.Automations.Reports.Razor;
+using DSDD.Automations.Hosting.Razor;
 using DSDD.Automations.Reports.Views;
 using Microsoft.Extensions.Logging;
 

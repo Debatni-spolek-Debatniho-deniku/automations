@@ -1,5 +1,5 @@
 ﻿using DSDD.Automations.Hosting.Middleware;
-using DSDD.Automations.Reports.Razor;
+using DSDD.Automations.Hosting.Razor;
 using DSDD.Automations.Reports.Views;
 using Microsoft.AspNetCore.Http;
 
