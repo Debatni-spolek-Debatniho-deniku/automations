@@ -1,6 +1,10 @@
 ﻿using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Middleware;
 using DSDD.Automations.Hosting.Razor;
+#if !DEBUG
+using Microsoft.AspNetCore.Http;
+using System.Net.Mime;
+#endif
 
 namespace DSDD.Automations.Hosting.Middleware;
 
@@ -28,8 +32,9 @@ public abstract class AccessRoleAuthorizationMiddlewareBase<TModel>: IFunctionsW
             }
 
             return;
-        }
+        }  
 #endif
+
 
         await next(ctx);
     }
