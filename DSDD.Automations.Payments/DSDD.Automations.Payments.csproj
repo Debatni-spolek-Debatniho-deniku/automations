@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
 	<PropertyGroup>
 		<AzureFunctionsVersion>v4</AzureFunctionsVersion>
 		<OutputType>Exe</OutputType>
@@ -16,11 +16,10 @@
 		<PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.Http" />
 		<PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.Timer" />
 		<PackageReference Include="Microsoft.Azure.Functions.Worker.Sdk" />
-		<PackageReference Include="RazorLight" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<None Update="host.json">
+		<None Include="host.json">
 		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
 	</ItemGroup>
@@ -36,17 +35,6 @@
 		</None>
 	</ItemGroup>
 
-	<ItemGroup>
-		<EmbeddedResource Include="Views\BankPayment\BankPayment.cshtml" />
-		<EmbeddedResource Include="Views\BankPayment\_BankPaymentForm.cshtml" />
-		<EmbeddedResource Include="Views\Error\Error.cshtml" />
-		<EmbeddedResource Include="Views\Index\Index.cshtml" />
-		<EmbeddedResource Include="Views\Layout\_Layout.cshtml" />
-		<EmbeddedResource Include="Views\ManualPayment\ManualPayment.cshtml" />
-		<EmbeddedResource Include="Views\ManualPayment\_ManualPaymentForm.cshtml" />
-		<EmbeddedResource Include="Views\Payer\_Payment.cshtml" />
-		<EmbeddedResource Include="Views\Payer\Payer.cshtml" />
-	</ItemGroup>
 	<ItemGroup>
 	  <ProjectReference Include="..\DSDD.Automations.Hosting\DSDD.Automations.Hosting.csproj" />
 	  <ProjectReference Include="..\DSDD.Automations.Payments.Common\DSDD.Automations.Payments.Common.csproj" />

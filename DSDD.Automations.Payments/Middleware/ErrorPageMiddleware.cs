@@ -1,43 +1,19 @@
-﻿using DSDD.Automations.Payments.Views.Error;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Azure.Functions.Worker;
-using Microsoft.Azure.Functions.Worker.Middleware;
-using RazorLight;
-using System.Net.Mime;
+﻿using DSDD.Automations.Hosting.Middleware;
+using DSDD.Automations.Hosting.Razor;
+using DSDD.Automations.Payments.Views;
 using Microsoft.Extensions.Logging;
 
 namespace DSDD.Automations.Payments.Middleware;
 
-public class ErrorPageMiddleware: IFunctionsWorkerMiddleware
+public class ErrorPageMiddleware: ErrorPageMiddlewareBase<ErrorViewModel>
 {
-    public ErrorPageMiddleware(IRazorLightEngine engine, ILogger<ErrorPageMiddleware> logger)
+    public ErrorPageMiddleware(IRazorRenderer renderer, ILogger<ErrorPageMiddlewareBase<ErrorViewModel>> logger) : base(renderer, logger)
     {
-        _engine = engine;
-        _logger = logger;
     }
 
-    public async Task Invoke(FunctionContext ctx, FunctionExecutionDelegate next)
-    {
-        try
-        {
-            await next(ctx);
-        }
-        catch (Exception ex)
-        {
-            if (ctx.GetHttpContext() is not HttpContext httpCtx)
-                throw;
+    protected override string ViewPath => "/Views/Error.cshtml";
 
-            httpCtx.Response.ContentType = MediaTypeNames.Text.Html;
-            httpCtx.Response.StatusCode = StatusCodes.Status500InternalServerError;
+    protected override ErrorViewModel CreateModel(Exception ex)
+        => new ErrorViewModel(ex);
 
-            await httpCtx
-                .Response
-                .WriteAsync(await _engine.CompileRenderAsync("Error.Error.cshtml", new ErrorViewModel(ex)));
-
-            _logger.LogError(ex, null);
-        }
-    }
-
-    private readonly IRazorLightEngine _engine;
-    private readonly ILogger<ErrorPageMiddleware> _logger;
 }

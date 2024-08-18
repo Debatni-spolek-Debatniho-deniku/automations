@@ -1,7 +1,7 @@
-﻿@inherits DSDD.Automations.Payments.Views.ShimTemplatePage<DSDD.Automations.Payments.Views.Payer.PaymentViewModel>
+﻿@model DSDD.Automations.Payments.Views.Payer.PaymentViewModel
 
 <tr class="@(Model.Type == DSDD.Automations.Payments.Views.Payer.PaymentType.BANK_REMOVED ? "row-removed" :null)">
-    <td>@DisplayFor(m => m.Type)</td>
+    <td>@Html.DisplayFor(m => m.Type)</td>
     <td>@(Model.CounterpartyAccountNumber ?? "-")</td>
     <td>@(Model.ConstantSymbol?.ToString() ?? "-")</td>
     <td>@Model.AmountCzk CZK</td>

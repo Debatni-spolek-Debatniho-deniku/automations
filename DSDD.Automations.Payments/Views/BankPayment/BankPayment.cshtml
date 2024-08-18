@@ -1,7 +1,7 @@
-﻿@inherits DSDD.Automations.Payments.Views.ShimTemplatePage<DSDD.Automations.Payments.Views.BankPayment.BankPaymentViewModel>
+﻿@model DSDD.Automations.Payments.Views.BankPayment.BankPaymentViewModel
 
 @{
-    Layout = "Layout._Layout.cshtml";
+    Layout = "../Shared/_Layout.cshtml";
 }
 
 <div class="mb-2">
@@ -53,8 +53,6 @@
             </div>
         </div>
     </div>
-    @{
-        await IncludeAsync("BankPayment._BankPaymentForm.cshtml", Model.Payment);
-    }
+    @await Html.PartialAsync("_BankPaymentForm.cshtml", Model.Payment)
 </div>
 

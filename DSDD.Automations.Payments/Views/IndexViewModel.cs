@@ -1,6 +1,6 @@
-﻿using DSDD.Automations.Payments.Views.Layout;
+﻿using DSDD.Automations.Payments.Views.Shared;
 
-namespace DSDD.Automations.Payments.Views.Index;
+namespace DSDD.Automations.Payments.Views;
 
 public class IndexViewModel : LayoutViewModel
 {

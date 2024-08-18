@@ -1,14 +1,14 @@
 using System.Reflection;
 using DSDD.Automations.Hosting;
+using DSDD.Automations.Hosting.Razor;
 using DSDD.Automations.Hosting.SisterApps;
 using DSDD.Automations.Payments;
 using DSDD.Automations.Payments.Middleware;
 using DSDD.Automations.Payments.Payments;
 using DSDD.Automations.Payments.RBCZ;
+using Microsoft.AspNetCore.Mvc.ApplicationParts;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using RazorLight;
-using RazorLight.Extensions;
 
 var host = new HostBuilder()
     .ConfigureAutomationsFunctionsWebApplication(app =>
@@ -20,12 +20,8 @@ var host = new HostBuilder()
     {
         services.ConfigureSisterApps();
 
-        services.AddRazorLight(() => new RazorLightEngineBuilder()
-            .UseEmbeddedResourcesProject(Assembly.GetExecutingAssembly(), "DSDD.Automations.Payments.Views")
-            .UseMemoryCachingProvider()
-            .EnableDebugMode()
-            .Build());
-        
+        services.AddRazorRenderer(new CompiledRazorAssemblyPart(Assembly.GetExecutingAssembly()));
+
         services.AddTransient<IPaymentsService, PayerPaymentsService>();
 
         services.AddPaymentsCommon();
