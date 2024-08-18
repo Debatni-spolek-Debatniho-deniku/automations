@@ -77,7 +77,7 @@ public static class ClosedXmlHelpers
 
         // Datetime is too narrow when auto adjusted and must be expanded.
         foreach (IXLColumn dateTimeColumn in dateTimeColumns)
-            dateTimeColumn.Width += 1;
+            dateTimeColumn.Width += 2;
 
         return SaveToMemory(workbook);
 

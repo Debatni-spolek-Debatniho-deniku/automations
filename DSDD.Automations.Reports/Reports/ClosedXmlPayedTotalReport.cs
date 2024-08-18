@@ -30,6 +30,7 @@ public class ClosedXmlPayedTotalReport: IPayedTotalReport
                     return new SummedPayer(payer.VariableSymbol, total);
                 return new SummedPayer(member.FirstName, member.LastName, member.VariableSymbol, total);
             })
+            .Where(p => p.AmountCzk != 0)
             .OrderBy(p => p.LastName)
             .ToArrayAsync(ct);
 

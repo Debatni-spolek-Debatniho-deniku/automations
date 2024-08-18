@@ -1,0 +1,8 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <ProjectReference Include="..\DSDD.Automations.Reports\DSDD.Automations.Reports.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Reports\MemberFees\" />
+  </ItemGroup>
+</Project>
