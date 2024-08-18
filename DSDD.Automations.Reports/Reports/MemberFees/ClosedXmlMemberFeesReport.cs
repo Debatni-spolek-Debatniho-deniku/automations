@@ -108,7 +108,7 @@ public class ClosedXmlMemberFeesReport: IMemberFeesReport
             field.TotalsRowFunction = XLTotalsRowFunction.Sum;
         IXLRangeRow totalsRow = table.TotalsRow();
         totalsRow.Style.Font.FontColor = XLColor.Black;
-        totalsRow.Style.Font.Bold = true;
+        totalsRow.Style.Font.Bold = false;
         
         table
             .Range(2, 3, table.LastRow().RowNumber(), 3)
