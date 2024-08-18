@@ -9,7 +9,10 @@ public struct PayerPaymentsPerMonth
         _perMonth = payer
             .ManualPayments
             .Select(p => (p.DateTime, p.ConstantSymbol, p.AmountCzk))
-            .Concat(payer.BankPayments.Select(p => (p.DateTime, p.ConstantSymbol, p.AmountCzk)))
+            .Concat(payer
+                .BankPayments
+                .Where(p => !p.Overrides.Removed)
+                .Select(p => (p.DateTime, p.ConstantSymbol, p.AmountCzk)))
             .Where(p => p.ConstantSymbol == constantSymbol)
             .Select(p => (new MonthYear(p.DateTime), p.AmountCzk))
             .GroupBy(p => p.Item1, p => p.AmountCzk)

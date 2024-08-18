@@ -14,11 +14,9 @@ public class ClosedXmlMemberFeesReport: IMemberFeesReport
         _payersDao = payersDao;
         _options = options.Value;
     }
-
+    
     public async Task<Stream> GenerateXlsxAsync(CancellationToken ct)
     {
-        MonthYear feesFromMonth = new(_options.FromMonth, _options.FromYear);
-
         IReadOnlyCollection<Member> members = await _membersProvider.GetMembersAsync(ct);
         members = members.OrderBy(p => p.LastName).ToArray();
         
@@ -28,7 +26,7 @@ public class ClosedXmlMemberFeesReport: IMemberFeesReport
 
         using XLWorkbook workbook = new();
         IXLWorksheet worksheet = workbook.AddWorksheet();
-
+        
         writeRow(
             worksheet.Row(1),
             cell => cell.Value = XLCellValue.FromObject("Jméno"),
@@ -42,15 +40,17 @@ public class ClosedXmlMemberFeesReport: IMemberFeesReport
                 cell.Value = XLCellValue.FromObject(new DateTime(monthYear.Year, monthYear.Month, 1));
             });
 
+        MonthYear feesMandatoryFrom = new(_options.FromMonth, _options.FromYear);
+
         int rowNumber = 2;
         foreach (Member member in members)
         {
+            Payer payer = (await _payersDao.GetAsync(member.VariableSymbol, ct)) ?? new(member.VariableSymbol);
+            PayerPaymentsPerMonth payedPerMonth = new(payer, _options.ConstantSymbol);
             MonthYear enlisted = new(member.Enlisted);
-
-            Payer? payer = await _payersDao.GetAsync(member.VariableSymbol, ct);
-            payer ??= new(member.VariableSymbol);
-
-            PayerPaymentsPerMonth perMonth = new(payer, _options.ConstantSymbol);
+            // Members that enlisted after the fees became mandatory get their "membership" after paying first fee and only from this obligated to pay fees.
+            // Between the enlistment and first fee payment they have no duty to pay as they are no members.
+            bool feeDutyStartedForThisMember = enlisted < feesMandatoryFrom;
             
             writeRow(
                 worksheet.Row(rowNumber),
@@ -59,19 +59,41 @@ public class ClosedXmlMemberFeesReport: IMemberFeesReport
                 cell => cell.Value = XLCellValue.FromObject(member.VariableSymbol),
                 (cell, monthYear) =>
                 {
-                    bool thisMonthHasPaymentRequirement = feesFromMonth <= monthYear;
+                    bool thisMonthHasPaymentRequirement = feesMandatoryFrom <= monthYear;
                     if (!thisMonthHasPaymentRequirement)
                         return;
 
-                    bool payerIsEnslitedForThisMonth = enlisted <= monthYear;
-                    if (!payerIsEnslitedForThisMonth)
+                    bool isEnlistedForThisMonth = enlisted <= monthYear;
+                    if (!isEnlistedForThisMonth)
                         return;
 
-                    decimal payedThisMonth = perMonth.Get(monthYear);
+                    decimal payedThisMonth = payedPerMonth.Get(monthYear);
+                    bool payedEnough = _options.FeeCzk <= payedThisMonth;
+
                     cell.Value = XLCellValue.FromObject(payedThisMonth);
                     cell.Style.Font.Bold = true;
+
+                    // Those who enlisted after fees became mandatory are obligated to pay fees after their first fee payment (before that they are not trully members).
+                    // First payment must fulfil the duty, paying less than the fee will treat it as not payed at all.
+                    if (!feeDutyStartedForThisMember && payedEnough)
+                        feeDutyStartedForThisMember = true;
+
+                    if (!feeDutyStartedForThisMember)
+                    {
+                        if (payedThisMonth == 0)
+                            cell.Value = XLCellValue.FromObject("Bez 1. platby");
+
+                        cell.Style.Font.FontColor = XLColor.Orange;
+                        return;
+                    }
+
+                    if (!payedEnough)
+                    {
+                        cell.Style.Font.FontColor = XLColor.Red;
+                        return;
+                    }
                     
-                    cell.Style.Font.FontColor = _options.FeeCzk <= payedThisMonth ? XLColor.Green : XLColor.Red;
+                    cell.Style.Font.FontColor = XLColor.Green;
                 });
 
             rowNumber++;
