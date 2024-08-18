@@ -1,4 +1,5 @@
-﻿using Azure.Core;
+﻿using System.Globalization;
+using Azure.Core;
 using Azure.Identity;
 using DSDD.Automations.Hosting.Middleware;
 using Microsoft.Azure.Functions.Worker;
@@ -14,6 +15,12 @@ public static class HostBuilderExtensions
         Action<IFunctionsWorkerApplicationBuilder>? configure = null)
         => hostBuilder.ConfigureFunctionsWebApplication(app =>
         {
+            CultureInfo csCz = CultureInfo.GetCultureInfo("cs-CZ");
+            CultureInfo.DefaultThreadCurrentCulture = csCz;
+            CultureInfo.DefaultThreadCurrentUICulture = csCz;
+            CultureInfo.CurrentCulture = csCz;
+            CultureInfo.CurrentUICulture = csCz;
+
             app.UseMiddleware<ClaimsPrincipalPoplulatingMiddleware>();
 
             configure?.Invoke(app);

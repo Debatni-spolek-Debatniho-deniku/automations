@@ -35,11 +35,9 @@ public class ClosedXmlMemberFeesReport: IMemberFeesReport
             (cell, monthYear) =>
             {
                 ClosedXmlHelpers.ApplyCzkFormat(cell.WorksheetColumn());
-                
-                cell.Style.DateFormat.Format = "mmmm yyyy";
-                cell.Value = XLCellValue.FromObject(new DateTime(monthYear.Year, monthYear.Month, 1));
+                cell.Value = XLCellValue.FromObject(monthYear);
             });
-
+        
         MonthYear feesMandatoryFrom = new(_options.FromMonth, _options.FromYear);
 
         int rowNumber = 2;
@@ -51,7 +49,7 @@ public class ClosedXmlMemberFeesReport: IMemberFeesReport
             // Members that enlisted after the fees became mandatory get their "membership" after paying first fee and only from this obligated to pay fees.
             // Between the enlistment and first fee payment they have no duty to pay as they are no members.
             bool feeDutyStartedForThisMember = enlisted < feesMandatoryFrom;
-            
+
             writeRow(
                 worksheet.Row(rowNumber),
                 cell => cell.Value = XLCellValue.FromObject(member.FirstName),
@@ -92,7 +90,7 @@ public class ClosedXmlMemberFeesReport: IMemberFeesReport
                         cell.Style.Font.FontColor = XLColor.Red;
                         return;
                     }
-                    
+
                     cell.Style.Font.FontColor = XLColor.Green;
                 });
 
@@ -101,24 +99,22 @@ public class ClosedXmlMemberFeesReport: IMemberFeesReport
 
         foreach (IXLColumn column in worksheet.ColumnsUsed())
             column.AdjustToContents();
+        
+        IXLTable table = worksheet.RangeUsed().CreateTable();
+        ClosedXmlHelpers.ApplyCommonTableTheme(table);
 
-        IXLRange range = worksheet.RangeUsed();
-        range.Style.Border.SetOutsideBorder(XLBorderStyleValues.Medium);
-        range
-            .Row(1)
+        table.ShowTotalsRow = true;
+        foreach (IXLTableField field in table.Fields.Skip(3))
+            field.TotalsRowFunction = XLTotalsRowFunction.Sum;
+        IXLRangeRow totalsRow = table.TotalsRow();
+        totalsRow.Style.Font.FontColor = XLColor.Black;
+        totalsRow.Style.Font.Bold = true;
+        
+        table
+            .Range(2, 3, table.LastRow().RowNumber(), 3)
             .Style
             .Border
-            .SetBottomBorder(XLBorderStyleValues.Medium);
-        range
-            .Row(1)
-            .Style
-            .Font
-            .Bold = true;
-        range
-            .Range(2, 3, range.LastRow().RowNumber(), 3)
-            .Style
-            .Border
-            .SetRightBorder(XLBorderStyleValues.Thin);
+            .SetRightBorder(XLBorderStyleValues.Medium);
 
         return ClosedXmlHelpers.SaveToMemory(workbook);
     }
