@@ -19,6 +19,8 @@ public class PayerPaymentsPerMonthTests
         payer.BankPayments.Add(new("foo", "bar", CONSTANT_SYMBOL, 120, monthAgo, null, new(false, null, null, null)));
         payer.BankPayments.Add(new("foo", "bar", 50, 100, now, null, new(false, null, null, null)));
         payer.BankPayments.Add(new("foo", "bar", CONSTANT_SYMBOL, 300, now, null, new(false, null, null, null)));
+        payer.BankPayments.Add(new("foo", "bar", CONSTANT_SYMBOL, 10, now, null, new(false, null, monthAgo, null)));
+        payer.BankPayments.Add(new("foo", "bar", CONSTANT_SYMBOL, 30, now, null, new(false, 50, null, null)));
         payer.BankPayments.Add(new("foo", "bar", CONSTANT_SYMBOL, 180, now, null, new(true, null, null, null)));
         payer.BankPayments.Add(new("foo", "bar", 50, 810, monthNext, null, new(false, null, null, null)));
         payer.BankPayments.Add(new("foo", "bar", CONSTANT_SYMBOL, 170, monthNext, null, new(false, null, null, null)));
@@ -38,7 +40,7 @@ public class PayerPaymentsPerMonthTests
         decimal resultMonthNext = sut.Get(new(monthNext));
 
         // Assert
-        Assert.That(resultMonthAgo, Is.EqualTo(320));
+        Assert.That(resultMonthAgo, Is.EqualTo(330));
         Assert.That(resultNow, Is.EqualTo(420));
         Assert.That(resultMonthNext, Is.EqualTo(370));
     }

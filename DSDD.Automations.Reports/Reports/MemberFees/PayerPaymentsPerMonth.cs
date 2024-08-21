@@ -12,7 +12,8 @@ public struct PayerPaymentsPerMonth
             .Concat(payer
                 .BankPayments
                 .Where(p => !p.Overrides.Removed)
-                .Select(p => (p.DateTime, p.ConstantSymbol, p.AmountCzk)))
+                .Select<BankPayment, (DateTime DateTime, ulong? ConstantSymbol, decimal AmountCzk)>(
+                    p => (p.FinalDateTime, p.FinalConstantSymbol, p.AmountCzk)))
             .Where(p => p.ConstantSymbol == constantSymbol)
             .Select(p => (new MonthYear(p.DateTime), p.AmountCzk))
             .GroupBy(p => p.Item1, p => p.AmountCzk)
