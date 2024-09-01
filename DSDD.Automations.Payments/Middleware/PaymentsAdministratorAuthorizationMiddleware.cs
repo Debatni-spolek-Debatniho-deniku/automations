@@ -4,7 +4,7 @@ using DSDD.Automations.Payments.Views;
 
 namespace DSDD.Automations.Payments.Middleware;
 
-public class PaymentsAdministratorAuthorizationMiddleware : AccessRoleAuthorizationMiddlewareBase<ErrorViewModel>
+public class PaymentsAdministratorAuthorizationMiddleware : AccessRoleAuthorizationMiddlewareBase<CalloutViewModel>
 {
     public PaymentsAdministratorAuthorizationMiddleware(IRazorRenderer renderer) : base(renderer)
     {
@@ -12,8 +12,8 @@ public class PaymentsAdministratorAuthorizationMiddleware : AccessRoleAuthorizat
 
     protected override string Role => "payments-administrator";
 
-    protected override string ViewPath => "/Views/Error.cshtml";
+    protected override string ViewPath => "/Views/Callout.cshtml";
 
-    protected override ErrorViewModel CreateModel(string message)
-        => new ErrorViewModel(message);
+    protected override CalloutViewModel CreateModel(string message)
+        => CalloutViewModel.Error(message);
 }

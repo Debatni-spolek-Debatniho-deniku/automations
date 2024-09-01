@@ -1,9 +1,10 @@
-using System.Net.Mime;
+﻿using System.Net.Mime;
 using DSDD.Automations.Hosting.Razor;
 using DSDD.Automations.Hosting.SisterApps;
 using DSDD.Automations.Payments.Helpers;
 using DSDD.Automations.Payments.Model;
 using DSDD.Automations.Payments.Payments;
+using DSDD.Automations.Payments.RBCZ;
 using DSDD.Automations.Payments.Views;
 using DSDD.Automations.Payments.Views.BankPayment;
 using DSDD.Automations.Payments.Views.ManualPayment;
@@ -11,6 +12,7 @@ using DSDD.Automations.Payments.Views.Payer;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Functions.Worker;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
 namespace DSDD.Automations.Payments;
@@ -18,13 +20,16 @@ namespace DSDD.Automations.Payments;
 public class MvcHttp
 {
     public MvcHttp(IRazorRenderer rednerer, IPayersDao payers, IPaymentsService paymentsService, 
-        INumericSymbolParser numericSymbolParser, IOptions<SisterAppsOptions> sisterAppsOptions)
+        INumericSymbolParser numericSymbolParser, IOptions<SisterAppsOptions> sisterAppsOptions,
+        IBankPaymentsImporter importer, ILogger<MvcHttp> logger)
     {
         _rednerer = rednerer;
         _payers = payers;
         _paymentsService = paymentsService;
         _numericSymbolParser = numericSymbolParser;
         _sisterAppsOptions = sisterAppsOptions;
+        _importer = importer;
+        _logger = logger;
     }
 
     [Function(nameof(MvcHttp) + "-" + nameof(GetIndex))]
@@ -194,11 +199,42 @@ public class MvcHttp
         return new RedirectResult($"/payers/{variableSymbol}");
     }
 
+    [Function(nameof(MvcHttp) + "-" + nameof(PostImportPayments))]
+    public async Task<IActionResult> PostImportPayments(
+        [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "import-payments")] HttpRequest req,
+        string variableSymbol)
+    {
+        StartImport();
+
+        return new ContentResult()
+        {
+            Content = await _rednerer.RenderAsync(
+                req.HttpContext, 
+                "/Views/Callout.cshtml",
+                new CalloutViewModel("Úspěch", "Import plateb z banky byl úspěšně spuštěn. Platby budou u jednotlivých poplatníků zobrazeny, až import skončí. To může trvat i několik minut.", CalloutBackButtonColor.SUCCESS)),
+            ContentType = MediaTypeNames.Text.Html,
+            StatusCode = StatusCodes.Status200OK
+        };
+
+        void StartImport()
+        {
+            _logger.LogInformation("User {User} started bank payments import.", req.HttpContext.User.Identity?.Name ?? "UNKNOWN");
+
+            _importer.ImportAsync(default).ContinueWith(task =>
+            {
+                if (task.IsFaulted)
+                    _logger.LogError(task.Exception.GetBaseException(), null);
+            });
+        }
+    }
+
     private readonly IRazorRenderer _rednerer;
     private readonly IPayersDao _payers;
     private readonly IPaymentsService _paymentsService;
     private readonly INumericSymbolParser _numericSymbolParser;
     private readonly IOptions<SisterAppsOptions> _sisterAppsOptions;
+    private readonly IBankPaymentsImporter _importer;
+    private readonly ILogger<MvcHttp> _logger;
 
     private ManualPaymentFormViewModel BindToManualPaymentFormViewModel(IFormCollection form)
     {

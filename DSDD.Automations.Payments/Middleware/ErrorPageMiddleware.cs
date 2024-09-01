@@ -5,15 +5,15 @@ using Microsoft.Extensions.Logging;
 
 namespace DSDD.Automations.Payments.Middleware;
 
-public class ErrorPageMiddleware: ErrorPageMiddlewareBase<ErrorViewModel>
+public class ErrorPageMiddleware: ErrorPageMiddlewareBase<CalloutViewModel>
 {
-    public ErrorPageMiddleware(IRazorRenderer renderer, ILogger<ErrorPageMiddlewareBase<ErrorViewModel>> logger) : base(renderer, logger)
+    public ErrorPageMiddleware(IRazorRenderer renderer, ILogger<ErrorPageMiddlewareBase<CalloutViewModel>> logger) : base(renderer, logger)
     {
     }
 
-    protected override string ViewPath => "/Views/Error.cshtml";
+    protected override string ViewPath => "/Views/Callout.cshtml";
 
-    protected override ErrorViewModel CreateModel(Exception ex)
-        => new ErrorViewModel(ex);
+    protected override CalloutViewModel CreateModel(Exception ex)
+        => CalloutViewModel.Error(ex.Message);
 
 }
