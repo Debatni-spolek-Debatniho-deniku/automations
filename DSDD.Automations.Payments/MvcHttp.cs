@@ -1,6 +1,7 @@
 ﻿using System.Net.Mime;
 using DSDD.Automations.Hosting.Razor;
 using DSDD.Automations.Hosting.SisterApps;
+using DSDD.Automations.Payments.Durable;
 using DSDD.Automations.Payments.Helpers;
 using DSDD.Automations.Payments.Model;
 using DSDD.Automations.Payments.Payments;
@@ -12,6 +13,7 @@ using DSDD.Automations.Payments.Views.Payer;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Functions.Worker;
+using Microsoft.DurableTask.Client;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
@@ -21,14 +23,13 @@ public class MvcHttp
 {
     public MvcHttp(IRazorRenderer rednerer, IPayersDao payers, IPaymentsService paymentsService, 
         INumericSymbolParser numericSymbolParser, IOptions<SisterAppsOptions> sisterAppsOptions,
-        IBankPaymentsImporter importer, ILogger<MvcHttp> logger)
+        ILogger<MvcHttp> logger)
     {
         _rednerer = rednerer;
         _payers = payers;
         _paymentsService = paymentsService;
         _numericSymbolParser = numericSymbolParser;
         _sisterAppsOptions = sisterAppsOptions;
-        _importer = importer;
         _logger = logger;
     }
 
@@ -202,30 +203,22 @@ public class MvcHttp
     [Function(nameof(MvcHttp) + "-" + nameof(PostImportPayments))]
     public async Task<IActionResult> PostImportPayments(
         [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "import-payments")] HttpRequest req,
+        [DurableClient] DurableTaskClient durableClient,
         string variableSymbol)
     {
-        StartImport();
+        _logger.LogInformation("User {User} started bank payments import.", req.HttpContext.User.Identity?.Name ?? "UNKNOWN");
+
+        string orchestrationId = await durableClient.ScheduleNewMethodOrchestrationInstanceAsync<RbczImport>(_ => _.Orhcestration(default!));
 
         return new ContentResult()
         {
             Content = await _rednerer.RenderAsync(
                 req.HttpContext, 
                 "/Views/Callout.cshtml",
-                new CalloutViewModel("Úspěch", "Import plateb z banky byl úspěšně spuštěn. Platby budou u jednotlivých poplatníků zobrazeny, až import skončí. To může trvat i několik minut.", CalloutBackButtonColor.SUCCESS)),
+                new CalloutViewModel("Úspěch", $"Import plateb z banky byl úspěšně spuštěn jako orchestrace s ID={orchestrationId}. Platby budou u jednotlivých poplatníků zobrazeny, až import skončí. To může trvat i několik minut.", CalloutBackButtonColor.SUCCESS)),
             ContentType = MediaTypeNames.Text.Html,
             StatusCode = StatusCodes.Status200OK
         };
-
-        void StartImport()
-        {
-            _logger.LogInformation("User {User} started bank payments import.", req.HttpContext.User.Identity?.Name ?? "UNKNOWN");
-
-            _importer.ImportAsync(default).ContinueWith(task =>
-            {
-                if (task.IsFaulted)
-                    _logger.LogError(task.Exception.GetBaseException(), null);
-            });
-        }
     }
 
     private readonly IRazorRenderer _rednerer;
@@ -233,7 +226,6 @@ public class MvcHttp
     private readonly IPaymentsService _paymentsService;
     private readonly INumericSymbolParser _numericSymbolParser;
     private readonly IOptions<SisterAppsOptions> _sisterAppsOptions;
-    private readonly IBankPaymentsImporter _importer;
     private readonly ILogger<MvcHttp> _logger;
 
     private ManualPaymentFormViewModel BindToManualPaymentFormViewModel(IFormCollection form)

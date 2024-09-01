@@ -22,7 +22,10 @@ public class RbczImport
         => context.CallActivityFromMethodTaskAsync<RbczImport>(_ => _.Activity(default!, default));
 
     [Function(nameof(RbczImport) + "-" + nameof(Activity))]
-    public Task Activity([ActivityTrigger] TaskActivityContext _, CancellationToken ct)
+    public Task Activity(
+        // Cannot be named _ (discard) as this name is prohibited in Azure Functions.
+        [ActivityTrigger] TaskActivityContext context,
+        CancellationToken ct)
         => _importer.ImportAsync(ct);
 
     private IBankPaymentsImporter _importer;
