@@ -5,7 +5,6 @@ using DSDD.Automations.Payments.Durable;
 using DSDD.Automations.Payments.Helpers;
 using DSDD.Automations.Payments.Model;
 using DSDD.Automations.Payments.Payments;
-using DSDD.Automations.Payments.RBCZ;
 using DSDD.Automations.Payments.Views;
 using DSDD.Automations.Payments.Views.BankPayment;
 using DSDD.Automations.Payments.Views.ManualPayment;
