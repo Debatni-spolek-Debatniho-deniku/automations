@@ -2,7 +2,6 @@
 using DSDD.Automations.Payments.Model;
 using DSDD.Automations.Payments.RBCZ.PremiumApi;
 using Microsoft.Extensions.Logging;
-using System;
 
 namespace DSDD.Automations.Payments.RBCZ;
 

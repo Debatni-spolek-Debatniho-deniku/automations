@@ -4,6 +4,10 @@
     Layout = "Shared/_Layout.cshtml";
 }
 
+<form method="POST" action="/import-payments" class="mb-2">
+    <button type="submit" class="btn btn-secondary">Importovat platby z banky</button>
+</form>
+
 <form class="card" style="max-width: 20rem" onsubmit="onSubmit(event)">
     <div class="card-body form-group">
         <label for="variable-symbol" class="required">Variabilní symbol</label>
