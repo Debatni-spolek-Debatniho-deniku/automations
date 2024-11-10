@@ -29,6 +29,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DSDD.Automations.Hosting", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DSDD.Automations.Reports.Tests", "DSDD.Automations.Reports.Tests\DSDD.Automations.Reports.Tests.csproj", "{40897BC6-CF7C-466B-957F-F3C7378C6561}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DSDD.Automations.Mailing", "DSDD.Automations.Mailing\DSDD.Automations.Mailing.csproj", "{CE75F671-0BC1-4CF0-A08A-462A4829B3E1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -71,6 +73,10 @@ Global
 		{40897BC6-CF7C-466B-957F-F3C7378C6561}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{40897BC6-CF7C-466B-957F-F3C7378C6561}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{40897BC6-CF7C-466B-957F-F3C7378C6561}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CE75F671-0BC1-4CF0-A08A-462A4829B3E1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CE75F671-0BC1-4CF0-A08A-462A4829B3E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CE75F671-0BC1-4CF0-A08A-462A4829B3E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CE75F671-0BC1-4CF0-A08A-462A4829B3E1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
