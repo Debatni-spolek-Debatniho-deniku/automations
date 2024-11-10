@@ -22,6 +22,8 @@ Create `local.settings.json`.
 
     "COSMOS_DB_ACCOUNT_ENDPOINT": "From payments-db-dev",
 
+    "RBCZ_IMPORT_TIMER_CRON": "0 0 1 * * *",
+
     "RBCZ_CLIENT_ID": "Copy from production Functions App in Azure Portal",
     "RBCZ_AUDIT_IP_ADDRESS": "255.255.255.255",
     "RBCZ_ACCOUNT_NUMBER": "1899051002",
