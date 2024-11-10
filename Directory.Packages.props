@@ -32,7 +32,6 @@
     <PackageVersion Include="NUnit3TestAdapter" Version="4.5.0" />
     <PackageVersion Include="PnP.Core" Version="1.13.0" />
     <PackageVersion Include="PnP.Core.Auth" Version="1.13.0" />
-    <PackageVersion Include="System.IdentityModel.Tokens.Jwt" Version="6.35.0" />
     <PackageVersion Include="System.Linq.Async" Version="6.0.1" />
   </ItemGroup>
 </Project>

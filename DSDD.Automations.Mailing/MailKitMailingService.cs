@@ -1,5 +1,4 @@
-﻿using System.IdentityModel.Tokens.Jwt;
-using Azure.Core;
+﻿using Azure.Core;
 using MailKit.Net.Smtp;
 using MailKit.Security;
 using Microsoft.Extensions.Options;
@@ -44,7 +43,7 @@ public class MailKitMailingService: IMailingService, IDisposable
     private readonly TokenCredential _tokenCredential;
     private readonly SemaphoreSlim _semaphore = new(1, 1);
 
-    private static string[] _scopes = new[] { "https://outlook.office.com/SMTP.Send" };
+    private static string[] _scopes = new[] { "https://outlook.office365.com/.default" };
 
     private async Task<SmtpClient> GetSmtpClientAsync(CancellationToken ct)
     {
@@ -56,14 +55,8 @@ public class MailKitMailingService: IMailingService, IDisposable
             _smtpClient.Connect(_options.Value.SmtpEndpoint, _options.Value.SmtpPort, SecureSocketOptions.StartTls);
 
             AccessToken accessToken = await _tokenCredential.GetTokenAsync(new(_scopes), ct);
-            
-            string username = new JwtSecurityTokenHandler()
-                .ReadJwtToken(accessToken.Token)
-                .Claims
-                .First(c => c.Type == "upn")
-                .Value;
 
-            await _smtpClient.AuthenticateAsync(new SaslMechanismOAuthBearer(username, accessToken.Token));
+            await _smtpClient.AuthenticateAsync(new SaslMechanismOAuth2(_options.Value.SenderEmail, accessToken.Token));
         }
 
         _semaphore.Release(1);
