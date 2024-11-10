@@ -53,7 +53,7 @@ public class MailKitMailingService: IMailingService, IDisposable
         if (_smtpClient is null)
         {
             _smtpClient = new();
-            _smtpClient.Connect(_options.Value.SmtpEndpoint, _options.Value.SmtpPort);
+            _smtpClient.Connect(_options.Value.SmtpEndpoint, _options.Value.SmtpPort, SecureSocketOptions.StartTls);
 
             AccessToken accessToken = await _tokenCredential.GetTokenAsync(new(_scopes), ct);
             
@@ -63,7 +63,7 @@ public class MailKitMailingService: IMailingService, IDisposable
                 .First(c => c.Type == "upn")
                 .Value;
 
-            await _smtpClient.AuthenticateAsync(new SaslMechanismOAuthBearer(username, accessToken.Token))
+            await _smtpClient.AuthenticateAsync(new SaslMechanismOAuthBearer(username, accessToken.Token));
         }
 
         _semaphore.Release(1);

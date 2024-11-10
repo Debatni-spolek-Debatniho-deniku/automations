@@ -31,6 +31,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DSDD.Automations.Reports.Te
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DSDD.Automations.Mailing", "DSDD.Automations.Mailing\DSDD.Automations.Mailing.csproj", "{CE75F671-0BC1-4CF0-A08A-462A4829B3E1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DSDD.Automations.SocialNetworks", "DSDD.Automations.SocialNetworks\DSDD.Automations.SocialNetworks.csproj", "{BD1D525B-D048-414A-8E74-D40FE05D1435}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -77,6 +79,10 @@ Global
 		{CE75F671-0BC1-4CF0-A08A-462A4829B3E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CE75F671-0BC1-4CF0-A08A-462A4829B3E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CE75F671-0BC1-4CF0-A08A-462A4829B3E1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BD1D525B-D048-414A-8E74-D40FE05D1435}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BD1D525B-D048-414A-8E74-D40FE05D1435}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BD1D525B-D048-414A-8E74-D40FE05D1435}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BD1D525B-D048-414A-8E74-D40FE05D1435}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
