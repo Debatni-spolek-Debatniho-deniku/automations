@@ -308,6 +308,65 @@ internal class BankPaymentsImporterTests
             .Property(nameof(BankPayment.CounterpartyAccountNumber)).EqualTo($"{ACCOUNTNUMBER}/{BANKCODE}"));
     }
 
+    [Test]
+    public async Task ImportAsync_MissingRemittanceInformation()
+    {
+        // Setup
+        DateTime NOW = DateTime.Now;
+
+        const string CZK = "CZK";
+        
+        const string TRANSACTION_REFERENCE = "tran1";
+        const double TRANSACTION_AMOUNT = 90;
+        const string TRANSACTION_ACCOUNT_PREFIX = "123";
+        const string TRANSACTION_ACCOUNTNUMBER = "555222";
+        const string TRANSACTION_BANKCODE = "200";
+
+        Transaction transaction = new()
+        {
+            EntryReference = TRANSACTION_REFERENCE,
+            BookingDate = NOW,
+            Amount = new()
+            {
+                Currency = CZK,
+                Value = TRANSACTION_AMOUNT
+            },
+            EntryDetails = new()
+            {
+                TransactionDetails = new()
+                {
+                    RelatedParties = new()
+                    {
+                        CounterParty = new()
+                        {
+                            OrganisationIdentification = new()
+                            {
+                                BankCode = TRANSACTION_BANKCODE
+                            },
+                            Account = new()
+                            {
+                                AccountNumber = TRANSACTION_ACCOUNTNUMBER,
+                                AccountNumberPrefix = TRANSACTION_ACCOUNT_PREFIX
+                            }
+                        }
+                    },
+                }
+            }
+        };
+
+        _premiumApiClient
+            .Setup(_ => _.GetLast90DaysTransactionsAsync(default))
+            .Returns(new[] { transaction }.ToAsyncEnumerable());
+
+        // Act
+        await _sut.ImportAsync(default);
+
+        // Assert
+        // Payers and transactions are mapped using variable symbol. 
+        // Missing RemittanceInformation (and var. smybol) should prevent creating a new Payer (or attaching transaction to an existing one).
+        _payers.Verify(_ => _.UpsertAync(It.IsAny<Payer>(), default), Times.Never);
+    }
+
     public static IEnumerable ImportAsync_Skips_Source
     {
         get
