@@ -53,7 +53,7 @@ internal class BankPaymentsImporter: IBankPaymentsImporter
                 string? variableSymbolRaw = transaction
                     .EntryDetails
                     .TransactionDetails
-                    .RemittanceInformation
+                    .RemittanceInformation?
                     .CreditorReferenceInformation?
                     .Variable;
 
