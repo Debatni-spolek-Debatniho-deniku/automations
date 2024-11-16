@@ -363,7 +363,7 @@ internal class BankPaymentsImporterTests
 
         // Assert
         // Payers and transactions are mapped using variable symbol. 
-        // Missing RemittanceInformation (and var. smybol) should prevent creating a new Payer (or attaching transaction to an existing one).
+        // Missing RemittanceInformation (and var. symbol) should prevent creating a new Payer (or attaching transaction to an existing one).
         _payers.Verify(_ => _.UpsertAync(It.IsAny<Payer>(), default), Times.Never);
     }
 
