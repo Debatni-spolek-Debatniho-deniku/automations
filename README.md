@@ -2,6 +2,8 @@
 
 This repository contains .NET applications to automate processes in DSDD.
 
+[UML diagram](https://debatnispolek.sharepoint.com/:u:/r/Shared%20Documents/IT%20komise/Automatizace%20proces%C5%AF/Spr%C3%A1va%20plateb%20a%20reporty.vsdx?d=wf2d58d606e964fe0bf85d1f024a5466f&csf=1&web=1&e=gsjnz1)
+
 ## DSDD.Automations.Payments
 
 Application for fee payments administration.
