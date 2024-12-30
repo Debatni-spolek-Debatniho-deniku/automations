@@ -57,7 +57,7 @@ public class NotifyMemberFees
     /// <summary>
     /// Sends warning email to every member that has not paid their monthly fee.
     /// </summary>
-    [Function(nameof(NotifyMemberFees) + "-" + nameof(SendMemberFeesReport) + "-" + "Activity")]
+    [Function(nameof(NotifyMemberFees) + "-" + nameof(SendMissingMemberFeesNotification) + "-" + "Activity")]
     public Task SendMissingMemberFeesNotification([ActivityTrigger] TaskActivityContext context, CancellationToken ct)
         // TODO: Next stage
         => Task.CompletedTask;

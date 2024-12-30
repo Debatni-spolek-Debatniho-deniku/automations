@@ -106,6 +106,10 @@ SharePoint Online (SPO) cannot be accessed using clientId/clientSecret (Environm
 1. Find the certificate in the windows certificate manager.
 1. Copy the it's thumbprint to `DEV_CERTIFICATE_THUMBPRINT`.
 
+#### Email
+
+Email address used as sender must be accessible by the principal that this application runs as.
+
 ### Deploy
 
 Application is automatically deployed on every push to main branch.
