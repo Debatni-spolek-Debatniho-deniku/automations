@@ -1,5 +1,5 @@
-﻿using DSDD.Automations.Payments.RBCZ;
-using DSDD.Automations.Payments.Durable;
+﻿using DSDD.Automations.Hosting.Durable;
+using DSDD.Automations.Payments.RBCZ;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.DurableTask;
 using Microsoft.DurableTask.Client;
@@ -14,7 +14,7 @@ public class RbczImport
     }
 
     [Function(nameof(RbczImport) + "-" + nameof(Timer))]
-    public Task Timer([TimerTrigger("%RBCZ_IMPORT_TIMER_CRON%")] TimerInfo myTimer, [DurableClient] DurableTaskClient client, CancellationToken ct)
+    public Task Timer([TimerTrigger("%RBCZ_IMPORT_TIMER_CRON%")] TimerInfo myTimer, [DurableClient] DurableTaskClient client)
         => client.ScheduleNewMethodOrchestrationInstanceAsync<RbczImport>(_ => _.Orhcestration(default!));
 
     [Function(nameof(RbczImport) + "-" + nameof(Orhcestration))]

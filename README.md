@@ -1,6 +1,8 @@
-# Automations
+﻿# Automations
 
 This repository contains .NET applications to automate processes in DSDD.
+
+[UML diagram](https://debatnispolek.sharepoint.com/:u:/r/Shared%20Documents/IT%20komise/Automatizace%20proces%C5%AF/Spr%C3%A1va%20plateb%20a%20reporty.vsdx?d=wf2d58d606e964fe0bf85d1f024a5466f&csf=1&web=1&e=gsjnz1)
 
 ## DSDD.Automations.Payments
 
@@ -65,6 +67,27 @@ Create `local.settings.json`.
 
     "SPO_SITE_URL": "https://debatnispolek.sharepoint.com/",
     "SPO_MEMBERS_DOCUMENT_ID": "1F2E4D5C-11FB-4B2C-AC80-65853C589D78",
+
+    "SPO_MEMBERS_WORKSHEET": "Členové",
+    "SPO_MEMBERS_HEADER_SIZE": 2,
+    "SPO_MEMBERS_FIRST_NAME_COL": "A",
+    "SPO_MEMBERS_LAST_NAME_COL": "B",
+    "SPO_MEMBERS_VARIABLE_SYMBOL_COL": "C",
+    "SPO_MEMBERS_ENLISTED_COL": "D",
+
+    "MEMBER_FEES_FROM_MONTH": 7,
+    "MEMBER_FEES_FROM_YEAR": 2024,
+    "MEMBER_FEE_CZK": 100,
+    "MEMBER_FEES_CONSTANT_SYMBOL": 100,
+
+    "MAILING_SENDER_EMAIL": "noreply@debatnispolek.debatnidenik.cz",
+    "MAILING_SENDER_NAME": "No Reply",
+    "MAILING_SMTP_ENDPOINT": "smtp.office365.com",
+    "MAILING_SMTP_PORT": 587,
+    
+    "NOTIFY_TIMER_CRON": "0 0 4 1 * *",
+    "NOTIFY_MEMBER_FEES_REPORT_RECIPIENT_EMAIL": "vybor@debatnispolek.debatnidenik.cz",
+    "NOTIFY_MEMBER_FEES_REPORT_RECIPIENT_NAME": "Výbor",
 
     "DEV_CERTIFICATE_THUMBPRINT": "see below"
   }

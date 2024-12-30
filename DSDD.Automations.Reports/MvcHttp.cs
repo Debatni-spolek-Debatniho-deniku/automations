@@ -3,6 +3,9 @@ using DSDD.Automations.Hosting.Razor;
 using DSDD.Automations.Hosting.SisterApps;
 using DSDD.Automations.Payments.Helpers;
 using DSDD.Automations.Reports.Reports;
+using DSDD.Automations.Reports.Reports.MemberFees;
+using DSDD.Automations.Reports.Reports.PayedTotal;
+using DSDD.Automations.Reports.Reports.PayerPayments;
 using DSDD.Automations.Reports.Views;
 using DSDD.Automations.Reports.Views.Reports;
 using Microsoft.AspNetCore.Http;
@@ -38,23 +41,23 @@ public class MvcHttp
     public async Task<IActionResult> PostPayerPayments([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "reports/payer-payments")] HttpRequest req, CancellationToken ct)
     {
         PayerPaymentsFormViewModel model = BindToPayerPaymentsFormViewModel(await req.ReadFormAsync());
-        Stream xlsx = await _payerPaymentsReport.GenerateXlsxAsync(model.VariableSymbol, model.ConstantSymbol, ct);
-        return CreateXlsxResult(xlsx, $"payments-{model.VariableSymbol}{(model.ConstantSymbol is ulong cs ? $"-on-{cs}" : "")}");
+        ReportFile file = await _payerPaymentsReport.GenerateXlsxAsync(model.VariableSymbol, model.ConstantSymbol, ct);
+        return CreateResult(file);
     }
 
     [Function(nameof(MvcHttp) + "-" + nameof(PostPayedTotal))]
     public async Task<IActionResult> PostPayedTotal([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "reports/payed-total")] HttpRequest req, CancellationToken ct)
     {
         PayedTotalFormViewModel model = BindToPayedTotalFormViewModel(await req.ReadFormAsync());
-        Stream xlsx = await _payedTotalReport.GenerateXlsxAsync(model.ConstantSymbol, ct);
-        return CreateXlsxResult(xlsx, $"payer-total-{model.ConstantSymbol}");
+        ReportFile file = await _payedTotalReport.GenerateXlsxAsync(model.ConstantSymbol, ct);
+        return CreateResult(file);
     }
 
     [Function(nameof(MvcHttp) + "-" + nameof(PostMemberFees))]
     public async Task<IActionResult> PostMemberFees([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "reports/member-fees")] HttpRequest req, CancellationToken ct)
     {
-        Stream xlsx = await _memberFeesReport.GenerateXlsxAsync(ct);
-        return CreateXlsxResult(xlsx, "member-fees");
+        ReportFile file = await _memberFeesReport.GenerateXlsxAsync(ct);
+        return CreateResult(file);
     }
 
     private readonly IOptions<SisterAppsOptions> _sisterAppsOptions;
@@ -87,9 +90,9 @@ public class MvcHttp
         return new(constantSymbol);
     }
 
-    private IActionResult CreateXlsxResult(Stream stream, string name)
-        => new FileStreamResult(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+    private IActionResult CreateResult(ReportFile file)
+        => new FileStreamResult(file.Content, file.ContentType)
         {
-            FileDownloadName = $"{name}-{DateTime.Now:s}.xlsx"
+            FileDownloadName = file.Name
         };
 }

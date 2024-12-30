@@ -1,9 +1,9 @@
 ﻿using System.Collections;
 using System.Linq.Expressions;
 using Microsoft.Azure.Functions.Worker;
-using Sut = DSDD.Automations.Payments.Durable.FunctionHelpers;
+using Sut = DSDD.Automations.Hosting.Durable.FunctionHelpers;
 
-namespace DSDD.Automations.Payments.Tests.Durable;
+namespace DSDD.Automations.Hosting.Tests.Durable;
 
 public class FunctionHelpersTests
 {

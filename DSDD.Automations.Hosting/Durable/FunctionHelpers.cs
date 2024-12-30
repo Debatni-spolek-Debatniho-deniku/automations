@@ -1,8 +1,8 @@
-﻿using Microsoft.Azure.Functions.Worker;
-using System.Linq.Expressions;
+﻿using System.Linq.Expressions;
 using System.Reflection;
+using Microsoft.Azure.Functions.Worker;
 
-namespace DSDD.Automations.Payments.Durable;
+namespace DSDD.Automations.Hosting.Durable;
 
 public static class FunctionHelpers
 {

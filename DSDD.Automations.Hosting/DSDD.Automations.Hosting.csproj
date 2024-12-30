@@ -1,6 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<ItemGroup>
 		<PackageReference Include="Azure.Identity" />
+		<PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.DurableTask" />
 		<PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.Http.AspNetCore" />
 		<PackageReference Include="Microsoft.ApplicationInsights.WorkerService" />
 		<PackageReference Include="Microsoft.Azure.Functions.Worker.ApplicationInsights" />

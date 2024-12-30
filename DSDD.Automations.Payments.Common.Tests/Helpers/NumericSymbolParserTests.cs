@@ -1,6 +1,4 @@
-﻿using DSDD.Automations.Payments.Helpers;
-
-namespace DSDD.Automations.Payments.Common.Tests.Helpers;
+﻿namespace DSDD.Automations.Payments.Helpers;
 
 public class NumericSymbolParserTests
 {

@@ -1,9 +1,8 @@
-﻿using System.Data;
-using ClosedXML.Excel;
+﻿using ClosedXML.Excel;
 using DSDD.Automations.Payments;
 using DSDD.Automations.Reports.Members;
 
-namespace DSDD.Automations.Reports.Reports;
+namespace DSDD.Automations.Reports.Reports.PayedTotal;
 
 public class ClosedXmlPayedTotalReport: IPayedTotalReport
 {
@@ -13,7 +12,7 @@ public class ClosedXmlPayedTotalReport: IPayedTotalReport
         _payersDao = payersDao;
     }
 
-    public async Task<Stream> GenerateXlsxAsync(ulong constantSymbol, CancellationToken ct)
+    public async Task<ReportFile> GenerateXlsxAsync(ulong constantSymbol, CancellationToken ct)
     {
         IReadOnlyCollection<Member> members = await _membersProvider.GetMembersAsync(ct);
         Dictionary<ulong, Member> byVariableSymbol = members.ToDictionary(m => m.VariableSymbol);
@@ -34,7 +33,9 @@ public class ClosedXmlPayedTotalReport: IPayedTotalReport
             .OrderBy(p => p.LastName)
             .ToArrayAsync(ct);
 
-        return ClosedXmlHelpers.ToSingleTableWorkbook(payers);
+        Stream stream = ClosedXmlHelpers.ToSingleTableWorkbook(payers);
+
+        return ReportFile.FromXlsx($"payer-total-{constantSymbol}", stream);
     }
 
     private readonly IMembersProvider _membersProvider;
