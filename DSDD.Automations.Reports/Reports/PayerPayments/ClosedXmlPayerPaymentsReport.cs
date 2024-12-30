@@ -1,7 +1,9 @@
-﻿using DSDD.Automations.Payments;
+﻿using DocumentFormat.OpenXml.EMMA;
+using DocumentFormat.OpenXml.Spreadsheet;
+using DSDD.Automations.Payments;
 using DSDD.Automations.Payments.Model;
 
-namespace DSDD.Automations.Reports.Reports;
+namespace DSDD.Automations.Reports.Reports.PayerPayments;
 
 public class ClosedXmlPayerPaymentsReport: IPayerPaymentsReport
 {
@@ -10,7 +12,7 @@ public class ClosedXmlPayerPaymentsReport: IPayerPaymentsReport
         _payersDao = payersDao;
     }
 
-    public async Task<Stream> GenerateXlsxAsync(ulong variableSymbol, ulong? constantSymbol, CancellationToken ct)
+    public async Task<ReportFile> GenerateXlsxAsync(ulong variableSymbol, ulong? constantSymbol, CancellationToken ct)
     {
         Payer? payer = await _payersDao.GetAsync(variableSymbol, ct);
         payer ??= new(variableSymbol);
@@ -29,7 +31,9 @@ public class ClosedXmlPayerPaymentsReport: IPayerPaymentsReport
             })
             .ToArray();
 
-        return ClosedXmlHelpers.ToSingleTableWorkbook(payments);
+        Stream stream = ClosedXmlHelpers.ToSingleTableWorkbook(payments);
+        
+        return ReportFile.FromXlsx($"payer-{variableSymbol}-payments{(constantSymbol is ulong cs ? $"-on-{cs}" : "")}", stream);
     }
 
     private struct Payment

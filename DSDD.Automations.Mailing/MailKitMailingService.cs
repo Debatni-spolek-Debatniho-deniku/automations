@@ -3,7 +3,7 @@ using MailKit.Net.Smtp;
 using MailKit.Security;
 using Microsoft.Extensions.Options;
 using MimeKit;
-using MimeKit.Text;
+using ContentType = MimeKit.ContentType;
 
 namespace DSDD.Automations.Mailing;
 
@@ -17,12 +17,20 @@ public class MailKitMailingService: IMailingService, IDisposable
 
     public async Task SendAsync(MailMessage message, CancellationToken ct)
     {
+        BodyBuilder bodyBuilder = new();
+        bodyBuilder.HtmlBody = message.HtmlBody;
+        foreach (MailAttachment attachement in message.Attachments)
+            bodyBuilder.Attachments.Add(
+                attachement.Name, 
+                attachement.Stream, 
+                ContentType.Parse(attachement.ContentType));
+        
         MimeMessage mkMessage = new(
                 [new MailboxAddress(_options.Value.SenderName, _options.Value.SenderEmail)],
                 message.Recipients.Select(r => new MailboxAddress(r.Name, r.Address)),
                 message.Subject,
-                new TextPart(TextFormat.Html) { Text = message.Body });
-
+                bodyBuilder.ToMessageBody());
+        
         SmtpClient smtpClient = await GetSmtpClientAsync(ct);
 
         await smtpClient.SendAsync(mkMessage, ct);

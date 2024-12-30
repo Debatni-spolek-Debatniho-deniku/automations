@@ -1,7 +1,7 @@
 ﻿using System.Net.Mime;
+using DSDD.Automations.Hosting.Durable;
 using DSDD.Automations.Hosting.Razor;
 using DSDD.Automations.Hosting.SisterApps;
-using DSDD.Automations.Payments.Durable;
 using DSDD.Automations.Payments.Helpers;
 using DSDD.Automations.Payments.Model;
 using DSDD.Automations.Payments.Payments;

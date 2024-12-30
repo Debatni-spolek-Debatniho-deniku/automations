@@ -6,12 +6,21 @@ public readonly struct MailMessage
 
     public string Subject { get; }
 
-    public string Body { get; }
+    public string HtmlBody { get; }
 
-    public MailMessage(IEnumerable<MailParty> recipients, string subject, string body)
+    public IReadOnlyList<MailAttachment> Attachments { get; }
+
+    public MailMessage(IEnumerable<MailParty> recipients, string subject, string htmlBody, params MailAttachment[] attachments)
     {
         Recipients = recipients.ToArray();
         Subject = subject;
-        Body = body;
+        HtmlBody = htmlBody;
+        Attachments = attachments;
+    }
+
+    public MailMessage(MailParty recipient, string subject, string htmlBody, params MailAttachment[] attachments)
+        : this([recipient], subject, htmlBody, attachments)
+    {
+
     }
 }

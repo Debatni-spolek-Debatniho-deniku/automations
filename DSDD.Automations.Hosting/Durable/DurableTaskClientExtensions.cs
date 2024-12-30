@@ -1,7 +1,7 @@
 ﻿using System.Linq.Expressions;
 using Microsoft.DurableTask.Client;
 
-namespace DSDD.Automations.Payments.Durable;
+namespace DSDD.Automations.Hosting.Durable;
 
 public static class DurableTaskClientExtensions
 {

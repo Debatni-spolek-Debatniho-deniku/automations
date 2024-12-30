@@ -12,8 +12,6 @@
   <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="ClosedXML" />
-    <PackageReference Include="Microsoft.Azure.Functions.Worker" />
-    <PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.Http" />
     <PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.Timer" />
     <PackageReference Include="Microsoft.Azure.Functions.Worker.Sdk" />
     <PackageReference Include="PnP.Core" />
@@ -22,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DSDD.Automations.Hosting\DSDD.Automations.Hosting.csproj" />
+    <ProjectReference Include="..\DSDD.Automations.Mailing\DSDD.Automations.Mailing.csproj" />
     <ProjectReference Include="..\DSDD.Automations.Payments.Common\DSDD.Automations.Payments.Common.csproj" />
   </ItemGroup>
   <ItemGroup>

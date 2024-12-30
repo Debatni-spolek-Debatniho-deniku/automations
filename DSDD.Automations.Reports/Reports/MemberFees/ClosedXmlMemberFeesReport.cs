@@ -15,7 +15,7 @@ public class ClosedXmlMemberFeesReport: IMemberFeesReport
         _options = options.Value;
     }
     
-    public async Task<Stream> GenerateXlsxAsync(CancellationToken ct)
+    public async Task<ReportFile> GenerateXlsxAsync(CancellationToken ct)
     {
         IReadOnlyCollection<Member> members = await _membersProvider.GetMembersAsync(ct);
         members = members.OrderBy(p => p.LastName).ToArray();
@@ -116,7 +116,9 @@ public class ClosedXmlMemberFeesReport: IMemberFeesReport
             .Border
             .SetRightBorder(XLBorderStyleValues.Medium);
 
-        return ClosedXmlHelpers.SaveToMemory(workbook);
+        Stream stream = ClosedXmlHelpers.SaveToMemory(workbook);
+
+        return ReportFile.FromXlsx("member-fees", stream);
     }
 
     private readonly IMembersProvider _membersProvider;

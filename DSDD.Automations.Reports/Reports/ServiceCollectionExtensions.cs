@@ -1,4 +1,6 @@
 ﻿using DSDD.Automations.Reports.Reports.MemberFees;
+using DSDD.Automations.Reports.Reports.PayedTotal;
+using DSDD.Automations.Reports.Reports.PayerPayments;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace DSDD.Automations.Reports.Reports;
