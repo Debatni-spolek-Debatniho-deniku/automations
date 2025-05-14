@@ -12,7 +12,7 @@ public class CosmosPayersDao: IPayersDao, IDisposable
     public CosmosPayersDao(TokenCredential tokenCredential, IOptions<CosmosOptions> cosmosOptions)
     {
         _tokenCredential = tokenCredential;
-        _accountEndpoint = cosmosOptions.Value.AccountEndpont;
+        _accountEndpoint = cosmosOptions.Value.AccountEndpoint;
     }
 
     /// <summary>
