@@ -14,7 +14,7 @@ public class DiscordTimer
     }
 
     [Function(nameof(DiscordTimer) + "-" + nameof(Praha))]
-    public Task Praha([TimerTrigger("%PRAHA_TIMER_CRON%", RunOnStartup = true)] TimerInfo myTimer)
+    public Task Praha([TimerTrigger("%PRAHA_TIMER_CRON%")] TimerInfo myTimer)
     {
         _logger.LogInformation("Notifying: Praha");
 
@@ -22,7 +22,7 @@ public class DiscordTimer
     }
 
     [Function(nameof(DiscordTimer) + "-" + nameof(Plzen))]
-    public Task Plzen([TimerTrigger("%PLZEN_TIMER_CRON%", RunOnStartup = true)] TimerInfo myTimer)
+    public Task Plzen([TimerTrigger("%PLZEN_TIMER_CRON%")] TimerInfo myTimer)
     {
         _logger.LogInformation("Notifying: Plzen");
 
