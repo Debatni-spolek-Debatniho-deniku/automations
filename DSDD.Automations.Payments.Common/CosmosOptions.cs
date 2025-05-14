@@ -6,5 +6,5 @@ namespace DSDD.Automations.Payments;
 public class CosmosOptions
 {
     [ConfigurationKeyName("COSMOS_DB_ACCOUNT_ENDPOINT"), Required]
-    public string AccountEndpont { get; set; } = "";
+    public string AccountEndpoint { get; set; } = "";
 }

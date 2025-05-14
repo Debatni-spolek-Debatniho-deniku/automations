@@ -115,3 +115,33 @@ Email address used as sender must be accessible by the principal that this appli
 Application is automatically deployed on every push to main branch.
 
 For production the [ManagedIdentityCredential](https://learn.microsoft.com/en-us/dotnet/api/azure.identity.managedidentitycredential) is used. Production application is assigned it's own service principal in the Azure Portal that is different to enterprise application service principal and gets injected via `MSI_SECRET` env variable.
+
+## DSDD.Automations.DiscordMessages
+
+Periodically posts to a disocrd channel via webhook.
+
+### Run locally
+
+Create `local.settings.json`.
+```json
+{
+  "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "UseDevelopmentStorage=true",
+    "FUNCTIONS_WORKER_RUNTIME": "dotnet-isolated",
+
+
+    "PRAHA_TIMER_CRON": "0 0 12 * * 5",
+    "PRAHA_MESSAGE": "Message for Prague",
+    "PRAHA_WEBHOOK_URL": "Prague channel webhook URL",
+
+    "PLZEN_TIMER_CRON": "0 0 12 * * 6",
+    "PLZEN_MESSAGE": "Message for Pilsen",
+    "PLZEN_WEBHOOK_URL": "Pilsen channel webhook URL"
+  }
+}
+```
+
+### Deploy
+
+Application is automatically deployed on every push to main branch.
