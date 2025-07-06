@@ -7,7 +7,7 @@
             <div class="col-4 form-group">
                 <label for="amount-value" class="required">Částka</label>
                 <div class="d-flex align-items-center">
-                    <input type="number" class="form-control" id="amount-value" name="@nameof(ViewModel.AmountCzk)" value="@Model?.AmountCzk" required>
+                    <input type="number" class="form-control" id="amount-value" name="@nameof(ViewModel.AmountCzk)" value="@Model?.AmountCzk.ToString("0.##")" required>
                     <span class="px-2">CZK</span>
                 </div>
             </div>

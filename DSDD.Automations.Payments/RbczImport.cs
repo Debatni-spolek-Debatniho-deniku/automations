@@ -13,9 +13,9 @@ public class RbczImport
         _importer = importer;
     }
 
-    [Function(nameof(RbczImport) + "-" + nameof(Timer))]
-    public Task Timer([TimerTrigger("%RBCZ_IMPORT_TIMER_CRON%")] TimerInfo myTimer, [DurableClient] DurableTaskClient client)
-        => client.ScheduleNewMethodOrchestrationInstanceAsync<RbczImport>(_ => _.Orhcestration(default!));
+    //[Function(nameof(RbczImport) + "-" + nameof(Timer))]
+    //public Task Timer([TimerTrigger("%RBCZ_IMPORT_TIMER_CRON%")] TimerInfo myTimer, [DurableClient] DurableTaskClient client)
+    //    => client.ScheduleNewMethodOrchestrationInstanceAsync<RbczImport>(_ => _.Orhcestration(default!));
 
     [Function(nameof(RbczImport) + "-" + nameof(Orhcestration))]
     public Task Orhcestration([OrchestrationTrigger] TaskOrchestrationContext context)
