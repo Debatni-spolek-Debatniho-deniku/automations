@@ -2,6 +2,7 @@
 using DSDD.Automations.Payments.Banking.RBCZ.PremiumApi;
 using DSDD.Automations.Payments.Helpers;
 using DSDD.Automations.Payments.Persistence.Abstractions;
+using DSDD.Automations.Payments.Persistence.Abstractions.Model;
 using DSDD.Automations.Payments.Persistence.Abstractions.Model.Payers;
 using DSDD.Automations.Payments.RBCZ.PremiumApi;
 using Microsoft.Extensions.Logging;
@@ -10,88 +11,105 @@ namespace DSDD.Automations.Payments.Banking.RBCZ;
 
 internal class BankPaymentsImporter: IBankPaymentsImporter
 {
-    public BankPaymentsImporter(ILogger<BankPaymentsImporter> logger, IPayersDao payers, IPremiumApiClient client, INumericSymbolParser numericSymbolParser, IFxRates fxRates)
+    public BankPaymentsImporter(ILogger<BankPaymentsImporter> logger, IPayersDao payers,
+        IPremiumApiClient client, INumericSymbolParser numericSymbolParser, IFxRates fxRates,
+        IUnpairedBankPaymentsDao unpairedBankPayments)
     {
         _logger = logger;
         _payers = payers;
         _client = client;
         _numericSymbolParser = numericSymbolParser;
         _fxRates = fxRates;
+        _unpairedBankPayments = unpairedBankPayments;
     }
 
     public async Task ImportAsync(CancellationToken ct)
     {
         _logger.LogInformation("Importing RBCZ payments.");
 
-        ILookup<ulong, Transaction> byVaraibleSymbol = await GetTransactionsAsync(ct);
+        IReadOnlyList<Transaction> transactions = await GetTransactionsAsync(ct);
 
-        IEnumerable<Task> tasks = byVaraibleSymbol.Select(async group =>
-        {
-            _logger.LogInformation("Working on varaible symbol {VariableSymbol}", group.Key);
+        IEnumerable<Task> transactionTasks = transactions
+            .Select(async transaction =>
+            {
+                UnpairedBankPayment unpairedPayment = new(
+                    transaction.EntryReference,
+                    GetCounterPartyAccountNumber(transaction)!,
+                    GetConstantSymbol(transaction),
+                    GetVariableSymbol(transaction),
+                    await GetCzkAmountAsync(transaction, ct),
+                    (decimal)transaction.Amount.Value,
+                    transaction.Amount.Currency,
+                    transaction.BookingDate!.Value,
+                    transaction.EntryDetails.TransactionDetails.RemittanceInformation.Unstructured);
 
-            Payer? payer = await _payers.GetAsync(group.Key, ct);
-            payer ??= new(group.Key);
+                // Duplicates will be overriden, better cost wise than loading DB to filter out duplicates.
+                await _unpairedBankPayments.UpsertAync(unpairedPayment, ct);
+            });
 
-            await MergePaymentsAsync(payer.BankPayments, group, ct);
+        IEnumerable<Task> payerTasks = GroupByVariableSymbol(transactions)
+            .Select(async group =>
+            {
+                _logger.LogInformation("Working on variable symbol {VariableSymbol}", group.Key);
 
-            await _payers.UpsertAync(payer, ct);
-        });
+                Payer? payer = await _payers.GetAsync(group.Key, ct);
+                payer ??= new(group.Key);
 
-        await Task.WhenAll(tasks);
+                await MergePaymentsAsync(payer.BankPayments, group, ct);
+
+                await _payers.UpsertAync(payer, ct);
+
+                _logger.LogInformation("Finished working on variable symbol {VariableSymbol}", group.Key);
+            });
+
+        await Task.WhenAll(payerTasks.Concat(transactionTasks));
 
         _logger.LogInformation("Finished importing RBCZ payments.");
     }
 
     private readonly ILogger<BankPaymentsImporter> _logger;
     private readonly IPayersDao _payers;
+    private readonly IUnpairedBankPaymentsDao _unpairedBankPayments;
     private readonly IPremiumApiClient _client;
     private readonly INumericSymbolParser _numericSymbolParser;
     private readonly IFxRates _fxRates;
 
-    private ValueTask<ILookup<ulong, Transaction>> GetTransactionsAsync(CancellationToken ct)
-        => _client
+    private async ValueTask<IReadOnlyList<Transaction>> GetTransactionsAsync(CancellationToken ct)
+        => await _client
             .GetLast90DaysTransactionsAsync(ct)
-            .Select(transaction =>
+            .Where(transaction =>
             {
-                string? variableSymbolRaw = transaction
-                    .EntryDetails
-                    .TransactionDetails
-                    .RemittanceInformation?
-                    .CreditorReferenceInformation?
-                    .Variable;
-
-                ulong? variableSymbol = string.IsNullOrWhiteSpace(variableSymbolRaw)
-                    ? null
-                    : _numericSymbolParser.Parse(variableSymbolRaw);
-
-                return (variableSymbol, transaction);
-            })
-            .Where(tuple =>
-            {
-                if (tuple.variableSymbol is null)
+                if (transaction is not { BookingDate: { } })
                 {
-                    _logger.LogInformation("Skipping {ID} due to missing variable symbol.", tuple.transaction.EntryReference);
+                    _logger.LogInformation("Skipping {ID} due to missing booking date.", transaction.EntryReference);
                     return false;
                 }
-
-                if (tuple.transaction is not { BookingDate: { } })
+                
+                if (GetCounterPartyAccountNumber(transaction) is null)
                 {
-                    _logger.LogInformation("Skipping {ID} due to missing booking date.", tuple.transaction.EntryReference);
-                    return false;
-                }
-
-                // PERFORMANCE TRADEOFF: prevent needles load from DB by doing the check here thatn in MergePaymentsAsync
-                if (GetCounterPartyAccountNumber(tuple.transaction) is null)
-                {
-                    _logger.LogInformation("Skipping {ID} due to missing account number.", tuple.transaction.EntryReference);
+                    _logger.LogInformation("Skipping {ID} due to missing account number.", transaction.EntryReference);
                     return false;
                 }
 
                 return true;
             })
-            .ToLookupAsync(
-                tuple => tuple.variableSymbol!.Value,
-                tuple => tuple.transaction);
+            .ToArrayAsync(ct);
+
+    private ILookup<ulong, Transaction> GroupByVariableSymbol(IEnumerable<Transaction> transactions)
+        => transactions
+            .Select<Transaction, (ulong? VariableSymbol, Transaction Transaction)>(transaction => (GetVariableSymbol(transaction), transaction))
+            .Where(tuple =>
+            {
+                if (tuple.VariableSymbol is null)
+                {
+                    _logger.LogInformation("Skipping {ID} from sorting by variable symbol due to missing variable symbol.", tuple.Transaction.EntryReference);
+                    return false;
+                }
+
+                return true;
+            }).ToLookup(
+                tuple => tuple.VariableSymbol!.Value,
+                tuple => tuple.Transaction);
 
     private async Task MergePaymentsAsync(
         ICollection<PayerBankPayment> current,
@@ -108,7 +126,7 @@ internal class BankPaymentsImporter: IBankPaymentsImporter
                 transaction.EntryReference,
                 GetCounterPartyAccountNumber(transaction)!,
                 GetConstantSymbol(transaction),
-                await GetCzkAmountAsync(transaction),
+                await GetCzkAmountAsync(transaction, ct),
                 transaction.BookingDate!.Value,
                 transaction
                     .EntryDetails
@@ -117,33 +135,49 @@ internal class BankPaymentsImporter: IBankPaymentsImporter
                     .Unstructured,
                 new(false, null, null, null)));
         }
+    }
 
-        ulong? GetConstantSymbol(Transaction transaction)
-        {
-            string? constantRaw = transaction
-                .EntryDetails
-                .TransactionDetails
-                .RemittanceInformation
-                .CreditorReferenceInformation
-                .Constant;
+    private ulong? GetVariableSymbol(Transaction transaction)
+    {
+        string? variableSymbolRaw = transaction
+            .EntryDetails
+            .TransactionDetails
+            .RemittanceInformation?
+            .CreditorReferenceInformation?
+            .Variable;
 
-            ulong? constant = string.IsNullOrWhiteSpace(constantRaw)
-                ? null
-                : _numericSymbolParser.Parse(constantRaw);
+        ulong? variableSymbol = string.IsNullOrWhiteSpace(variableSymbolRaw)
+            ? null
+            : _numericSymbolParser.Parse(variableSymbolRaw);
 
-            return constant;
-        }
+        return variableSymbol;
+    }
 
-        Task<decimal> GetCzkAmountAsync(Transaction transaction)
-        {
-            decimal value = (decimal)transaction.Amount.Value;
-            string currency = transaction.Amount.Currency;
+    private ulong? GetConstantSymbol(Transaction transaction)
+    {
+        string? constantRaw = transaction
+            .EntryDetails
+            .TransactionDetails
+            .RemittanceInformation
+            .CreditorReferenceInformation
+            .Constant;
 
-            if (transaction.Amount.Currency.ToLower() is "czk")
-                return Task.FromResult(value);
+        ulong? constant = string.IsNullOrWhiteSpace(constantRaw)
+            ? null
+            : _numericSymbolParser.Parse(constantRaw);
 
-            return _fxRates.ToCzkAsync(value, currency, ct);
-        }
+        return constant;
+    }
+
+    private Task<decimal> GetCzkAmountAsync(Transaction transaction, CancellationToken ct)
+    {
+        decimal value = (decimal)transaction.Amount.Value;
+        string currency = transaction.Amount.Currency;
+
+        if (transaction.Amount.Currency.ToLower() is "czk")
+            return Task.FromResult(value);
+
+        return _fxRates.ToCzkAsync(value, currency, ct);
     }
 
     private string? GetCounterPartyAccountNumber(Transaction transaction)

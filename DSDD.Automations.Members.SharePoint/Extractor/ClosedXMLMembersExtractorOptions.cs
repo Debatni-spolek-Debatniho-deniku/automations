@@ -20,11 +20,11 @@ public class ClosedXMLMembersExtractorOptions
     [ConfigurationKeyName("SPO_MEMBERS_VARIABLE_SYMBOL_COL"), Required]
     public string VariableSymbolColumn { get; set; } = "";
 
-    [ConfigurationKeyName("SPO_MEMBERS_FEE_PAYMENT_PERIOD_COL"), Required]
-    public string FeePaymentPeriodColumn { get; set; } = "";
-
     [ConfigurationKeyName("SPO_MEMBERS_ENLISTED_COL"), Required]
     public string EnlistedColumn { get; set; } = "";
+
+    [ConfigurationKeyName("SPO_MEMBERS_FEE_PAYMENT_PERIOD_COL"), Required]
+    public string FeePaymentPeriodColumn { get; set; } = "";
 
     [ConfigurationKeyName("SPO_MEMBERS_FEE_PAYMENT_PERIOD_MONTHLY_VALUE"), Required]
     public string FeePaymentPeriodMonthlyValue { get; set; } = "";

@@ -1,6 +1,7 @@
 ﻿using System.Security.Cryptography.X509Certificates;
 using Azure.Core;
 using DSDD.Automations.Members.SharePoint;
+using DSDD.Automations.Payments.Helpers;
 using DSDD.Automations.Reports.Members.Extractor;
 using Microsoft.Extensions.DependencyInjection;
 using PnP.Core.Auth;
@@ -17,6 +18,8 @@ public static class ServiceCollectionExtensions
     /// <returns></returns>
     public static IServiceCollection AddSharePointMembersProvider(this IServiceCollection services)
     {
+        services.AddNumbericSymbolParser();
+
         services.AddPnPCore();
         services
             .AddOptions<PnPCoreOptions>()
