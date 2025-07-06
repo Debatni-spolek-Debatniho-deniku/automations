@@ -32,7 +32,7 @@ public static class ServiceCollectionExtensions
                     StoreLocation.CurrentUser,
                     Environment.GetEnvironmentVariable("DEV_CERTIFICATE_THUMBPRINT"));
 #else
-                options.DefaultAuthenticationProvider = new TokenCredentialAuthenticationProvider(credential);
+                options.DefaultAuthenticationProvider = new DSDD.Automations.Members.SharePoint.Auth.TokenCredentialAuthenticationProvider(credential);
 #endif
             });
 
