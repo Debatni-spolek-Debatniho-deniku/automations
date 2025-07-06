@@ -8,5 +8,5 @@ public interface IUnpairedBankPaymentsDao
 
     IAsyncEnumerable<UnpairedBankPayment> GetAllAsync(CancellationToken ct);
 
-    Task UpsertAync(UnpairedBankPayment payer, CancellationToken ct);
+    Task UpsertAync(UnpairedBankPayment payment, CancellationToken ct);
 }

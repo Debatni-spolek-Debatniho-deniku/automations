@@ -11,6 +11,8 @@ public class MemberFeePeriodParser: IMemberFeePeriodParser
 
     public MemberFeePaymentPeriod Parse(string value)
     {
+        value = value.Trim();
+
         if (value.Equals(options.Value.FeePaymentPeriodMonthlyValue, StringComparison.InvariantCultureIgnoreCase))
             return MemberFeePaymentPeriod.MONTHLY;
         if (value.Equals(options.Value.FeePaymentPeriodAnnualyValue, StringComparison.InvariantCultureIgnoreCase))

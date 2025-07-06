@@ -3,6 +3,7 @@ using DSDD.Automations.Hosting;
 using DSDD.Automations.Hosting.Razor;
 using DSDD.Automations.Hosting.SisterApps;
 using DSDD.Automations.Mailing;
+using DSDD.Automations.Payments.Helpers;
 using DSDD.Automations.Payments.Persistence.Cosmos;
 using DSDD.Automations.Reports;
 using DSDD.Automations.Reports.Members;
@@ -25,6 +26,8 @@ var host = new HostBuilder()
         services.AddRazorRenderer(new CompiledRazorAssemblyPart(Assembly.GetExecutingAssembly()));
 
         services.AddCosmosPaymentsDaos();
+
+        services.AddNumbericSymbolParser();
 
         services.AddMailKitMailing();
         
