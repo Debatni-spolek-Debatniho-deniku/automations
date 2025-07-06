@@ -8,7 +8,7 @@ namespace DSDD.Automations.Payments.Persistence.Cosmos;
 
 public class CosmosPayersDao: CosmosDaoBase<Payer>, IPayersDao
 {
-    public CosmosPayersDao(TokenCredential tokenCredential, IOptions<CosmosOptions> cosmosOptions, CosmosClient? client) : base(tokenCredential, cosmosOptions, client)
+    public CosmosPayersDao(TokenCredential tokenCredential, IOptions<CosmosOptions> cosmosOptions) : base(tokenCredential, cosmosOptions)
     {
     }
 

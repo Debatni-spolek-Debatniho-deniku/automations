@@ -14,11 +14,10 @@ public abstract class CosmosDaoBase<TDto>: IDisposable
 
     protected abstract string ContainerName { get; }
 
-    protected CosmosDaoBase(TokenCredential tokenCredential, IOptions<CosmosOptions> cosmosOptions, CosmosClient? client)
+    protected CosmosDaoBase(TokenCredential tokenCredential, IOptions<CosmosOptions> cosmosOptions)
     {
         _tokenCredential = tokenCredential;
         _cosmosOptions = cosmosOptions;
-        _client = client;
     }
 
     /// <summary>

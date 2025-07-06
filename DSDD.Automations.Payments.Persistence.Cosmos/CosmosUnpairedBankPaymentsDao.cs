@@ -17,7 +17,7 @@ public class CosmosUnpairedBankPaymentsDao: CosmosDaoBase<UnpairedBankPayment>, 
     public Task UpsertAync(UnpairedBankPayment payment, CancellationToken ct)
         => UpsertAyncInternal(payment, ct);
     
-    public CosmosUnpairedBankPaymentsDao(TokenCredential tokenCredential, IOptions<CosmosOptions> cosmosOptions, CosmosClient? client) : base(tokenCredential, cosmosOptions, client)
+    public CosmosUnpairedBankPaymentsDao(TokenCredential tokenCredential, IOptions<CosmosOptions> cosmosOptions) : base(tokenCredential, cosmosOptions)
     {
     }
 
