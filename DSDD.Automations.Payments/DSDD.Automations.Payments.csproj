@@ -35,7 +35,10 @@
 
 	<ItemGroup>
 	  <ProjectReference Include="..\DSDD.Automations.Hosting\DSDD.Automations.Hosting.csproj" />
-	  <ProjectReference Include="..\DSDD.Automations.Payments.Common\DSDD.Automations.Payments.Common.csproj" />
-	  <ProjectReference Include="..\DSDD.Automations.Payments.RBCZ\DSDD.Automations.Payments.RBCZ.csproj" />
+	  <ProjectReference Include="..\DSDD.Automations.Payments.Banking.Abstractions\DSDD.Automations.Payments.Banking.Abstractions.csproj" />
+	  <ProjectReference Include="..\DSDD.Automations.Payments.Banking.RBCZ\DSDD.Automations.Payments.Banking.RBCZ.csproj" />
+	  <ProjectReference Include="..\DSDD.Automations.Payments.Helpers\DSDD.Automations.Payments.Helpers.csproj" />
+	  <ProjectReference Include="..\DSDD.Automations.Payments.Persistence.Abstractions\DSDD.Automations.Payments.Persistence.Abstractions.csproj" />
+	  <ProjectReference Include="..\DSDD.Automations.Payments.Persistence.Cosmos\DSDD.Automations.Payments.Persistence.Cosmos.csproj" />
 	</ItemGroup>
 </Project>

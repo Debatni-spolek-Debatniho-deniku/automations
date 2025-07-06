@@ -11,17 +11,15 @@
   </PropertyGroup>
   <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
-    <PackageReference Include="ClosedXML" />
     <PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.Timer" />
     <PackageReference Include="Microsoft.Azure.Functions.Worker.Sdk" />
-    <PackageReference Include="PnP.Core" />
-    <PackageReference Include="PnP.Core.Auth" />
     <PackageReference Include="System.Linq.Async" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DSDD.Automations.Hosting\DSDD.Automations.Hosting.csproj" />
-    <ProjectReference Include="..\DSDD.Automations.Mailing\DSDD.Automations.Mailing.csproj" />
-    <ProjectReference Include="..\DSDD.Automations.Payments.Common\DSDD.Automations.Payments.Common.csproj" />
+    <ProjectReference Include="..\DSDD.Automations.Mailing.MailKit\DSDD.Automations.Mailing.MailKit.csproj" />
+    <ProjectReference Include="..\DSDD.Automations.Members.SharePoint\DSDD.Automations.Members.SharePoint.csproj" />
+    <ProjectReference Include="..\DSDD.Automations.Payments.Persistence.Cosmos\DSDD.Automations.Payments.Persistence.Cosmos.csproj" />
   </ItemGroup>
   <ItemGroup>
     <None Include="host.json">

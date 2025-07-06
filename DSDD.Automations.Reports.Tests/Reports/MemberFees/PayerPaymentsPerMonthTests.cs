@@ -1,4 +1,4 @@
-﻿using DSDD.Automations.Payments.Model;
+﻿using DSDD.Automations.Payments.Persistence.Abstractions.Model.Payers;
 using DSDD.Automations.Reports.Reports.MemberFees;
 
 namespace DSDD.Automations.Reports.Tests.Reports.MemberFees;

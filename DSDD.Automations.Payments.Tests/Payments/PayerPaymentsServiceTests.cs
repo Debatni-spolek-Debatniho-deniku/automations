@@ -1,5 +1,6 @@
-﻿using DSDD.Automations.Payments.Model;
-using DSDD.Automations.Payments.Payments;
+﻿using DSDD.Automations.Payments.Payments;
+using DSDD.Automations.Payments.Persistence.Abstractions;
+using DSDD.Automations.Payments.Persistence.Abstractions.Model.Payers;
 
 namespace DSDD.Automations.Payments.Tests.Payments;
 
@@ -70,7 +71,7 @@ public class PayerPaymentsServiceTests
         string? description)
     {
         // Arrange
-        BankPayment payment = new(
+        PayerBankPayment payment = new(
             paymentReference,
             "FOO",
             0ul,
@@ -123,7 +124,7 @@ public class PayerPaymentsServiceTests
         const string REFERENCE = "ref12";
 
         // Arrange
-        BankPayment bankPayment = new(REFERENCE, "FOO", null, 10, DateTime.Now, null, new(false, null, null, null));
+        PayerBankPayment bankPayment = new(REFERENCE, "FOO", null, 10, DateTime.Now, null, new(false, null, null, null));
         Payer payer = new(VARIABLE_SYMBOL);
         payer.BankPayments.Add(bankPayment);
         _payers.Setup(p => p.GetAsync(VARIABLE_SYMBOL, default)).ReturnsAsync(payer);
@@ -145,7 +146,7 @@ public class PayerPaymentsServiceTests
         const string REFERENCE = "ref12";
 
         // Arrange
-        ManualPayment manualPayment = new(REFERENCE, null, 0, DateTime.MinValue, null);
+        PayerManualPayment manualPayment = new(REFERENCE, null, 0, DateTime.MinValue, null);
         Payer payer = new(VARIABLE_SYMBOL);
         payer.ManualPayments.Add(manualPayment);
         _payers.Setup(p => p.GetAsync(VARIABLE_SYMBOL, default)).ReturnsAsync(payer);
@@ -184,7 +185,7 @@ public class PayerPaymentsServiceTests
         const ulong VARIABLE_SYMBOL = 50;
         const string REFERENCE = "FOO";
 
-        BankPayment bankPayment = new(REFERENCE, "FOO", null, 10, DateTime.Now, null, new(true, null, null, null));
+        PayerBankPayment bankPayment = new(REFERENCE, "FOO", null, 10, DateTime.Now, null, new(true, null, null, null));
         Payer payer = new(VARIABLE_SYMBOL);
         payer.BankPayments.Add(bankPayment);
         _payers.Setup(_ => _.GetAsync(VARIABLE_SYMBOL, default)).ReturnsAsync(payer);
@@ -223,7 +224,7 @@ public class PayerPaymentsServiceTests
         const ulong VARIABLE_SYMBOL = 4;
         const string REFERENCE = "payment";
 
-        ManualPayment payment = new(REFERENCE, null, 50, DateTime.Now, null);
+        PayerManualPayment payment = new(REFERENCE, null, 50, DateTime.Now, null);
 
         Payer payer = new(VARIABLE_SYMBOL);
         payer.ManualPayments.Add(payment);

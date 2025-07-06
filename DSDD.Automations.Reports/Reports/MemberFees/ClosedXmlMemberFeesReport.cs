@@ -1,6 +1,6 @@
 ﻿using ClosedXML.Excel;
-using DSDD.Automations.Payments;
-using DSDD.Automations.Payments.Model;
+using DSDD.Automations.Payments.Persistence.Abstractions;
+using DSDD.Automations.Payments.Persistence.Abstractions.Model.Payers;
 using DSDD.Automations.Reports.Members;
 using Microsoft.Extensions.Options;
 
@@ -44,11 +44,16 @@ public class ClosedXmlMemberFeesReport: IMemberFeesReport
         foreach (Member member in members)
         {
             Payer payer = (await _payersDao.GetAsync(member.VariableSymbol, ct)) ?? new(member.VariableSymbol);
-            PayerPaymentsPerMonth payedPerMonth = new(payer, _options.ConstantSymbol);
+
+            (decimal fee, ulong constantSymbol, bool isAnnual) = member.FeePaymentPeriod == MemberFeePaymentPeriod.ANNUALLY
+                ? (_options.AnnualyFeeCzk, _options.AnuallyConstantSymbol, true)
+                : (_options.MonthlyFeeCzk, _options.MonthlyConstantSymbol, false);
+
+            PayerPaymentsPerMonth payedPerMonth = new(payer, constantSymbol);
+
             MonthYear enlisted = new(member.Enlisted);
-            // Members that enlisted after the fees became mandatory get their "membership" after paying first fee and only from this obligated to pay fees.
-            // Between the enlistment and first fee payment they have no duty to pay as they are no members.
-            bool feeDutyStartedForThisMember = enlisted < feesMandatoryFrom;
+
+            MonthYear? maybeLastAnnualPayment = null;
 
             writeRow(
                 worksheet.Row(rowNumber),
@@ -57,6 +62,8 @@ public class ClosedXmlMemberFeesReport: IMemberFeesReport
                 cell => cell.Value = XLCellValue.FromObject(member.VariableSymbol),
                 (cell, monthYear) =>
                 {
+                    cell.Style.Font.Bold = true;
+
                     bool thisMonthHasPaymentRequirement = feesMandatoryFrom <= monthYear;
                     if (!thisMonthHasPaymentRequirement)
                         return;
@@ -66,24 +73,27 @@ public class ClosedXmlMemberFeesReport: IMemberFeesReport
                         return;
 
                     decimal payedThisMonth = payedPerMonth.Get(monthYear);
-                    bool payedEnough = _options.FeeCzk <= payedThisMonth;
+                    bool payedEnough = fee <= payedThisMonth;
 
+                    if (payedEnough && isAnnual)
+                        maybeLastAnnualPayment = monthYear;
+
+                    if (!payedEnough && isAnnual && maybeLastAnnualPayment is {} lastAnnualPayment)
+                    { 
+                        long monthsPassed = (monthYear - lastAnnualPayment) 
+                                            // Month of the payment should be included: 1.2025 - 2.2025 should be 2
+                                            + 1;
+                        
+                        if (monthsPassed <= 12)
+                        {
+                            cell.Value = XLCellValue.FromObject(payedThisMonth);
+                            cell.Style.Font.FontColor = XLColor.Orange;
+                            return;
+                        }
+                    }
+                    
                     cell.Value = XLCellValue.FromObject(payedThisMonth);
                     cell.Style.Font.Bold = true;
-
-                    // Those who enlisted after fees became mandatory are obligated to pay fees after their first fee payment (before that they are not trully members).
-                    // First payment must fulfil the duty, paying less than the fee will treat it as not payed at all.
-                    if (!feeDutyStartedForThisMember && payedEnough)
-                        feeDutyStartedForThisMember = true;
-
-                    if (!feeDutyStartedForThisMember)
-                    {
-                        if (payedThisMonth == 0)
-                            cell.Value = XLCellValue.FromObject("Bez 1. platby");
-
-                        cell.Style.Font.FontColor = XLColor.Orange;
-                        return;
-                    }
 
                     if (!payedEnough)
                     {

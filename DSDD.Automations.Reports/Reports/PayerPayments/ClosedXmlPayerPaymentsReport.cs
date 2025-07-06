@@ -1,7 +1,5 @@
-﻿using DocumentFormat.OpenXml.EMMA;
-using DocumentFormat.OpenXml.Spreadsheet;
-using DSDD.Automations.Payments;
-using DSDD.Automations.Payments.Model;
+﻿using DSDD.Automations.Payments.Persistence.Abstractions;
+using DSDD.Automations.Payments.Persistence.Abstractions.Model.Payers;
 
 namespace DSDD.Automations.Reports.Reports.PayerPayments;
 
@@ -38,7 +36,7 @@ public class ClosedXmlPayerPaymentsReport: IPayerPaymentsReport
 
     private struct Payment
     {
-        [ClosedXmlHelpers.Configuration("Protúčet")]
+        [ClosedXmlHelpers.Configuration("Protiúčet")]
         public string CounterParty { get; }
 
         [ClosedXmlHelpers.Configuration("KS")]
@@ -53,7 +51,7 @@ public class ClosedXmlPayerPaymentsReport: IPayerPaymentsReport
         [ClosedXmlHelpers.Configuration("Popis")]
         public string? Description { get; }
 
-        public Payment(BankPayment payment)
+        public Payment(PayerBankPayment payment)
         {
             CounterParty = payment.CounterpartyAccountNumber;
             ConstantSymbol = payment.FinalConstantSymbol;
@@ -62,7 +60,7 @@ public class ClosedXmlPayerPaymentsReport: IPayerPaymentsReport
             Description = payment.FinalDescription;
         }
 
-        public Payment(ManualPayment payment)
+        public Payment(PayerManualPayment payment)
         {
             CounterParty = "Manuální";
             ConstantSymbol = payment.ConstantSymbol;

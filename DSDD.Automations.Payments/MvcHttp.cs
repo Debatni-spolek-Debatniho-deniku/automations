@@ -3,8 +3,9 @@ using DSDD.Automations.Hosting.Durable;
 using DSDD.Automations.Hosting.Razor;
 using DSDD.Automations.Hosting.SisterApps;
 using DSDD.Automations.Payments.Helpers;
-using DSDD.Automations.Payments.Model;
 using DSDD.Automations.Payments.Payments;
+using DSDD.Automations.Payments.Persistence.Abstractions;
+using DSDD.Automations.Payments.Persistence.Abstractions.Model.Payers;
 using DSDD.Automations.Payments.Views;
 using DSDD.Automations.Payments.Views.BankPayment;
 using DSDD.Automations.Payments.Views.ManualPayment;
@@ -113,12 +114,12 @@ public class MvcHttp
 
             switch (await _paymentsService.GetPaymentAsync(longVariableSymbol, paymentReference, req.HttpContext.RequestAborted))
             {
-                case BankPayment bankPayment:
+                case PayerBankPayment bankPayment:
                     return await _rednerer.RenderAsync(
                         req.HttpContext,
                         "/Views/BankPayment/BankPayment.cshtml",
                         new BankPaymentViewModel(longVariableSymbol, bankPayment));
-                case ManualPayment manualPayment:
+                case PayerManualPayment manualPayment:
                     return await _rednerer.RenderAsync(
                         req.HttpContext,
                         "/Views/ManualPayment/ManualPayment.cshtml",
@@ -142,7 +143,7 @@ public class MvcHttp
         bool isBank = (await _paymentsService.GetPaymentAsync(
             longVariableSymbol, 
             paymentReference, 
-            req.HttpContext.RequestAborted)) is BankPayment;
+            req.HttpContext.RequestAborted)) is PayerBankPayment;
 
         if (isBank)
         {

@@ -1,4 +1,4 @@
-﻿using DSDD.Automations.Payments.Model;
+﻿using DSDD.Automations.Payments.Persistence.Abstractions.Model.Payers;
 
 namespace DSDD.Automations.Reports.Reports.MemberFees;
 
@@ -12,7 +12,7 @@ public struct PayerPaymentsPerMonth
             .Concat(payer
                 .BankPayments
                 .Where(p => !p.Overrides.Removed)
-                .Select<BankPayment, (DateTime DateTime, ulong? ConstantSymbol, decimal AmountCzk)>(
+                .Select<PayerBankPayment, (DateTime DateTime, ulong? ConstantSymbol, decimal AmountCzk)>(
                     p => (p.FinalDateTime, p.FinalConstantSymbol, p.AmountCzk)))
             .Where(p => p.ConstantSymbol == constantSymbol)
             .Select(p => (new MonthYear(p.DateTime), p.AmountCzk))
