@@ -1,4 +1,5 @@
-﻿using DSDD.Automations.Payments.Views.Shared;
+﻿using DSDD.Automations.Payments.Persistence.Abstractions.Model.Payers;
+using DSDD.Automations.Payments.Views.Shared;
 
 namespace DSDD.Automations.Payments.Views.BankPayment;
 
@@ -18,7 +19,7 @@ public class BankPaymentViewModel : LayoutViewModel
 
     public BankPaymentFormViewModel Payment { get; }
 
-    public BankPaymentViewModel(ulong variableSymbol, Model.BankPayment payment) : base($"Bankovní platba poplatníka {variableSymbol}")
+    public BankPaymentViewModel(ulong variableSymbol, PayerBankPayment payment) : base($"Bankovní platba poplatníka {variableSymbol}")
     {
         VariableSymbol = variableSymbol;
         CounterpartyAccountNumber = payment.CounterpartyAccountNumber;

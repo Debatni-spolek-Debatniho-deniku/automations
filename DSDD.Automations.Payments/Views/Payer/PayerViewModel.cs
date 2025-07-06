@@ -14,7 +14,7 @@ public class PayerViewModel : LayoutViewModel
         Payments = Array.Empty<PaymentViewModel>();
     }
 
-    public PayerViewModel(Model.Payer payer) : this(payer.VariableSymbol)
+    public PayerViewModel(Persistence.Abstractions.Model.Payers.Payer payer) : this(payer.VariableSymbol)
     {
         Payments = payer
             .BankPayments

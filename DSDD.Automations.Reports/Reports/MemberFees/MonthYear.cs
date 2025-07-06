@@ -53,4 +53,11 @@ public struct MonthYear
 
     public static bool operator >=(MonthYear left, MonthYear right)
         => left > right || left == right;
+
+    public static long operator -(MonthYear left, MonthYear right)
+    {
+        if (left < right)
+            return -1 * (right - left);
+        return (left.Year - right.Year) * 12 + (left.Month - right.Month);
+    }
 }

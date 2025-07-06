@@ -1,4 +1,5 @@
-﻿using DSDD.Automations.Payments.Views.Shared;
+﻿using DSDD.Automations.Payments.Persistence.Abstractions.Model.Payers;
+using DSDD.Automations.Payments.Views.Shared;
 
 namespace DSDD.Automations.Payments.Views.ManualPayment;
 
@@ -14,7 +15,7 @@ public class ManualPaymentViewModel : LayoutViewModel
         Payment = null;
     }
 
-    public ManualPaymentViewModel(ulong variableSymbol, Model.ManualPayment payment) : base($"Manuální platba poplatníka {variableSymbol}")
+    public ManualPaymentViewModel(ulong variableSymbol, PayerManualPayment payment) : base($"Manuální platba poplatníka {variableSymbol}")
     {
         VariableSymbol = variableSymbol;
         Payment = new(payment);

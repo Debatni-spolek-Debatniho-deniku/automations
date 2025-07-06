@@ -1,5 +1,5 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using DSDD.Automations.Payments.Model;
+﻿using DSDD.Automations.Payments.Persistence.Abstractions;
+using DSDD.Automations.Payments.Persistence.Abstractions.Model.Payers;
 
 namespace DSDD.Automations.Payments.Payments;
 
@@ -24,8 +24,8 @@ public class PayerPaymentsService: IPaymentsService
 
         if (paymentReference is not null)
         {
-            ManualPayment[] concurrent = payer.ManualPayments.Where(p => p.Reference == paymentReference).ToArray();
-            foreach (ManualPayment c in concurrent)
+            PayerManualPayment[] concurrent = payer.ManualPayments.Where(p => p.Reference == paymentReference).ToArray();
+            foreach (PayerManualPayment c in concurrent)
                 payer.ManualPayments.Remove(c);
         }
 
@@ -44,7 +44,7 @@ public class PayerPaymentsService: IPaymentsService
     {
         Payer payer = await _payers.GetRequiredAsync(variableSymbol, ct);
 
-        BankPayment payment = payer.BankPayments.Single(p => p.Reference == paymentReference);
+        PayerBankPayment payment = payer.BankPayments.Single(p => p.Reference == paymentReference);
         payment.Overrides.ConstantSymbol = constantSymbol;
         payment.Overrides.DateTime = dateTime;
         payment.Overrides.Description = description;
@@ -58,10 +58,10 @@ public class PayerPaymentsService: IPaymentsService
         
         switch (FilterOutPayment(payer, paymentReference, true)!)
         {
-            case BankPayment bankPayment:
+            case PayerBankPayment bankPayment:
                 bankPayment.Overrides.Removed = true;
                 break;
-            case ManualPayment manualPayment:
+            case PayerManualPayment manualPayment:
                 payer.ManualPayments.Remove(manualPayment);
                 break;
             default:
@@ -76,7 +76,7 @@ public class PayerPaymentsService: IPaymentsService
         Payer payer = await _payers.GetRequiredAsync(variableSymbol, ct);
 
         object? payment = FilterOutPayment(payer, paymentReference, false);
-        if (payment is not BankPayment bankPayment)
+        if (payment is not PayerBankPayment bankPayment)
             throw new InvalidOperationException("Je možné obnovit pouze bankovní plataby!");
 
         bankPayment.Overrides.Removed = false;
@@ -88,11 +88,11 @@ public class PayerPaymentsService: IPaymentsService
 
     private object? FilterOutPayment(Payer payer, string paymentReference, bool throwIfNotFound)
     {
-        BankPayment? maybeBankPayment = payer.BankPayments.SingleOrDefault(p => p.Reference == paymentReference);
+        PayerBankPayment? maybeBankPayment = payer.BankPayments.SingleOrDefault(p => p.Reference == paymentReference);
         if (maybeBankPayment is not null)
             return maybeBankPayment;
 
-        ManualPayment? maybeManualPayment = payer.ManualPayments.SingleOrDefault(p => p.Reference == paymentReference);
+        PayerManualPayment? maybeManualPayment = payer.ManualPayments.SingleOrDefault(p => p.Reference == paymentReference);
         if (maybeManualPayment is not null)
             return maybeManualPayment;
 

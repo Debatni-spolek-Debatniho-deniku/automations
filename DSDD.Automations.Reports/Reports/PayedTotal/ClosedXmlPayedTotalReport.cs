@@ -1,5 +1,5 @@
 ﻿using ClosedXML.Excel;
-using DSDD.Automations.Payments;
+using DSDD.Automations.Payments.Persistence.Abstractions;
 using DSDD.Automations.Reports.Members;
 
 namespace DSDD.Automations.Reports.Reports.PayedTotal;

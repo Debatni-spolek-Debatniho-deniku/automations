@@ -1,4 +1,6 @@
-﻿namespace DSDD.Automations.Payments.Views.BankPayment;
+﻿using DSDD.Automations.Payments.Persistence.Abstractions.Model.Payers;
+
+namespace DSDD.Automations.Payments.Views.BankPayment;
 
 public class BankPaymentFormViewModel
 {
@@ -15,7 +17,7 @@ public class BankPaymentFormViewModel
         Description = description;
     }
 
-    public BankPaymentFormViewModel(Model.BankPaymentOverrides overrides)
+    public BankPaymentFormViewModel(PayerBankPaymentOverrides overrides)
         : this(overrides.ConstantSymbol, overrides.DateTime, overrides.Description)
     { }
 }

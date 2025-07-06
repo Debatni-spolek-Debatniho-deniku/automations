@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using DSDD.Automations.Payments.Persistence.Abstractions.Model.Payers;
 
 namespace DSDD.Automations.Payments.Views.ManualPayment;
 
@@ -20,7 +20,7 @@ public class ManualPaymentFormViewModel
         Description = description;
     }
 
-    public ManualPaymentFormViewModel(Model.ManualPayment payment)
+    public ManualPaymentFormViewModel(PayerManualPayment payment)
         : this(payment.ConstantSymbol, payment.AmountCzk, payment.DateTime, payment.Description)
     { }
 }

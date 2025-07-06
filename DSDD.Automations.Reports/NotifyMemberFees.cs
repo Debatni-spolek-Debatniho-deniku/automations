@@ -1,5 +1,5 @@
 ﻿using DSDD.Automations.Hosting.Durable;
-using DSDD.Automations.Mailing;
+using DSDD.Automations.Mailing.Abstractions;
 using DSDD.Automations.Reports.Reports;
 using DSDD.Automations.Reports.Reports.MemberFees;
 using Microsoft.Azure.Functions.Worker;

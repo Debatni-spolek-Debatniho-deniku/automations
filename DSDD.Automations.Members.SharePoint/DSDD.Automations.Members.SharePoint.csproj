@@ -1,0 +1,11 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<ItemGroup>
+		<PackageReference Include="Azure.Core" />
+		<PackageReference Include="ClosedXML" />
+		<PackageReference Include="PnP.Core.Auth" />
+	</ItemGroup>
+	<ItemGroup>
+	  <ProjectReference Include="..\DSDD.Automations.Members.Abstranctions\DSDD.Automations.Members.Abstranctions.csproj" />
+	  <ProjectReference Include="..\DSDD.Automations.Payments.Helpers\DSDD.Automations.Payments.Helpers.csproj" />
+	</ItemGroup>
+</Project>

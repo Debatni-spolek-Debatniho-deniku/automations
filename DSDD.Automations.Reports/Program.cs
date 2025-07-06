@@ -3,7 +3,7 @@ using DSDD.Automations.Hosting;
 using DSDD.Automations.Hosting.Razor;
 using DSDD.Automations.Hosting.SisterApps;
 using DSDD.Automations.Mailing;
-using DSDD.Automations.Payments;
+using DSDD.Automations.Payments.Persistence.Cosmos;
 using DSDD.Automations.Reports;
 using DSDD.Automations.Reports.Members;
 using DSDD.Automations.Reports.Middleware;
@@ -24,10 +24,13 @@ var host = new HostBuilder()
         
         services.AddRazorRenderer(new CompiledRazorAssemblyPart(Assembly.GetExecutingAssembly()));
 
-        services.AddPaymentsCommon();
-        services.AddMembers();
+        services.AddCosmosPaymentsDaos();
+
+        services.AddMailKitMailing();
+        
+        services.AddSharePointMembersProvider();
+
         services.AddReports();
-        services.AddMailing();
         
         services.AddOptionsWithValidateOnStart<NotifyMemberFeesOptions>().BindConfiguration("");
     })

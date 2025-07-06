@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using DSDD.Automations.Payments.Persistence.Abstractions.Model.Payers;
 
 namespace DSDD.Automations.Payments.Views.Payer;
 
@@ -26,7 +27,7 @@ public class PaymentViewModel
     [Display(Name = "Popis")]
     public string? Description { get; }
     
-    public PaymentViewModel(ulong variableSymbol, Model.BankPayment payment)
+    public PaymentViewModel(ulong variableSymbol, PayerBankPayment payment)
     {
         Reference = payment.Reference;
         VariableSymbol = variableSymbol;
@@ -44,7 +45,7 @@ public class PaymentViewModel
         };
     }
 
-    public PaymentViewModel(ulong variableSymbol, Model.ManualPayment payment)
+    public PaymentViewModel(ulong variableSymbol, PayerManualPayment payment)
     {
         Reference = payment.Reference;
         VariableSymbol = variableSymbol;

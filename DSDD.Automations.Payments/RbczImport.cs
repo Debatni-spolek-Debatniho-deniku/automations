@@ -1,5 +1,5 @@
 ﻿using DSDD.Automations.Hosting.Durable;
-using DSDD.Automations.Payments.RBCZ;
+using DSDD.Automations.Payments.Banking.Abstractions;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.DurableTask;
 using Microsoft.DurableTask.Client;
