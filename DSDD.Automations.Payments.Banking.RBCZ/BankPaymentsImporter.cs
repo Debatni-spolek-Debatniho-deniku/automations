@@ -41,7 +41,7 @@ internal class BankPaymentsImporter: IBankPaymentsImporter
                     (decimal)transaction.Amount.Value,
                     transaction.Amount.Currency,
                     transaction.BookingDate!.Value,
-                    transaction.EntryDetails.TransactionDetails.RemittanceInformation.Unstructured);
+                    GetRemittanceInformation(transaction)?.Unstructured);
 
                 // Duplicates will be overriden, better cost wise than loading DB to filter out duplicates.
                 await _unpairedBankPayments.UpsertAync(unpairedPayment, ct);
