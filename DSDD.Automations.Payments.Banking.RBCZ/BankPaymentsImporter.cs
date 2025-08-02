@@ -128,45 +128,35 @@ internal class BankPaymentsImporter: IBankPaymentsImporter
                 GetConstantSymbol(transaction),
                 await GetCzkAmountAsync(transaction, ct),
                 transaction.BookingDate!.Value,
-                transaction
-                    .EntryDetails
-                    .TransactionDetails
-                    .RemittanceInformation
-                    .Unstructured,
+                GetRemittanceInformation(transaction)?.Unstructured,
                 new(false, null, null, null)));
         }
     }
 
     private ulong? GetVariableSymbol(Transaction transaction)
-    {
-        string? variableSymbolRaw = transaction
-            .EntryDetails
-            .TransactionDetails
-            .RemittanceInformation?
-            .CreditorReferenceInformation?
-            .Variable;
-
-        ulong? variableSymbol = string.IsNullOrWhiteSpace(variableSymbolRaw)
-            ? null
-            : _numericSymbolParser.Parse(variableSymbolRaw);
-
-        return variableSymbol;
-    }
+        => GetNumericSymbol(transaction, info => info.Variable);
 
     private ulong? GetConstantSymbol(Transaction transaction)
+        => GetNumericSymbol(transaction, info => info.Constant);
+
+    private ulong? GetNumericSymbol(Transaction transaction, Func<CreditorReferenceInformation, string?> picker)
     {
-        string? constantRaw = transaction
+        if (GetRemittanceInformation(transaction) is not { CreditorReferenceInformation: {} creditorReference })
+            return null;
+
+        string? symbolRaw = picker(creditorReference);
+        if (string.IsNullOrWhiteSpace(symbolRaw))
+            return null;
+
+        return _numericSymbolParser.Parse(symbolRaw);
+    }
+
+    private static RemittanceInformation? GetRemittanceInformation(Transaction transaction)
+    {
+        return transaction
             .EntryDetails
             .TransactionDetails
-            .RemittanceInformation
-            .CreditorReferenceInformation
-            .Constant;
-
-        ulong? constant = string.IsNullOrWhiteSpace(constantRaw)
-            ? null
-            : _numericSymbolParser.Parse(constantRaw);
-
-        return constant;
+            .RemittanceInformation;
     }
 
     private Task<decimal> GetCzkAmountAsync(Transaction transaction, CancellationToken ct)

@@ -14,7 +14,7 @@ public class RbczImport
     }
 
     [Function(nameof(RbczImport) + "-" + nameof(Timer))]
-    public Task Timer([TimerTrigger("%RBCZ_IMPORT_TIMER_CRON%")] TimerInfo myTimer, [DurableClient] DurableTaskClient client)
+    public Task Timer([TimerTrigger("%RBCZ_IMPORT_TIMER_CRON%", RunOnStartup = true)] TimerInfo myTimer, [DurableClient] DurableTaskClient client)
         => client.ScheduleNewMethodOrchestrationInstanceAsync<RbczImport>(_ => _.Orhcestration(default!));
 
     [Function(nameof(RbczImport) + "-" + nameof(Orhcestration))]
