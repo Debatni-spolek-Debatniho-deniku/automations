@@ -3,8 +3,7 @@ name: Deploy Reports functions app to azure
 on:
   [push]
 
-
-env:
+    env:
   APP_NAME: 'dsdd-reports-functions'
   APP_PATH: 'DSDD.Automations.Reports'
   DOTNET_VERSION: '8.0.x'

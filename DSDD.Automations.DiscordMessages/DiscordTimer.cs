@@ -48,8 +48,13 @@ public class DiscordTimer
     private readonly ILogger _logger;
     private readonly IOptions<DiscordMessageOptions> _discordOptions;
 
-    private async Task notify(string webhookUrl, string message)
+    private async Task notify(string? webhookUrl, string? message)
     {
+        if (string.IsNullOrWhiteSpace(webhookUrl))
+            throw new ArgumentException("Value must be filled!", nameof(webhookUrl));
+        if (string.IsNullOrWhiteSpace(message))
+            throw new ArgumentException("Value must be filled!", nameof(message));
+
         using DiscordWebhookClient client = new DiscordWebhookClient(webhookUrl);
 
         await client.SendMessageAsync(message);
