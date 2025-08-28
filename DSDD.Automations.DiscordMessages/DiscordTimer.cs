@@ -13,20 +13,36 @@ public class DiscordTimer
         _discordOptions = discordOptions;
     }
 
-    [Function(nameof(DiscordTimer) + "-" + nameof(Praha))]
-    public Task Praha([TimerTrigger("%PRAHA_TIMER_CRON%")] TimerInfo myTimer)
+    [Function(nameof(DiscordTimer) + "-" + nameof(Timer1))]
+    public Task Timer1([TimerTrigger("%TIMER_1_CRON%")] TimerInfo myTimer)
     {
-        _logger.LogInformation("Notifying: Praha");
+        _logger.LogInformation("Notifying: Timer 1");
 
-        return notify(_discordOptions.Value.PrahaWebhookUrl, _discordOptions.Value.PrahaMessage);
+        return notify(_discordOptions.Value.Timer1WebhookUrl, _discordOptions.Value.Timer1Message);
     }
 
-    [Function(nameof(DiscordTimer) + "-" + nameof(Plzen))]
-    public Task Plzen([TimerTrigger("%PLZEN_TIMER_CRON%")] TimerInfo myTimer)
+    [Function(nameof(DiscordTimer) + "-" + nameof(Timer2))]
+    public Task Timer2([TimerTrigger("%TIMER_2_CRON%")] TimerInfo myTimer)
     {
-        _logger.LogInformation("Notifying: Plzen");
+        _logger.LogInformation("Notifying: Timer 2");
 
-        return notify(_discordOptions.Value.PlzenWebhookUrl, _discordOptions.Value.PlzenMessage);
+        return notify(_discordOptions.Value.Timer2WebhookUrl, _discordOptions.Value.Timer2Message);
+    }
+
+    [Function(nameof(DiscordTimer) + "-" + nameof(Timer3))]
+    public Task Timer3([TimerTrigger("%TIMER_3_CRON%")] TimerInfo myTimer)
+    {
+        _logger.LogInformation("Notifying: Timer 3");
+
+        return notify(_discordOptions.Value.Timer3WebhookUrl, _discordOptions.Value.Timer3Message);
+    }
+
+    [Function(nameof(DiscordTimer) + "-" + nameof(Timer4))]
+    public Task Timer4([TimerTrigger("%TIMER_4_CRON%")] TimerInfo myTimer)
+    {
+        _logger.LogInformation("Notifying: Timer 4");
+
+        return notify(_discordOptions.Value.Timer4WebhookUrl, _discordOptions.Value.Timer4Message);
     }
 
     private readonly ILogger _logger;
