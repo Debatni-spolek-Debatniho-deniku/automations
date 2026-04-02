@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(xargs head:*)",
+      "Bash(head -30 /f/git/automations/DSDD.Automations.Hosting/SisterApps/*.cs)"
+    ]
+  }
+}
