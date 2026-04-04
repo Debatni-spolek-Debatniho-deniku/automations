@@ -120,9 +120,7 @@ SharePoint Online (SPO) cannot be accessed using clientId/clientSecret (Environm
 
 ## DSDD.Automations.Reports
 
-Application for generating user reports. Runs on **Linux Consumption**.
-
-> **Note:** Reports currently still accesses SharePoint Online directly for member data and requires the same SPO and certificate configuration as the Members service. Once the Members service is validated in production, Reports will be switched to consume member data via HTTP from the Members service instead.
+Application for generating user reports. Gets member data from the Members service via HTTP. Runs on **Linux Consumption**.
 
 ### Run locally
 
@@ -140,18 +138,8 @@ Create `local.settings.json`.
 
     "COSMOS_DB_ACCOUNT_ENDPOINT": "From payments-db-dev",
 
-    "SPO_SITE_URL": "https://debatnispolek.sharepoint.com/",
-    "SPO_MEMBERS_DOCUMENT_ID": "1F2E4D5C-11FB-4B2C-AC80-65853C589D78",
-
-    "SPO_MEMBERS_WORKSHEET": "Členové",
-    "SPO_MEMBERS_HEADER_SIZE": 2,
-    "SPO_MEMBERS_FIRST_NAME_COL": "A",
-    "SPO_MEMBERS_LAST_NAME_COL": "B",
-    "SPO_MEMBERS_VARIABLE_SYMBOL_COL": "C",
-    "SPO_MEMBERS_ENLISTED_COL": "D",
-    "SPO_MEMBERS_FEE_PAYMENT_PERIOD_COL": "J",
-    "SPO_MEMBERS_FEE_PAYMENT_PERIOD_ANNUALY_VALUE": "roční",
-    "SPO_MEMBERS_FEE_PAYMENT_PERIOD_MONTHLY_VALUE": "měsíční",
+    "MEMBERS_APP_URL": "http://localhost:7071",
+    "MEMBERS_APP_KEY": "Function key from Members service",
 
     "MEMBER_FEES_FROM_MONTH": 7,
     "MEMBER_FEES_FROM_YEAR": 2024,
@@ -167,18 +155,12 @@ Create `local.settings.json`.
     
     "NOTIFY_TIMER_CRON": "0 0 4 1 * *",
     "NOTIFY_MEMBER_FEES_REPORT_RECIPIENT_EMAIL": "vybor@debatnispolek.debatnidenik.cz",
-    "NOTIFY_MEMBER_FEES_REPORT_RECIPIENT_NAME": "Výbor",
-
-    "DEV_CERTIFICATE_THUMBPRINT": "see below"
+    "NOTIFY_MEMBER_FEES_REPORT_RECIPIENT_NAME": "Výbor"
   }
 }
 ```
 
 For local development the [EnvironmentCredential](https://learn.microsoft.com/en-us/dotnet/api/azure.identity.environmentcredential) is used. In order to access Azure resource settings must contain `AZURE_TENANT_ID`, `AZURE_CLIENT_ID`, `AZURE_CLIENT_SECRET`. This service principal represents enterprise application.
-
-#### Certificate for SharePoint
-
-See the certificate setup instructions in the [Members](#dsddautomationsmembers) section above.
 
 #### Email
 

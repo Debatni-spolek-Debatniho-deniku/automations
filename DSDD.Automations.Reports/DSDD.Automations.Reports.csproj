@@ -20,7 +20,7 @@
     <ProjectReference Include="..\DSDD.Automations.Hosting\DSDD.Automations.Hosting.csproj" />
     <ProjectReference Include="..\DSDD.Automations.Payments.Helpers\DSDD.Automations.Payments.Helpers.csproj" />
     <ProjectReference Include="..\DSDD.Automations.Mailing.MailKit\DSDD.Automations.Mailing.MailKit.csproj" />
-    <ProjectReference Include="..\DSDD.Automations.Members.SharePoint\DSDD.Automations.Members.SharePoint.csproj" />
+    <ProjectReference Include="..\DSDD.Automations.Members.Http\DSDD.Automations.Members.Http.csproj" />
     <ProjectReference Include="..\DSDD.Automations.Payments.Persistence.Cosmos\DSDD.Automations.Payments.Persistence.Cosmos.csproj" />
   </ItemGroup>
   <ItemGroup>

@@ -6,7 +6,7 @@ using DSDD.Automations.Mailing;
 using DSDD.Automations.Payments.Helpers;
 using DSDD.Automations.Payments.Persistence.Cosmos;
 using DSDD.Automations.Reports;
-using DSDD.Automations.Reports.Members;
+using DSDD.Automations.Members.Http;
 using DSDD.Automations.Reports.Middleware;
 using Microsoft.Extensions.Hosting;
 using DSDD.Automations.Reports.Reports;
@@ -31,7 +31,7 @@ var host = new HostBuilder()
 
         services.AddMailKitMailing();
         
-        services.AddSharePointMembersProvider();
+        services.AddHttpMembersProvider();
 
         services.AddReports();
         

@@ -24,7 +24,7 @@ dotnet test DSDD.Automations.Payments.Tests/DSDD.Automations.Payments.Tests.cspr
 
 - **DSDD.Automations.Payments** — Bank payment import (RBCZ timer-triggered durable orchestration) + Razor web UI for payer/payment management. Deploys to `dsdd-payments-functions`.
 - **DSDD.Automations.Members** — Centralized member data HTTP API backed by SharePoint Online. Isolates the complex SPO/IAM setup so other services consume members via HTTP. Deploys to `dsdd-members-functions`.
-- **DSDD.Automations.Reports** — Generates Excel reports (ClosedXML), emails them via Office 365 SMTP. Timer-triggered durable orchestration. Currently still accesses SPO directly for member data (will switch to Members service via HTTP once validated). Deploys to `dsdd-reports-functions`.
+- **DSDD.Automations.Reports** — Generates Excel reports (ClosedXML), emails them via Office 365 SMTP. Timer-triggered durable orchestration. Gets member data from the Members service via HTTP. Deploys to `dsdd-reports-functions`.
 - **DSDD.Automations.DiscordMessages** — Posts scheduled messages to Discord via webhooks. Timer-triggered. Deploys to `dsdd-discordmessages-functions`.
 
 ### Shared Libraries
@@ -66,4 +66,4 @@ NUnit + Moq. Test project detection is automatic via `Directory.Build.props` —
 
 ## Deployment
 
-A single GitHub Actions workflow (`.github/workflows/deploy.yml`) auto-deploys all apps on push to `main` using a matrix strategy. Each app builds and deploys in parallel via Azure Functions publish profiles stored in GitHub secrets.
+A single GitHub Actions workflow (`.github/workflows/deploy.yml`) auto-deploys all apps on push to `main` using a matrix strategy. Each app builds and deploys in parallel via RBAC with GitHub federated identity (OIDC).
