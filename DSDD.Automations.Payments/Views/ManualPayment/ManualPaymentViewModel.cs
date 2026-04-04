@@ -7,17 +7,21 @@ public class ManualPaymentViewModel : LayoutViewModel
 {
     public ulong VariableSymbol { get; }
 
+    public string? MemberName { get; }
+
     public ManualPaymentFormViewModel? Payment { get; }
 
-    public ManualPaymentViewModel(ulong variableSymbol): base($"Nová manuální platba poplatníka {variableSymbol}")
+    public ManualPaymentViewModel(ulong variableSymbol, string? memberName): base($"Nová manuální platba poplatníka {variableSymbol}")
     {
         VariableSymbol = variableSymbol;
+        MemberName = memberName;
         Payment = null;
     }
 
-    public ManualPaymentViewModel(ulong variableSymbol, PayerManualPayment payment) : base($"Manuální platba poplatníka {variableSymbol}")
+    public ManualPaymentViewModel(ulong variableSymbol, PayerManualPayment payment, string? memberName) : base($"Manuální platba poplatníka {variableSymbol}")
     {
         VariableSymbol = variableSymbol;
+        MemberName = memberName;
         Payment = new(payment);
     }
 }

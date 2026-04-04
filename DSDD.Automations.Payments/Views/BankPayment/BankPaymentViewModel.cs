@@ -17,11 +17,14 @@ public class BankPaymentViewModel : LayoutViewModel
 
     public string? Description { get; }
 
+    public string? MemberName { get; }
+
     public BankPaymentFormViewModel Payment { get; }
 
-    public BankPaymentViewModel(ulong variableSymbol, PayerBankPayment payment) : base($"Bankovní platba poplatníka {variableSymbol}")
+    public BankPaymentViewModel(ulong variableSymbol, PayerBankPayment payment, string? memberName) : base($"Bankovní platba poplatníka {variableSymbol}")
     {
         VariableSymbol = variableSymbol;
+        MemberName = memberName;
         CounterpartyAccountNumber = payment.CounterpartyAccountNumber;
         ConstantSymbol = payment.ConstantSymbol;
         AmountCzk = payment.AmountCzk;

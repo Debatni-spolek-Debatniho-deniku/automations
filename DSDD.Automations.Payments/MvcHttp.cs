@@ -7,6 +7,8 @@ using DSDD.Automations.Payments.Payments;
 using DSDD.Automations.Payments.Persistence.Abstractions;
 using DSDD.Automations.Payments.Persistence.Abstractions.Model.Payers;
 using DSDD.Automations.Payments.Views;
+using DSDD.Automations.Payments.Members;
+using DSDD.Automations.Reports.Members;
 using DSDD.Automations.Payments.Views.BankPayment;
 using DSDD.Automations.Payments.Views.ManualPayment;
 using DSDD.Automations.Payments.Views.Payer;
@@ -21,8 +23,9 @@ namespace DSDD.Automations.Payments;
 
 public class MvcHttp
 {
-    public MvcHttp(IRazorRenderer rednerer, IPayersDao payers, IPaymentsService paymentsService, 
+    public MvcHttp(IRazorRenderer rednerer, IPayersDao payers, IPaymentsService paymentsService,
         INumericSymbolParser numericSymbolParser, IOptions<SisterAppsOptions> sisterAppsOptions,
+        IMembersProvider membersProvider, IMemberNameResolver memberNameResolver,
         ILogger<MvcHttp> logger)
     {
         _rednerer = rednerer;
@@ -30,17 +33,23 @@ public class MvcHttp
         _paymentsService = paymentsService;
         _numericSymbolParser = numericSymbolParser;
         _sisterAppsOptions = sisterAppsOptions;
+        _membersProvider = membersProvider;
+        _memberNameResolver = memberNameResolver;
         _logger = logger;
     }
 
     [Function(nameof(MvcHttp) + "-" + nameof(GetIndex))]
     public async Task<IActionResult> GetIndex([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "payers")] HttpRequest req)
-        => new ContentResult()
+    {
+        IReadOnlyCollection<Member> members = await _membersProvider.GetMembersAsync(req.HttpContext.RequestAborted);
+
+        return new ContentResult()
         {
-            Content = await _rednerer.RenderAsync(req.HttpContext, "/Views/Index.cshtml", new IndexViewModel(_sisterAppsOptions.Value.SisterAppUrl)),
+            Content = await _rednerer.RenderAsync(req.HttpContext, "/Views/Index.cshtml", new IndexViewModel(_sisterAppsOptions.Value.SisterAppUrl, members)),
             ContentType = MediaTypeNames.Text.Html,
             StatusCode = StatusCodes.Status200OK
         };
+    }
 
     [Function(nameof(MvcHttp) + "-" + nameof(GetPayer))]
     public async Task<IActionResult> GetPayer(
@@ -48,13 +57,16 @@ public class MvcHttp
         string variableSymbol)
     {
         ulong longVariableSymbol = _numericSymbolParser.Parse(variableSymbol);
-        Payer? maybePayer = await _payers.GetAsync(longVariableSymbol, req.HttpContext.RequestAborted);
+        CancellationToken ct = req.HttpContext.RequestAborted;
+
+        Payer? maybePayer = await _payers.GetAsync(longVariableSymbol, ct);
+        string? memberName = await _memberNameResolver.GetMemberNameAsync(longVariableSymbol, ct);
 
         return new ContentResult()
         {
             Content = await _rednerer.RenderAsync(req.HttpContext, "/Views/Payer/Payer.cshtml", maybePayer is not null
-                ? new PayerViewModel(maybePayer)
-                : new PayerViewModel(longVariableSymbol)),
+                ? new PayerViewModel(maybePayer, memberName)
+                : new PayerViewModel(longVariableSymbol, memberName)),
             ContentType = MediaTypeNames.Text.Html,
             StatusCode = StatusCodes.Status200OK
         };
@@ -66,10 +78,11 @@ public class MvcHttp
         string variableSymbol)
     {
         ulong longVariableSymbol = _numericSymbolParser.Parse(variableSymbol);
+        string? memberName = await _memberNameResolver.GetMemberNameAsync(longVariableSymbol, req.HttpContext.RequestAborted);
 
         return new ContentResult()
         {
-            Content = await _rednerer.RenderAsync(req.HttpContext, "/Views/ManualPayment/ManualPayment.cshtml", new ManualPaymentViewModel(longVariableSymbol)),
+            Content = await _rednerer.RenderAsync(req.HttpContext, "/Views/ManualPayment/ManualPayment.cshtml", new ManualPaymentViewModel(longVariableSymbol, memberName)),
             ContentType = MediaTypeNames.Text.Html,
             StatusCode = StatusCodes.Status200OK
         };
@@ -110,20 +123,22 @@ public class MvcHttp
         async Task<string> GetContent()
         {
             ulong longVariableSymbol = _numericSymbolParser.Parse(variableSymbol);
-            Payer payer = await _payers.GetRequiredAsync(longVariableSymbol, req.HttpContext.RequestAborted);
+            CancellationToken ct = req.HttpContext.RequestAborted;
+            Payer payer = await _payers.GetRequiredAsync(longVariableSymbol, ct);
+            string? memberName = await _memberNameResolver.GetMemberNameAsync(longVariableSymbol, ct);
 
-            switch (await _paymentsService.GetPaymentAsync(longVariableSymbol, paymentReference, req.HttpContext.RequestAborted))
+            switch (await _paymentsService.GetPaymentAsync(longVariableSymbol, paymentReference, ct))
             {
                 case PayerBankPayment bankPayment:
                     return await _rednerer.RenderAsync(
                         req.HttpContext,
                         "/Views/BankPayment/BankPayment.cshtml",
-                        new BankPaymentViewModel(longVariableSymbol, bankPayment));
+                        new BankPaymentViewModel(longVariableSymbol, bankPayment, memberName));
                 case PayerManualPayment manualPayment:
                     return await _rednerer.RenderAsync(
                         req.HttpContext,
                         "/Views/ManualPayment/ManualPayment.cshtml",
-                        new ManualPaymentViewModel(longVariableSymbol, manualPayment));
+                        new ManualPaymentViewModel(longVariableSymbol, manualPayment, memberName));
                 default:
                     throw new IndexOutOfRangeException();
             }
@@ -226,6 +241,8 @@ public class MvcHttp
     private readonly IPaymentsService _paymentsService;
     private readonly INumericSymbolParser _numericSymbolParser;
     private readonly IOptions<SisterAppsOptions> _sisterAppsOptions;
+    private readonly IMembersProvider _membersProvider;
+    private readonly IMemberNameResolver _memberNameResolver;
     private readonly ILogger<MvcHttp> _logger;
 
     private ManualPaymentFormViewModel BindToManualPaymentFormViewModel(IFormCollection form)

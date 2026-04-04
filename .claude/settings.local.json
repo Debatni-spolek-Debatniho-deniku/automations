@@ -5,7 +5,9 @@
       "Bash(head -30 /f/git/automations/DSDD.Automations.Hosting/SisterApps/*.cs)",
       "Bash(dotnet sln:*)",
       "Bash(dotnet build:*)",
-      "Bash(dotnet test:*)"
+      "Bash(dotnet test:*)",
+      "Bash(xargs grep:*)",
+      "Bash(grep -E \"\\\\.\\(cs|cshtml\\)$\")"
     ]
   }
 }

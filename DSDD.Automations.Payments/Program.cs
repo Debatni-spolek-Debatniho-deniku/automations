@@ -2,6 +2,8 @@ using System.Reflection;
 using DSDD.Automations.Hosting;
 using DSDD.Automations.Hosting.Razor;
 using DSDD.Automations.Hosting.SisterApps;
+using DSDD.Automations.Members.Http;
+using DSDD.Automations.Payments.Members;
 using DSDD.Automations.Payments.Banking.RBCZ;
 using DSDD.Automations.Payments.Helpers;
 using DSDD.Automations.Payments.Middleware;
@@ -30,6 +32,9 @@ var host = new HostBuilder()
         services.AddNumbericSymbolParser();
         
         services.AddRbczImporter();
+
+        services.AddHttpMembersProvider();
+        services.AddTransient<IMemberNameResolver, MemberNameResolver>();
     })
     .Build();
 

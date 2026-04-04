@@ -35,6 +35,7 @@
 
 	<ItemGroup>
 	  <ProjectReference Include="..\DSDD.Automations.Hosting\DSDD.Automations.Hosting.csproj" />
+	  <ProjectReference Include="..\DSDD.Automations.Members.Http\DSDD.Automations.Members.Http.csproj" />
 	  <ProjectReference Include="..\DSDD.Automations.Payments.Banking.Abstractions\DSDD.Automations.Payments.Banking.Abstractions.csproj" />
 	  <ProjectReference Include="..\DSDD.Automations.Payments.Banking.RBCZ\DSDD.Automations.Payments.Banking.RBCZ.csproj" />
 	  <ProjectReference Include="..\DSDD.Automations.Payments.Helpers\DSDD.Automations.Payments.Helpers.csproj" />

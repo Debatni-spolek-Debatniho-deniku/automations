@@ -6,15 +6,18 @@ public class PayerViewModel : LayoutViewModel
 {
     public ulong VariableSymbol { get; }
 
+    public string? MemberName { get; }
+
     public IReadOnlyList<PaymentViewModel> Payments { get; }
-    
-    public PayerViewModel(ulong variableSymbol) : base($"Poplatník s variabilním symbolem {variableSymbol}")
+
+    public PayerViewModel(ulong variableSymbol, string? memberName) : base($"Poplatník s variabilním symbolem {variableSymbol}")
     {
         VariableSymbol = variableSymbol;
+        MemberName = memberName;
         Payments = Array.Empty<PaymentViewModel>();
     }
 
-    public PayerViewModel(Persistence.Abstractions.Model.Payers.Payer payer) : this(payer.VariableSymbol)
+    public PayerViewModel(Persistence.Abstractions.Model.Payers.Payer payer, string? memberName) : this(payer.VariableSymbol, memberName)
     {
         Payments = payer
             .BankPayments

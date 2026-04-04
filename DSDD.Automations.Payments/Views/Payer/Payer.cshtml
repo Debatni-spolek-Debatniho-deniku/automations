@@ -10,6 +10,8 @@
     }
 </style>
 
+<p class="lead">@(Model.MemberName ?? "Není člen")</p>
+
 <div class="mb-2">
     <a href="/payers" class="btn btn-secondary">Zpět</a>
     <a href="/payers/@Model.VariableSymbol/payments/new" class="btn btn-success"><i class="bi bi-plus"></i>Nová platba</a>

@@ -4,6 +4,8 @@
     Layout = "../Shared/_Layout.cshtml";
 }
 
+<p class="lead">@(Model.MemberName ?? "Není člen")</p>
+
 <div class="mb-2">
     <a href="/payers/@Model.VariableSymbol" class="btn btn-secondary">Zpět</a>
 </div>

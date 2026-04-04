@@ -10,11 +10,19 @@
 
 <form class="card" style="max-width: 20rem" onsubmit="onSubmit(event)">
     <div class="card-body form-group">
-        <label for="variable-symbol" class="required">Variabilní symbol</label>
-        <input type="number" class="form-control" id="variable-symbol" required min="0" step="1">
+        <label for="member-select">Člen</label>
+        <select class="form-select mb-3" id="member-select">
+            <option value="" disabled selected>Vyberte člena...</option>
+            @foreach (var member in Model.Members.OrderBy(m => m.LastName).ThenBy(m => m.FirstName))
+            {
+                <option value="@member.VariableSymbol">@member.LastName @member.FirstName (@member.VariableSymbol)</option>
+            }
+        </select>
+        <label for="variable-symbol">Vlastní variabilní symbol</label>
+        <input type="number" class="form-control" id="variable-symbol" min="0" step="1">
     </div>
     <div class="card-footer d-flex justify-content-end">
-        <button type="submit" class="btn btn-success">Uložit</button>
+        <button type="submit" class="btn btn-success">Zobrazit</button>
     </div>
 </form>
 
@@ -28,7 +36,12 @@
     function onSubmit(event) {
         event.preventDefault();
 
-        const numberInput = document.getElementById('variable-symbol').value;
-        window.location.href = '/payers/' + numberInput;
+        const custom = document.getElementById('variable-symbol').value;
+        const selected = document.getElementById('member-select').value;
+        const value = custom || selected;
+
+        if (!value) return;
+
+        window.location.href = '/payers/' + value;
     }
 </script>
