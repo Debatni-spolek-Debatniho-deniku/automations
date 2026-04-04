@@ -1,12 +1,43 @@
-﻿# Automations
+# Automations
 
 This repository contains .NET applications to automate processes in DSDD.
 
 [UML diagram](https://debatnispolek.sharepoint.com/:u:/r/Shared%20Documents/IT%20komise/Automatizace%20proces%C5%AF/Spr%C3%A1va%20plateb%20a%20reporty.vsdx?d=wf2d58d606e964fe0bf85d1f024a5466f&csf=1&web=1&e=gsjnz1)
 
+## Deployment
+
+All apps are automatically deployed on every push to `main` via a single GitHub Actions workflow (`.github/workflows/deploy.yml`). All apps deploy using **RBAC with GitHub federated identity (OIDC)** — GitHub exchanges its OIDC token directly with Entra ID, no stored secrets needed.
+
+### Setup
+
+An Entra app registration is configured with a federated identity credential:
+- **Issuer:** `https://token.actions.githubusercontent.com`
+- **Subject:** `repo:<org>/<repo>:ref:refs/heads/main`
+- **Audience:** `api://AzureADTokenExchange`
+
+The app registration must have the **Website Contributor** role assigned on each Function App.
+
+Three GitHub secrets are needed:
+
+| Secret | Description |
+|--------|-------------|
+| `AZURE_CLIENT_ID` | App registration client ID (from Entra > App registrations > Overview) |
+| `AZURE_TENANT_ID` | Entra tenant ID (from the same Overview page) |
+| `AZURE_SUBSCRIPTION_ID` | Azure subscription ID (from the Function App > Overview) |
+
+### Adding a new Function App
+
+1. Create the Function App in Azure
+2. Assign **Website Contributor** role to the existing app registration on the new Function App
+3. Add the app to the matrix in `.github/workflows/deploy.yml`
+
+### Runtime
+
+For production the [ManagedIdentityCredential](https://learn.microsoft.com/en-us/dotnet/api/azure.identity.managedidentitycredential) is used. Production applications are assigned their own service principal in the Azure Portal that is different to the enterprise application service principal and gets injected via `MSI_SECRET` env variable.
+
 ## DSDD.Automations.Payments
 
-Application for fee payments administration.
+Application for fee payments administration. Runs on **Linux Consumption**.
 
 ### Run locally
 
@@ -39,15 +70,9 @@ Create `local.settings.json`.
 ```
 For local development the [EnvironmentCredential](https://learn.microsoft.com/en-us/dotnet/api/azure.identity.environmentcredential) is used. In order to access Azure resource settings must contain `AZURE_TENANT_ID`, `AZURE_CLIENT_ID`, `AZURE_CLIENT_SECRET`. This service principal represents enterprise application.
 
-### Deploy
-
-Automatically deployed on every push to `main`. Runs on **Linux Consumption** (soon to be discontinued by Microsoft). Deploys via **publish profile** stored in GitHub secret `AZURE_PAYMENTS_PUBLISH_PROFILE`. To regenerate: Azure Portal > Function App > Overview > Get publish profile.
-
-For production the [ManagedIdentityCredential](https://learn.microsoft.com/en-us/dotnet/api/azure.identity.managedidentitycredential) is used. Production application is assigned it's own service principal in the Azure Portal that is different to enterprise application service principal and gets injected via `MSI_SECRET` env variable.
-
 ## DSDD.Automations.Members
 
-Centralized member data service. Exposes member information from SharePoint Online via an HTTP API (`GET /api/members`). Other services consume member data through this service instead of accessing SharePoint directly.
+Centralized member data service. Exposes member information from SharePoint Online via an HTTP API (`GET /api/members`). Other services consume member data through this service instead of accessing SharePoint directly. Runs on **Flex Consumption**.
 
 ### Run locally
 
@@ -93,24 +118,9 @@ SharePoint Online (SPO) cannot be accessed using clientId/clientSecret (Environm
 1. Find the certificate in the windows certificate manager.
 1. Copy the it's thumbprint to `DEV_CERTIFICATE_THUMBPRINT`.
 
-### Deploy
-
-Automatically deployed on every push to `main`. Runs on **Flex Consumption**. Deploys via **RBAC with GitHub federated identity (OIDC)** — GitHub exchanges its token directly with Entra ID, no stored secrets.
-
-Setup requires an Entra app registration with a federated identity credential:
-- **Issuer:** `https://token.actions.githubusercontent.com`
-- **Subject:** `repo:<org>/<repo>:ref:refs/heads/main`
-- **Audience:** `api://AzureADTokenExchange`
-
-The app registration must have the **Website Contributor** role assigned on this Function App.
-
-GitHub secrets needed: `AZURE_CLIENT_ID`, `AZURE_TENANT_ID`, `AZURE_SUBSCRIPTION_ID` (shared with other RBAC-deployed apps).
-
-For production the [ManagedIdentityCredential](https://learn.microsoft.com/en-us/dotnet/api/azure.identity.managedidentitycredential) is used. Production application is assigned it's own service principal in the Azure Portal that is different to enterprise application service principal and gets injected via `MSI_SECRET` env variable.
-
 ## DSDD.Automations.Reports
 
-Application for generating user reports.
+Application for generating user reports. Runs on **Linux Consumption**.
 
 > **Note:** Reports currently still accesses SharePoint Online directly for member data and requires the same SPO and certificate configuration as the Members service. Once the Members service is validated in production, Reports will be switched to consume member data via HTTP from the Members service instead.
 
@@ -174,15 +184,9 @@ See the certificate setup instructions in the [Members](#dsddautomationsmembers)
 
 Email address used as sender must be accessible by the principal that this application runs as.
 
-### Deploy
-
-Automatically deployed on every push to `main`. Runs on **Linux Consumption** (soon to be discontinued by Microsoft). Deploys via **publish profile** stored in GitHub secret `AZURE_REPORTS_PUBLISH_PROFILE`. To regenerate: Azure Portal > Function App > Overview > Get publish profile.
-
-For production the [ManagedIdentityCredential](https://learn.microsoft.com/en-us/dotnet/api/azure.identity.managedidentitycredential) is used. Production application is assigned it's own service principal in the Azure Portal that is different to enterprise application service principal and gets injected via `MSI_SECRET` env variable.
-
 ## DSDD.Automations.DiscordMessages
 
-Periodically posts to a disocrd channel via webhook.
+Periodically posts to a disocrd channel via webhook. Runs on **Windows Consumption**.
 
 ### Run locally
 
@@ -205,7 +209,3 @@ Create `local.settings.json`.
   }
 }
 ```
-
-### Deploy
-
-Automatically deployed on every push to `main`. Runs on **Windows Consumption**. Deploys via **RBAC with GitHub federated identity (OIDC)** — same setup as the Members service. The app registration must have **Website Contributor** role on this Function App. Uses shared GitHub secrets `AZURE_CLIENT_ID`, `AZURE_TENANT_ID`, `AZURE_SUBSCRIPTION_ID`.
