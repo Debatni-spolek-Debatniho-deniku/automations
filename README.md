@@ -41,7 +41,7 @@ For local development the [EnvironmentCredential](https://learn.microsoft.com/en
 
 ### Deploy
 
-Application is automatically deployed on every push to main branch.
+Automatically deployed on every push to `main`. Runs on **Linux Consumption** (soon to be discontinued by Microsoft). Deploys via **publish profile** stored in GitHub secret `AZURE_PAYMENTS_PUBLISH_PROFILE`. To regenerate: Azure Portal > Function App > Overview > Get publish profile.
 
 For production the [ManagedIdentityCredential](https://learn.microsoft.com/en-us/dotnet/api/azure.identity.managedidentitycredential) is used. Production application is assigned it's own service principal in the Azure Portal that is different to enterprise application service principal and gets injected via `MSI_SECRET` env variable.
 
@@ -95,7 +95,16 @@ SharePoint Online (SPO) cannot be accessed using clientId/clientSecret (Environm
 
 ### Deploy
 
-Application is automatically deployed on every push to main branch.
+Automatically deployed on every push to `main`. Runs on **Flex Consumption**. Deploys via **RBAC with GitHub federated identity (OIDC)** — GitHub exchanges its token directly with Entra ID, no stored secrets.
+
+Setup requires an Entra app registration with a federated identity credential:
+- **Issuer:** `https://token.actions.githubusercontent.com`
+- **Subject:** `repo:<org>/<repo>:ref:refs/heads/main`
+- **Audience:** `api://AzureADTokenExchange`
+
+The app registration must have the **Website Contributor** role assigned on this Function App.
+
+GitHub secrets needed: `AZURE_CLIENT_ID`, `AZURE_TENANT_ID`, `AZURE_SUBSCRIPTION_ID` (shared with other RBAC-deployed apps).
 
 For production the [ManagedIdentityCredential](https://learn.microsoft.com/en-us/dotnet/api/azure.identity.managedidentitycredential) is used. Production application is assigned it's own service principal in the Azure Portal that is different to enterprise application service principal and gets injected via `MSI_SECRET` env variable.
 
@@ -167,7 +176,7 @@ Email address used as sender must be accessible by the principal that this appli
 
 ### Deploy
 
-Application is automatically deployed on every push to main branch.
+Automatically deployed on every push to `main`. Runs on **Linux Consumption** (soon to be discontinued by Microsoft). Deploys via **publish profile** stored in GitHub secret `AZURE_REPORTS_PUBLISH_PROFILE`. To regenerate: Azure Portal > Function App > Overview > Get publish profile.
 
 For production the [ManagedIdentityCredential](https://learn.microsoft.com/en-us/dotnet/api/azure.identity.managedidentitycredential) is used. Production application is assigned it's own service principal in the Azure Portal that is different to enterprise application service principal and gets injected via `MSI_SECRET` env variable.
 
@@ -199,4 +208,4 @@ Create `local.settings.json`.
 
 ### Deploy
 
-Application is automatically deployed on every push to main branch.
+Automatically deployed on every push to `main`. Runs on **Windows Consumption**. Deploys via **RBAC with GitHub federated identity (OIDC)** — same setup as the Members service. The app registration must have **Website Contributor** role on this Function App. Uses shared GitHub secrets `AZURE_CLIENT_ID`, `AZURE_TENANT_ID`, `AZURE_SUBSCRIPTION_ID`.
