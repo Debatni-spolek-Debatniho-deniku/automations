@@ -1,0 +1,44 @@
+name: Deploy to Azure
+
+on:
+  push:
+    branches: [main]
+
+env:
+  DOTNET_VERSION: '8.0.x'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: dev
+    strategy:
+      matrix:
+        include:
+          - app-name: dsdd-payments-functions
+            app-path: DSDD.Automations.Payments
+            publish-profile-secret: AZURE_PAYMENTS_PUBLISH_PROFILE
+          - app-name: dsdd-members-functions
+            app-path: DSDD.Automations.Members
+            publish-profile-secret: AZURE_MEMBERS_PUBLISH_PROFILE
+          - app-name: dsdd-reports-functions
+            app-path: DSDD.Automations.Reports
+            publish-profile-secret: AZURE_REPORTS_PUBLISH_PROFILE
+          - app-name: dsdd-discordmessages-functions
+            app-path: DSDD.Automations.DiscordMessages
+            publish-profile-secret: AZURE_DISCORDMESSAGES_PUBLISH_PROFILE
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+      - name: Build
+        run: |
+          pushd './${{ matrix.app-path }}'
+          dotnet build --configuration Release --output ./output
+          popd
+      - name: Deploy
+        uses: Azure/functions-action@v1
+        with:
+          app-name: ${{ matrix.app-name }}
+          package: '${{ matrix.app-path }}/output'
+          publish-profile: ${{ secrets[matrix.publish-profile-secret] }}

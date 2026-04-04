@@ -66,10 +66,4 @@ NUnit + Moq. Test project detection is automatic via `Directory.Build.props` —
 
 ## Deployment
 
-GitHub Actions auto-deploys each app on push to `main`:
-- `.github/workflows/payments-deploy.yml`
-- `.github/workflows/reports-deploy.yml`
-- `.github/workflows/members-deploy.yml`
-- `.github/workflows/discordmessages-deploy.yml`
-
-Each workflow builds the specific project and deploys via Azure Functions publish profile stored in GitHub secrets.
+A single GitHub Actions workflow (`.github/workflows/deploy.yml`) auto-deploys all apps on push to `main` using a matrix strategy. Each app builds and deploys in parallel via Azure Functions publish profiles stored in GitHub secrets.
