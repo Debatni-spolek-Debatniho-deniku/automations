@@ -7,6 +7,10 @@ on:
 env:
   DOTNET_VERSION: '8.0.x'
 
+permissions:
+  id-token: write
+  contents: read
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -17,9 +21,6 @@ jobs:
           - app-name: dsdd-payments-functions
             app-path: DSDD.Automations.Payments
             publish-profile-secret: AZURE_PAYMENTS_PUBLISH_PROFILE
-          - app-name: dsdd-members-functions
-            app-path: DSDD.Automations.Members
-            publish-profile-secret: AZURE_MEMBERS_PUBLISH_PROFILE
           - app-name: dsdd-reports-functions
             app-path: DSDD.Automations.Reports
             publish-profile-secret: AZURE_REPORTS_PUBLISH_PROFILE
@@ -42,3 +43,27 @@ jobs:
           app-name: ${{ matrix.app-name }}
           package: '${{ matrix.app-path }}/output'
           publish-profile: ${{ secrets[matrix.publish-profile-secret] }}
+
+  deploy-members:
+    runs-on: ubuntu-latest
+    environment: dev
+    steps:
+      - uses: actions/checkout@v3
+      - uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      - uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+      - name: Build
+        run: |
+          pushd './DSDD.Automations.Members'
+          dotnet build --configuration Release --output ./output
+          popd
+      - name: Deploy
+        uses: Azure/functions-action@v1
+        with:
+          app-name: dsdd-members-functions
+          package: 'DSDD.Automations.Members/output'
