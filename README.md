@@ -45,9 +45,65 @@ Application is automatically deployed on every push to main branch.
 
 For production the [ManagedIdentityCredential](https://learn.microsoft.com/en-us/dotnet/api/azure.identity.managedidentitycredential) is used. Production application is assigned it's own service principal in the Azure Portal that is different to enterprise application service principal and gets injected via `MSI_SECRET` env variable.
 
+## DSDD.Automations.Members
+
+Centralized member data service. Exposes member information from SharePoint Online via an HTTP API (`GET /api/members`). Other services consume member data through this service instead of accessing SharePoint directly.
+
+### Run locally
+
+Create `local.settings.json`.
+```json
+{
+  "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "UseDevelopmentStorage=true",
+    "FUNCTIONS_WORKER_RUNTIME": "dotnet-isolated",
+
+    "AZURE_TENANT_ID": "From Entra: automations-dev",
+    "AZURE_CLIENT_ID": "From Entra: automations-dev",
+    "AZURE_CLIENT_SECRET": "Emit your own in Entra: automations-dev",
+
+    "SPO_SITE_URL": "https://debatnispolek.sharepoint.com/",
+    "SPO_MEMBERS_DOCUMENT_ID": "1F2E4D5C-11FB-4B2C-AC80-65853C589D78",
+
+    "SPO_MEMBERS_WORKSHEET": "Členové",
+    "SPO_MEMBERS_HEADER_SIZE": 2,
+    "SPO_MEMBERS_FIRST_NAME_COL": "A",
+    "SPO_MEMBERS_LAST_NAME_COL": "B",
+    "SPO_MEMBERS_VARIABLE_SYMBOL_COL": "C",
+    "SPO_MEMBERS_ENLISTED_COL": "D",
+    "SPO_MEMBERS_FEE_PAYMENT_PERIOD_COL": "J",
+    "SPO_MEMBERS_FEE_PAYMENT_PERIOD_ANNUALY_VALUE": "roční",
+    "SPO_MEMBERS_FEE_PAYMENT_PERIOD_MONTHLY_VALUE": "měsíční",
+
+    "DEV_CERTIFICATE_THUMBPRINT": "see below"
+  }
+}
+```
+
+For local development the [EnvironmentCredential](https://learn.microsoft.com/en-us/dotnet/api/azure.identity.environmentcredential) is used. In order to access Azure resource settings must contain `AZURE_TENANT_ID`, `AZURE_CLIENT_ID`, `AZURE_CLIENT_SECRET`. This service principal represents enterprise application.
+
+#### Certificate for SharePoint
+
+SharePoint Online (SPO) cannot be accessed using clientId/clientSecret (EnvironmentCredential). For local development certificate must be used.
+
+1. Create self signed certificate. You may use [this tutorial](https://learn.microsoft.com/en-us/sharepoint/dev/solution-guidance/security-apponly-azuread).
+1. Open automations-dev app registration in Entra, certificates & secrets, and upload your certificate (.cert file).
+1. Install the certificate on your computer (.pfx file).
+1. Find the certificate in the windows certificate manager.
+1. Copy the it's thumbprint to `DEV_CERTIFICATE_THUMBPRINT`.
+
+### Deploy
+
+Application is automatically deployed on every push to main branch.
+
+For production the [ManagedIdentityCredential](https://learn.microsoft.com/en-us/dotnet/api/azure.identity.managedidentitycredential) is used. Production application is assigned it's own service principal in the Azure Portal that is different to enterprise application service principal and gets injected via `MSI_SECRET` env variable.
+
 ## DSDD.Automations.Reports
 
 Application for generating user reports.
+
+> **Note:** Reports currently still accesses SharePoint Online directly for member data and requires the same SPO and certificate configuration as the Members service. Once the Members service is validated in production, Reports will be switched to consume member data via HTTP from the Members service instead.
 
 ### Run locally
 
@@ -103,13 +159,7 @@ For local development the [EnvironmentCredential](https://learn.microsoft.com/en
 
 #### Certificate for SharePoint
 
-SharePoint Online (SPO) cannot be accessed using clientId/clientSecret (EnvironmentCredential). For local development certificate must be used.
-
-1. Create self signed certificate. You may use [this tutorial](https://learn.microsoft.com/en-us/sharepoint/dev/solution-guidance/security-apponly-azuread).
-1. Open automations-dev app registration in Entra, certificates & secrets, and upload your certificate (.cert file).
-1. Install the certificate on your computer (.pfx file).
-1. Find the certificate in the windows certificate manager.
-1. Copy the it's thumbprint to `DEV_CERTIFICATE_THUMBPRINT`.
+See the certificate setup instructions in the [Members](#dsddautomationsmembers) section above.
 
 #### Email
 

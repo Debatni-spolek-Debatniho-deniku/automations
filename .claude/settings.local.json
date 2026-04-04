@@ -2,7 +2,10 @@
   "permissions": {
     "allow": [
       "Bash(xargs head:*)",
-      "Bash(head -30 /f/git/automations/DSDD.Automations.Hosting/SisterApps/*.cs)"
+      "Bash(head -30 /f/git/automations/DSDD.Automations.Hosting/SisterApps/*.cs)",
+      "Bash(dotnet sln:*)",
+      "Bash(dotnet build:*)",
+      "Bash(dotnet test:*)"
     ]
   }
 }

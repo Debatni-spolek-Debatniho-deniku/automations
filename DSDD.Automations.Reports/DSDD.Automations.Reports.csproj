@@ -13,10 +13,12 @@
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.Timer" />
     <PackageReference Include="Microsoft.Azure.Functions.Worker.Sdk" />
+    <PackageReference Include="ClosedXML" />
     <PackageReference Include="System.Linq.Async" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DSDD.Automations.Hosting\DSDD.Automations.Hosting.csproj" />
+    <ProjectReference Include="..\DSDD.Automations.Payments.Helpers\DSDD.Automations.Payments.Helpers.csproj" />
     <ProjectReference Include="..\DSDD.Automations.Mailing.MailKit\DSDD.Automations.Mailing.MailKit.csproj" />
     <ProjectReference Include="..\DSDD.Automations.Members.SharePoint\DSDD.Automations.Members.SharePoint.csproj" />
     <ProjectReference Include="..\DSDD.Automations.Payments.Persistence.Cosmos\DSDD.Automations.Payments.Persistence.Cosmos.csproj" />
