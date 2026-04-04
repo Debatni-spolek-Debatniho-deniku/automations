@@ -14,7 +14,6 @@ permissions:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    environment: dev
     strategy:
       matrix:
         include:
@@ -46,7 +45,6 @@ jobs:
 
   deploy-members:
     runs-on: ubuntu-latest
-    environment: dev
     steps:
       - uses: actions/checkout@v3
       - uses: azure/login@v2
